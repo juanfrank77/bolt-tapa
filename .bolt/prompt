@@ -1,5 +1,18 @@
-For all designs I ask you to make, have them be beautiful, not cookie cutter. Make webpages that are fully featured and worthy for production.
+# Project Name: TAPA - Technologically Augmented Personal Assistant
 
-By default, this template supports JSX syntax with Tailwind CSS classes, React hooks, and Lucide React for icons. Do not install other packages for UI themes, icons, etc unless absolutely necessary or I request them.
+## Primary Goals
+- Simplify the understanding and usage of LLMs for non-technical users.
+- Provide a centralized platform for interacting with multiple AI models.
+- Offer an engaging and educational experience through a friendly mascot.
 
-Use icons from lucide-react for logos.
+## Tech Stack & Environment
+
+**Frontend:** Vite + React + TypeScript + Tailwind CSS
+**Backend:** Supabase (PostgreSQL + Auth)
+
+## UI/UX Design
+
+### Look & Feel
+- Friendly and approachable design with a focus on simplicity and clarity. Make all the designs beautiful and not cookie cutter.
+
+Use @phosphor-icons/react for icons. Do not install other packages for icons, themes,  etc. Unless is necessary or I request them.
