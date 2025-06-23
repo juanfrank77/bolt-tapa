@@ -7,10 +7,10 @@
 - [x] Initialize the project using Vite with React and TypeScript
 - [x] Install Tailwind CSS and configure it
 
-### [ ] **[Medium]** Environment & Dependency Setup
-- [ ] Configure environment variables for Supabase (API keys, endpoints)
-- [ ] Set up a connection to Supabase in the project
-- [ ] Install any additional dependencies (e.g., React Router, Axios, etc.)
+### [x] **[Medium]** Environment & Dependency Setup
+- [x] Configure environment variables for Supabase (API keys, endpoints)
+- [x] Set up a connection to Supabase in the project
+- [x] Install any additional dependencies (e.g., React Router, Axios, etc.)
 
 ### [ ] **[Medium]** Database & Supabase Setup
 - [ ] Define the PostgreSQL database schema for:
