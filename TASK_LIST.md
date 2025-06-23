@@ -37,7 +37,6 @@
 - [x] Implement email/password authentication using Supabase Auth
 - [x] Ensure proper error handling and success notifications
 - [ ] Integrate OAuth providers as needed (configure in Supabase dashboard)
-- [ ] Create unit tests to validate authentication flows
 
 ### [ ] **[Medium]** Home Page with Integrated Model Selection
 - [ ] Develop the Home Page component with a clean dashboard layout
