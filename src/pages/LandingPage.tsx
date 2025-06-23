@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Brain, 
-  Sparkles, 
+  Sparkle, 
   Users, 
   Shield, 
   ArrowRight,
@@ -57,7 +57,7 @@ const LandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
             <div className="inline-flex items-center px-4 py-2 bg-blue-100 rounded-full text-blue-800 text-sm font-medium mb-8">
-              <Sparkles className="w-4 h-4 mr-2" weight="fill" />
+              <Sparkle className="w-4 h-4 mr-2" weight="fill" />
               Your AI Assistant is Here
             </div>
             
@@ -132,7 +132,7 @@ const LandingPage: React.FC = () => {
             
             <div className="text-center group">
               <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                <Sparkles className="w-8 h-8 text-white" weight="bold" />
+                <Sparkle className="w-8 h-8 text-white" weight="bold" />
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Friendly Mascot Guide</h3>
               <p className="text-gray-600 leading-relaxed">
