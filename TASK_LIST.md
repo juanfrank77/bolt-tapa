@@ -29,14 +29,14 @@
 ### [ ] **[Medium]** Landing Page Implementation
 - [x] Create a responsive Landing Page component using React
 - [x] Include an overview of platform benefits and a call-to-action (CTA) for sign-up/log-in
-- [ ] Integrate routing so that the landing page is the default route
-- [ ] Style the page with Tailwind CSS (clean, friendly, and simple layout)
+- [x] Integrate routing so that the landing page is the default route
+- [x] Style the page with Tailwind CSS (clean, friendly, and simple layout)
 
 ### [ ] **[Medium]** Login/Sign-Up Functionality
-- [ ] Create separate components/pages for Login and Sign-Up
-- [ ] Implement email/password authentication using Supabase Auth
+- [x] Create separate components/pages for Login and Sign-Up
+- [x] Implement email/password authentication using Supabase Auth
+- [x] Ensure proper error handling and success notifications
 - [ ] Integrate OAuth providers as needed (configure in Supabase dashboard)
-- [ ] Ensure proper error handling and success notifications
 - [ ] Create unit tests to validate authentication flows
 
 ### [ ] **[Medium]** Home Page with Integrated Model Selection
