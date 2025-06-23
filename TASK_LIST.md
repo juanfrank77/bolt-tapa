@@ -27,8 +27,8 @@
 ## Core Features Development
 
 ### [ ] **[Medium]** Landing Page Implementation
-- [ ] Create a responsive Landing Page component using React
-- [ ] Include an overview of platform benefits and a call-to-action (CTA) for sign-up/log-in
+- [x] Create a responsive Landing Page component using React
+- [x] Include an overview of platform benefits and a call-to-action (CTA) for sign-up/log-in
 - [ ] Integrate routing so that the landing page is the default route
 - [ ] Style the page with Tailwind CSS (clean, friendly, and simple layout)
 
