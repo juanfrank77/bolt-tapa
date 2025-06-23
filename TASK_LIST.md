@@ -12,15 +12,15 @@
 - [x] Set up a connection to Supabase in the project
 - [x] Install any additional dependencies (e.g., React Router, Axios, etc.)
 
-### [ ] **[Medium]** Database & Supabase Setup
-- [ ] Define the PostgreSQL database schema for:
+### [x] **[Medium]** Database & Supabase Setup
+- [x] Define the PostgreSQL database schema for:
   - User profiles
   - Subscription status
   - Interaction logs
   - Model access records
   - Authentication details
-- [ ] Enable row-level security on relevant tables
-- [ ] Create initial migrations and test the database connection
+- [x] Enable row-level security on relevant tables
+- [x] Create initial migrations and test the database connection
 
 ---
 
