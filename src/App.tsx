@@ -1,10 +1,17 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { LandingPage } from './pages';
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <p>Start prompting (or editing) to see magic happen :)</p>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        {/* Add more routes here as you create them */}
+        <Route path="/login" element={<div className="min-h-screen flex items-center justify-center"><p>Login page coming soon...</p></div>} />
+        <Route path="/signup" element={<div className="min-h-screen flex items-center justify-center"><p>Sign up page coming soon...</p></div>} />
+      </Routes>
+    </Router>
   );
 }
 
