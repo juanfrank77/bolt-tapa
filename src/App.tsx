@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { LandingPage, LoginPage, SignUpPage, DashboardPage } from './pages';
+import { LandingPage, LoginPage, SignUpPage, DashboardPage, ChatPage } from './pages';
 import { useAuth } from './hooks/useAuth';
 
 // Protected Route Component
@@ -34,6 +34,14 @@ function App() {
           element={
             <ProtectedRoute>
               <DashboardPage />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/chat/:modelId" 
+          element={
+            <ProtectedRoute>
+              <ChatPage />
             </ProtectedRoute>
           } 
         />

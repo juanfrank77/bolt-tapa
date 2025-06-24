@@ -14,6 +14,7 @@ import {
   Star
 } from '@phosphor-icons/react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // Define available AI models
 const AI_MODELS = [
@@ -157,6 +158,7 @@ const DashboardPage: React.FC = () => {
   const { user, signOut } = useAuth();
   const { profile, loading: profileLoading } = useUserProfile();
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleSignOut = async () => {
     await signOut();
@@ -164,9 +166,7 @@ const DashboardPage: React.FC = () => {
 
   const handleSelectModel = (modelId: string) => {
     setSelectedModel(modelId);
-    // TODO: Navigate to chat interface or open chat modal
-    console.log(`Selected model: ${modelId}`);
-    alert(`Starting chat with ${AI_MODELS.find(m => m.id === modelId)?.name}!\n\nChat interface coming soon...`);
+    navigate(`/chat/${modelId}`);
   };
 
   if (profileLoading) {
