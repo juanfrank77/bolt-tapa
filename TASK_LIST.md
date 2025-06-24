@@ -39,16 +39,11 @@
 - [ ] Integrate OAuth providers as needed (configure in Supabase dashboard)
 
 ### [ ] **[Medium]** Home Page with Integrated Model Selection
-- [ ] Develop the Home Page component with a clean dashboard layout
-- [ ] Implement the Model List Component to display various LLMs with descriptions
-- [ ] Integrate a subscription check to restrict access to proprietary models
+- [x] Develop the Home Page component with a clean dashboard layout
+- [x] Implement the Model List Component to display various LLMs with descriptions
+- [x] Integrate a subscription check to restrict access to proprietary models
 - [ ] Hook up model selection actions to trigger interaction with the associated LLM service
-- [ ] Include navigation to other pages (e.g., Learning Page, FAQ, etc.)
- [x] Develop the Home Page component with a clean dashboard layout
- [x] Implement the Model List Component to display various LLMs with descriptions
- [x] Integrate a subscription check to restrict access to proprietary models
- [ ] Hook up model selection actions to trigger interaction with the associated LLM service
- [x] Include navigation to other pages (e.g., Learning Page, FAQ, etc.)
+- [x] Include navigation to other pages (e.g., Learning Page, FAQ, etc.)
 
 ### [ ] **[Medium]** Interactive Mascot Guide (Scope: Basic Integration)
 - [ ] Create a Mascot Chat Component that offers a chat-like interface
