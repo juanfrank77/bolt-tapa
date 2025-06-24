@@ -1,6 +1,17 @@
 import { useState, useEffect } from 'react'
-import { useAuth } from './useAuth'
+import { useAuth, isGuestUser } from './useAuth'
 import * as db from '../lib/database'
+
+// Default guest profile
+const GUEST_PROFILE = {
+  id: 'guest-profile',
+  user_id: 'guest',
+  full_name: 'Guest User',
+  avatar_url: null,
+  subscription_status: 'free' as const,
+  created_at: new Date().toISOString(),
+  updated_at: new Date().toISOString()
+}
 
 // Hook for user profile
 export const useUserProfile = () => {
@@ -12,6 +23,13 @@ export const useUserProfile = () => {
   useEffect(() => {
     if (!user) {
       setProfile(null)
+      setLoading(false)
+      return
+    }
+
+    // Return guest profile for guest users
+    if (isGuestUser(user)) {
+      setProfile(GUEST_PROFILE)
       setLoading(false)
       return
     }
@@ -37,7 +55,7 @@ export const useUserProfile = () => {
     avatar_url?: string
     subscription_status?: 'free' | 'premium' | 'enterprise'
   }) => {
-    if (!user) return
+    if (!user || isGuestUser(user)) return
 
     try {
       const updatedProfile = await db.updateUserProfile(user.id, updates)
@@ -67,6 +85,14 @@ export const useModelAccess = (modelName?: string) => {
   useEffect(() => {
     if (!user || !modelName) {
       setHasAccess(false)
+      setLoading(false)
+      return
+    }
+
+    // Guest users only have access to free models
+    if (isGuestUser(user)) {
+      const freeModels = ['gpt-3.5-turbo', 'claude-3-haiku', 'llama-2-7b']
+      setHasAccess(freeModels.includes(modelName))
       setLoading(false)
       return
     }
@@ -103,7 +129,7 @@ export const useInteractionHistory = (limit: number = 50) => {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!user) {
+    if (!user || isGuestUser(user)) {
       setInteractions([])
       setLoading(false)
       return
@@ -132,7 +158,7 @@ export const useInteractionHistory = (limit: number = 50) => {
     tokensUsed: number,
     responseTimeMs?: number
   ) => {
-    if (!user) return
+    if (!user || isGuestUser(user)) return
 
     try {
       const newInteraction = await db.logInteraction(
@@ -167,7 +193,7 @@ export const useUsageAnalytics = (startDate?: string, endDate?: string) => {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!user) {
+    if (!user || isGuestUser(user)) {
       setAnalytics([])
       setLoading(false)
       return

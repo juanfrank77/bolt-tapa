@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { LandingPage, LoginPage, SignUpPage, DashboardPage, ChatPage } from './pages';
 import { useAuth } from './hooks/useAuth';
 
-// Protected Route Component
+// Protected Route Component (only for chat pages)
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, loading } = useAuth();
 
@@ -15,7 +15,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
     );
   }
 
-  if (!user) {
+  if (!user || (user && 'isGuest' in user)) {
     return <LoginPage />;
   }
 
@@ -29,14 +29,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
-        <Route 
-          path="/dashboard" 
-          element={
-            <ProtectedRoute>
-              <DashboardPage />
-            </ProtectedRoute>
-          } 
-        />
+        <Route path="/dashboard" element={<DashboardPage />} />
         <Route 
           path="/chat/:modelId" 
           element={

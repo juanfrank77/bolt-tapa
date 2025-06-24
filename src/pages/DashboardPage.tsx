@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth, isGuestUser } from '../hooks/useAuth';
 import { useUserProfile, useModelAccess } from '../hooks/useDatabase';
 import { 
   Brain, 
@@ -79,8 +79,9 @@ const ModelCard: React.FC<{
   userSubscription: string;
   hasAccess: boolean;
   loading: boolean;
+  isGuest: boolean;
   onSelectModel: (modelId: string) => void;
-}> = ({ model, userSubscription, hasAccess, loading, onSelectModel }) => {
+}> = ({ model, userSubscription, hasAccess, loading, isGuest, onSelectModel }) => {
   const IconComponent = model.icon;
   const isAccessible = hasAccess;
   const needsUpgrade = !isAccessible && model.minSubscription !== 'free';
@@ -138,12 +139,12 @@ const ModelCard: React.FC<{
           className={`w-full bg-gradient-to-r ${model.color} text-white px-4 py-3 rounded-lg font-medium hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center`}
         >
           <ChatCircle className="w-4 h-4 mr-2" weight="bold" />
-          Start Chatting
+          {isGuest ? 'Try as Guest' : 'Start Chatting'}
         </button>
       ) : needsUpgrade ? (
         <button className="w-full bg-gray-100 text-gray-600 px-4 py-3 rounded-lg font-medium cursor-not-allowed flex items-center justify-center">
           <Lock className="w-4 h-4 mr-2" />
-          Upgrade to {model.minSubscription} required
+          {isGuest ? 'Sign up for access' : `Upgrade to ${model.minSubscription} required`}
         </button>
       ) : (
         <button className="w-full bg-gray-100 text-gray-600 px-4 py-3 rounded-lg font-medium cursor-not-allowed">
@@ -159,6 +160,7 @@ const DashboardPage: React.FC = () => {
   const { profile, loading: profileLoading } = useUserProfile();
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
   const navigate = useNavigate();
+  const isGuest = user ? isGuestUser(user) : false;
 
   const handleSignOut = async () => {
     await signOut();
@@ -198,8 +200,9 @@ const DashboardPage: React.FC = () => {
               <div className="flex items-center space-x-2">
                 <User className="w-5 h-5 text-gray-600" />
                 <span className="text-gray-700">
-                  {profile?.full_name || user?.email}
+                  {isGuest ? 'Guest' : (profile?.full_name || user?.email)}
                 </span>
+                {!isGuest && (
                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                   profile?.subscription_status === 'premium' 
                     ? 'bg-purple-100 text-purple-800'
@@ -209,7 +212,24 @@ const DashboardPage: React.FC = () => {
                 }`}>
                   {profile?.subscription_status || 'free'}
                 </span>
+                )}
               </div>
+              {isGuest ? (
+                <div className="flex items-center space-x-2">
+                  <Link
+                    to="/login"
+                    className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-200"
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              ) : (
               <button
                 onClick={handleSignOut}
                 className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors"
@@ -217,6 +237,7 @@ const DashboardPage: React.FC = () => {
                 <SignOut className="w-5 h-5" />
                 <span>Sign Out</span>
               </button>
+              )}
             </div>
           </div>
         </div>
@@ -228,23 +249,51 @@ const DashboardPage: React.FC = () => {
         <div className="text-center mb-12">
           <div className="inline-flex items-center px-4 py-2 bg-blue-100 rounded-full text-blue-800 text-sm font-medium mb-6">
             <Sparkle className="w-4 h-4 mr-2" weight="fill" />
-            Welcome to your AI Dashboard
+            {isGuest ? 'Welcome to TAPA' : 'Welcome to your AI Dashboard'}
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Hello, {profile?.full_name?.split(' ')[0] || 'there'}! 👋
+            Hello, {isGuest ? 'Guest' : (profile?.full_name?.split(' ')[0] || 'there')}! 👋
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Choose from our selection of AI models and start your conversation. Each model has unique strengths and capabilities.
+            {isGuest 
+              ? 'Explore our AI models as a guest. Sign up to unlock your full potential and save your conversations.'
+              : 'Choose from our selection of AI models and start your conversation. Each model has unique strengths and capabilities.'
+            }
           </p>
         </div>
+
+        {/* Guest Notice */}
+        {isGuest && (
+          <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-8">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                  <User className="w-5 h-5 text-blue-600" weight="bold" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-blue-900">You're browsing as a guest</h3>
+                  <p className="text-blue-700">Sign up to save conversations, access premium models, and track your usage.</p>
+                </div>
+              </div>
+              <Link
+                to="/signup"
+                className="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+              >
+                Sign Up Free
+              </Link>
+            </div>
+          </div>
+        )}
 
         {/* AI Models Section */}
         <div className="mb-12">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold text-gray-900">Available AI Models</h2>
+            {!isGuest && (
             <div className="text-sm text-gray-600">
               Your plan: <span className="font-medium capitalize">{profile?.subscription_status || 'free'}</span>
             </div>
+            )}
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -258,6 +307,7 @@ const DashboardPage: React.FC = () => {
                     userSubscription={profile?.subscription_status || 'free'}
                     hasAccess={hasAccess}
                     loading={loading}
+                    isGuest={isGuest}
                     onSelectModel={handleSelectModel}
                   />
                 );
@@ -268,6 +318,7 @@ const DashboardPage: React.FC = () => {
         </div>
 
         {/* Quick Stats */}
+        {!isGuest && (
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
           <h3 className="text-xl font-bold text-gray-900 mb-4">Quick Stats</h3>
           <div className="grid md:grid-cols-3 gap-6">
@@ -291,18 +342,33 @@ const DashboardPage: React.FC = () => {
             </div>
           </div>
         </div>
+        )}
 
         {/* Upgrade CTA for Free Users */}
-        {profile?.subscription_status === 'free' && (
+        {(isGuest || profile?.subscription_status === 'free') && (
           <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl p-8 text-white text-center">
             <Crown className="w-12 h-12 mx-auto mb-4" weight="bold" />
-            <h3 className="text-2xl font-bold mb-4">Unlock Premium AI Models</h3>
+            <h3 className="text-2xl font-bold mb-4">
+              {isGuest ? 'Sign Up to Unlock More' : 'Unlock Premium AI Models'}
+            </h3>
             <p className="text-purple-100 mb-6 max-w-2xl mx-auto">
-              Upgrade to Premium and get access to GPT-4, Claude 3 Sonnet, and other advanced models with enhanced capabilities.
+              {isGuest 
+                ? 'Create an account to save your conversations, access premium models, and unlock the full potential of TAPA.'
+                : 'Upgrade to Premium and get access to GPT-4, Claude 3 Sonnet, and other advanced models with enhanced capabilities.'
+              }
             </p>
+            {isGuest ? (
+              <Link
+                to="/signup"
+                className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+              >
+                Sign Up Free
+              </Link>
+            ) : (
             <button className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
               Upgrade to Premium
             </button>
+            )}
           </div>
         )}
       </main>
