@@ -40,9 +40,11 @@ const LoginPage: React.FC = () => {
         {/* Header */}
         <div className="text-center">
           <Link to="/" className="inline-flex items-center space-x-2 mb-8">
-            <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
-              <Brain className="w-7 h-7 text-white" weight="bold" />
-            </div>
+            <img 
+              src="/src/assets/tapa-logo.png" 
+              alt="TAPA Logo" 
+              className="w-12 h-12"
+            />
             <span className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               TAPA
             </span>
