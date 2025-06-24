@@ -1,21 +1,181 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
-import { useUserProfile } from '../hooks/useDatabase';
-import { Brain, SignOut, User, Sparkle } from '@phosphor-icons/react';
+import { useUserProfile, useModelAccess } from '../hooks/useDatabase';
+import { 
+  Brain, 
+  SignOut, 
+  User, 
+  Sparkle, 
+  Crown, 
+  Lightning, 
+  ChatCircle,
+  Lock,
+  CheckCircle,
+  Star
+} from '@phosphor-icons/react';
 import { Link } from 'react-router-dom';
+
+// Define available AI models
+const AI_MODELS = [
+  {
+    id: 'gpt-3.5-turbo',
+    name: 'GPT-3.5 Turbo',
+    description: 'Fast and efficient conversational AI perfect for everyday tasks and quick responses.',
+    minSubscription: 'free' as const,
+    icon: ChatCircle,
+    color: 'from-green-500 to-emerald-600',
+    features: ['Fast responses', 'General knowledge', 'Code assistance']
+  },
+  {
+    id: 'claude-3-haiku',
+    name: 'Claude 3 Haiku',
+    description: 'Anthropic\'s fastest model, great for simple tasks and quick interactions.',
+    minSubscription: 'free' as const,
+    icon: Lightning,
+    color: 'from-blue-500 to-cyan-600',
+    features: ['Lightning fast', 'Concise answers', 'Task-focused']
+  },
+  {
+    id: 'gpt-4',
+    name: 'GPT-4',
+    description: 'Advanced reasoning and complex problem-solving capabilities for professional use.',
+    minSubscription: 'premium' as const,
+    icon: Brain,
+    color: 'from-purple-500 to-violet-600',
+    features: ['Advanced reasoning', 'Complex tasks', 'High accuracy']
+  },
+  {
+    id: 'claude-3-sonnet',
+    name: 'Claude 3 Sonnet',
+    description: 'Balanced performance for a wide range of tasks with excellent reasoning.',
+    minSubscription: 'premium' as const,
+    icon: Star,
+    color: 'from-orange-500 to-amber-600',
+    features: ['Balanced performance', 'Creative writing', 'Analysis']
+  },
+  {
+    id: 'gpt-4-turbo',
+    name: 'GPT-4 Turbo',
+    description: 'The most advanced model with enhanced capabilities and latest knowledge.',
+    minSubscription: 'enterprise' as const,
+    icon: Crown,
+    color: 'from-gray-700 to-gray-900',
+    features: ['Latest knowledge', 'Enhanced capabilities', 'Premium support']
+  },
+  {
+    id: 'claude-3-opus',
+    name: 'Claude 3 Opus',
+    description: 'Anthropic\'s most powerful model for the most complex and nuanced tasks.',
+    minSubscription: 'enterprise' as const,
+    icon: Crown,
+    color: 'from-indigo-600 to-purple-700',
+    features: ['Maximum capability', 'Complex reasoning', 'Enterprise features']
+  }
+];
+
+const ModelCard: React.FC<{
+  model: typeof AI_MODELS[0];
+  userSubscription: string;
+  hasAccess: boolean;
+  loading: boolean;
+  onSelectModel: (modelId: string) => void;
+}> = ({ model, userSubscription, hasAccess, loading, onSelectModel }) => {
+  const IconComponent = model.icon;
+  const isAccessible = hasAccess;
+  const needsUpgrade = !isAccessible && model.minSubscription !== 'free';
+
+  const getSubscriptionBadge = (subscription: string) => {
+    switch (subscription) {
+      case 'free':
+        return <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">Free</span>;
+      case 'premium':
+        return <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">Premium</span>;
+      case 'enterprise':
+        return <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">Enterprise</span>;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className={`bg-white rounded-2xl shadow-lg p-6 border-2 transition-all duration-300 ${
+      isAccessible 
+        ? 'border-transparent hover:border-blue-200 hover:shadow-xl transform hover:-translate-y-1' 
+        : 'border-gray-200 opacity-75'
+    }`}>
+      <div className="flex items-start justify-between mb-4">
+        <div className={`w-12 h-12 bg-gradient-to-r ${model.color} rounded-xl flex items-center justify-center`}>
+          <IconComponent className="w-6 h-6 text-white" weight="bold" />
+        </div>
+        {getSubscriptionBadge(model.minSubscription)}
+      </div>
+      
+      <h3 className="text-xl font-bold text-gray-900 mb-2">{model.name}</h3>
+      <p className="text-gray-600 mb-4 text-sm leading-relaxed">{model.description}</p>
+      
+      <div className="mb-4">
+        <div className="flex flex-wrap gap-2">
+          {model.features.map((feature, index) => (
+            <span key={index} className="inline-flex items-center px-2 py-1 rounded-md text-xs bg-gray-100 text-gray-700">
+              <CheckCircle className="w-3 h-3 mr-1 text-green-500" weight="fill" />
+              {feature}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {loading ? (
+        <button disabled className="w-full bg-gray-200 text-gray-500 px-4 py-3 rounded-lg font-medium cursor-not-allowed">
+          <div className="flex items-center justify-center">
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-400 mr-2"></div>
+            Checking access...
+          </div>
+        </button>
+      ) : isAccessible ? (
+        <button
+          onClick={() => onSelectModel(model.id)}
+          className={`w-full bg-gradient-to-r ${model.color} text-white px-4 py-3 rounded-lg font-medium hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center`}
+        >
+          <ChatCircle className="w-4 h-4 mr-2" weight="bold" />
+          Start Chatting
+        </button>
+      ) : needsUpgrade ? (
+        <button className="w-full bg-gray-100 text-gray-600 px-4 py-3 rounded-lg font-medium cursor-not-allowed flex items-center justify-center">
+          <Lock className="w-4 h-4 mr-2" />
+          Upgrade to {model.minSubscription} required
+        </button>
+      ) : (
+        <button className="w-full bg-gray-100 text-gray-600 px-4 py-3 rounded-lg font-medium cursor-not-allowed">
+          Access Denied
+        </button>
+      )}
+    </div>
+  );
+};
 
 const DashboardPage: React.FC = () => {
   const { user, signOut } = useAuth();
   const { profile, loading: profileLoading } = useUserProfile();
+  const [selectedModel, setSelectedModel] = useState<string | null>(null);
 
   const handleSignOut = async () => {
     await signOut();
   };
 
+  const handleSelectModel = (modelId: string) => {
+    setSelectedModel(modelId);
+    // TODO: Navigate to chat interface or open chat modal
+    console.log(`Selected model: ${modelId}`);
+    alert(`Starting chat with ${AI_MODELS.find(m => m.id === modelId)?.name}!\n\nChat interface coming soon...`);
+  };
+
   if (profileLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading your dashboard...</p>
+        </div>
       </div>
     );
   }
@@ -23,22 +183,31 @@ const DashboardPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-100">
+      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-2">
+            <Link to="/" className="flex items-center space-x-2">
               <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
                 <Brain className="w-6 h-6 text-white" weight="bold" />
               </div>
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 TAPA
               </span>
-            </div>
+            </Link>
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
                 <User className="w-5 h-5 text-gray-600" />
                 <span className="text-gray-700">
                   {profile?.full_name || user?.email}
+                </span>
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                  profile?.subscription_status === 'premium' 
+                    ? 'bg-purple-100 text-purple-800'
+                    : profile?.subscription_status === 'enterprise'
+                    ? 'bg-gray-100 text-gray-800'
+                    : 'bg-green-100 text-green-800'
+                }`}>
+                  {profile?.subscription_status || 'free'}
                 </span>
               </div>
               <button
@@ -65,59 +234,77 @@ const DashboardPage: React.FC = () => {
             Hello, {profile?.full_name?.split(' ')[0] || 'there'}! 👋
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Ready to explore the world of AI? Choose from our selection of models and start your conversation.
+            Choose from our selection of AI models and start your conversation. Each model has unique strengths and capabilities.
           </p>
         </div>
 
-        {/* Profile Info */}
+        {/* AI Models Section */}
+        <div className="mb-12">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">Available AI Models</h2>
+            <div className="text-sm text-gray-600">
+              Your plan: <span className="font-medium capitalize">{profile?.subscription_status || 'free'}</span>
+            </div>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {AI_MODELS.map((model) => {
+              const ModelAccessWrapper: React.FC = () => {
+                const { hasAccess, loading } = useModelAccess(model.id);
+                return (
+                  <ModelCard
+                    key={model.id}
+                    model={model}
+                    userSubscription={profile?.subscription_status || 'free'}
+                    hasAccess={hasAccess}
+                    loading={loading}
+                    onSelectModel={handleSelectModel}
+                  />
+                );
+              };
+              return <ModelAccessWrapper key={model.id} />;
+            })}
+          </div>
+        </div>
+
+        {/* Quick Stats */}
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Your Profile</h2>
+          <h3 className="text-xl font-bold text-gray-900 mb-4">Quick Stats</h3>
           <div className="grid md:grid-cols-3 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-              <p className="text-gray-900">{profile?.full_name || 'Not set'}</p>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-blue-600 mb-1">
+                {AI_MODELS.filter(m => m.minSubscription === 'free').length}
+              </div>
+              <div className="text-sm text-gray-600">Free Models Available</div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-              <p className="text-gray-900">{user?.email}</p>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-purple-600 mb-1">
+                {profile?.subscription_status === 'premium' || profile?.subscription_status === 'enterprise' 
+                  ? AI_MODELS.filter(m => m.minSubscription === 'premium' || m.minSubscription === 'free').length
+                  : AI_MODELS.filter(m => m.minSubscription === 'free').length}
+              </div>
+              <div className="text-sm text-gray-600">Models You Can Access</div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Subscription</label>
-              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                profile?.subscription_status === 'premium' 
-                  ? 'bg-purple-100 text-purple-800'
-                  : profile?.subscription_status === 'enterprise'
-                  ? 'bg-gray-100 text-gray-800'
-                  : 'bg-green-100 text-green-800'
-              }`}>
-                {profile?.subscription_status || 'free'}
-              </span>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-600 mb-1">0</div>
+              <div className="text-sm text-gray-600">Conversations Today</div>
             </div>
           </div>
         </div>
 
-        {/* Coming Soon Section */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 text-center">
-          <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <Brain className="w-8 h-8 text-white" weight="bold" />
-          </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">AI Models Coming Soon!</h2>
-          <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-            We're working hard to bring you access to multiple AI models. Soon you'll be able to chat with 
-            different AI assistants, compare their responses, and find the perfect match for your needs.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/"
-              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
-            >
-              Explore Features
-            </Link>
-            <button className="text-gray-600 hover:text-gray-900 px-6 py-3 rounded-lg font-medium border-2 border-gray-200 hover:border-gray-300 transition-all duration-200">
-              Learn More
+        {/* Upgrade CTA for Free Users */}
+        {profile?.subscription_status === 'free' && (
+          <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl p-8 text-white text-center">
+            <Crown className="w-12 h-12 mx-auto mb-4" weight="bold" />
+            <h3 className="text-2xl font-bold mb-4">Unlock Premium AI Models</h3>
+            <p className="text-purple-100 mb-6 max-w-2xl mx-auto">
+              Upgrade to Premium and get access to GPT-4, Claude 3 Sonnet, and other advanced models with enhanced capabilities.
+            </p>
+            <button className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
+              Upgrade to Premium
             </button>
           </div>
-        </div>
+        )}
       </main>
     </div>
   );
