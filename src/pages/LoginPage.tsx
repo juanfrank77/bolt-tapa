@@ -41,7 +41,7 @@ const LoginPage: React.FC = () => {
         <div className="text-center">
           <Link to="/" className="inline-flex items-center space-x-2 mb-8">
             <img 
-              src="/src/assets/tapa-logo.png" 
+              src="/src/assets/tapa-icon.png" 
               alt="TAPA Logo" 
               className="w-12 h-12"
             />

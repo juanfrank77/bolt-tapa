@@ -350,7 +350,7 @@ const ChatPage: React.FC = () => {
             </div>
             <Link to="/" className="flex items-center space-x-2">
               <img 
-                src="/src/assets/tapa-logo.png" 
+                src="/src/assets/tapa-icon.png" 
                 alt="TAPA Logo" 
                 className="w-8 h-8"
               />

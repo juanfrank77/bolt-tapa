@@ -19,7 +19,7 @@ const LandingPage: React.FC = () => {
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-2">
               <img 
-                src="/src/assets/tapa-logo.png" 
+                src="/src/assets/tapa-icon.png" 
                 alt="TAPA Logo" 
                 className="w-10 h-10"
               />
@@ -260,7 +260,7 @@ const LandingPage: React.FC = () => {
             <div className="col-span-2">
               <div className="flex items-center space-x-2 mb-6">
                 <img 
-                  src="/src/assets/tapa-logo.png" 
+                  src="/src/assets/tapa-icon.png" 
                   alt="TAPA Logo" 
                   className="w-10 h-10"
                 />

@@ -190,7 +190,7 @@ const DashboardPage: React.FC = () => {
           <div className="flex justify-between items-center py-4">
             <Link to="/" className="flex items-center space-x-2">
               <img 
-                src="/src/assets/tapa-logo.png" 
+                src="/src/assets/tapa-icon.png" 
                 alt="TAPA Logo" 
                 className="w-10 h-10"
               />
