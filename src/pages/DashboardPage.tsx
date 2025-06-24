@@ -194,7 +194,7 @@ const DashboardPage: React.FC = () => {
                 alt="TAPA Logo" 
                 className="w-10 h-10"
               />
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="text-2xl font-bold bg-gradient-to-r from-[#812dea] to-[#4ea6fd] bg-clip-text text-transparent">
                 TAPA
               </span>
             </Link>
@@ -226,7 +226,7 @@ const DashboardPage: React.FC = () => {
                   </Link>
                   <Link
                     to="/signup"
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-200"
+                    className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-4 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-200"
                   >
                     Sign Up
                   </Link>
@@ -279,7 +279,7 @@ const DashboardPage: React.FC = () => {
               </div>
               <Link
                 to="/signup"
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                className="bg-[#812dea] text-white px-6 py-2 rounded-lg font-medium hover:bg-[#6d1fc7] transition-colors"
               >
                 Sign Up Free
               </Link>
@@ -348,7 +348,7 @@ const DashboardPage: React.FC = () => {
 
         {/* Upgrade CTA for Free Users */}
         {(isGuest || profile?.subscription_status === 'free') && (
-          <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl p-8 text-white text-center">
+          <div className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] rounded-2xl p-8 text-white text-center">
             <Crown className="w-12 h-12 mx-auto mb-4" weight="bold" />
             <h3 className="text-2xl font-bold mb-4">
               {isGuest ? 'Sign Up to Unlock More' : 'Unlock Premium AI Models'}
@@ -362,12 +362,12 @@ const DashboardPage: React.FC = () => {
             {isGuest ? (
               <Link
                 to="/signup"
-                className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+                className="bg-white text-[#812dea] px-8 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
               >
                 Sign Up Free
               </Link>
             ) : (
-            <button className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
+            <button className="bg-white text-[#812dea] px-8 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
               Upgrade to Premium
             </button>
             )}

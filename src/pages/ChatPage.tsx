@@ -81,7 +81,7 @@ const ChatMessage: React.FC<{ message: Message; modelConfig: any }> = ({ message
       {/* Avatar */}
       <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
         message.isUser 
-          ? 'bg-gradient-to-r from-blue-600 to-purple-600' 
+          ? 'bg-gradient-to-r from-[#812dea] to-[#4ea6fd]' 
           : modelConfig.avatar
       }`}>
         {message.isUser ? (
@@ -95,7 +95,7 @@ const ChatMessage: React.FC<{ message: Message; modelConfig: any }> = ({ message
       <div className={`flex-1 max-w-3xl ${message.isUser ? 'text-right' : ''}`}>
         <div className={`inline-block p-4 rounded-2xl ${
           message.isUser 
-            ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white' 
+            ? 'bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white' 
             : 'bg-white border border-gray-200 text-gray-900'
         }`}>
           <div className="whitespace-pre-wrap leading-relaxed">{message.content}</div>
@@ -314,7 +314,7 @@ const ChatPage: React.FC = () => {
           </p>
           <Link
             to="/dashboard"
-            className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:shadow-lg transition-all duration-200"
+            className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-6 py-3 rounded-lg font-medium hover:shadow-lg transition-all duration-200"
           >
             Back to Dashboard
           </Link>
@@ -354,7 +354,7 @@ const ChatPage: React.FC = () => {
                 alt="TAPA Logo" 
                 className="w-8 h-8"
               />
-              <span className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="text-lg font-bold bg-gradient-to-r from-[#812dea] to-[#4ea6fd] bg-clip-text text-transparent">
                 TAPA
               </span>
             </Link>

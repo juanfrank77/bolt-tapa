@@ -23,7 +23,7 @@ const LandingPage: React.FC = () => {
                 alt="TAPA Logo" 
                 className="w-10 h-10"
               />
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <span className="text-2xl font-bold bg-gradient-to-r from-[#812dea] to-[#4ea6fd] bg-clip-text text-transparent">
                 TAPA
               </span>
             </div>
@@ -45,7 +45,7 @@ const LandingPage: React.FC = () => {
               </Link>
               <Link 
                 to="/signup" 
-                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 font-medium"
+                className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-6 py-2 rounded-full hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 font-medium"
               >
                 Get Started
               </Link>
@@ -65,7 +65,7 @@ const LandingPage: React.FC = () => {
             
             <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-8 leading-tight">
               Meet Your
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent block">
+              <span className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] bg-clip-text text-transparent block">
                 AI Companion
               </span>
             </h1>
@@ -79,7 +79,7 @@ const LandingPage: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link 
                 to="/signup"
-                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 flex items-center group"
+                className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 flex items-center group"
               >
                 Start Your AI Journey
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" weight="bold" />
@@ -210,7 +210,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-blue-600 to-purple-600">
+      <section className="py-24 bg-gradient-to-r from-[#812dea] to-[#4ea6fd]">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Ready to Explore AI?
@@ -223,20 +223,20 @@ const LandingPage: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link 
               to="/signup"
-              className="bg-white text-blue-600 px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 flex items-center group"
+              className="bg-white text-[#812dea] px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 flex items-center group"
             >
               Get Started Free
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" weight="bold" />
             </Link>
             <Link 
               to="/login"
-              className="text-white hover:text-blue-100 px-8 py-4 rounded-full text-lg font-medium border-2 border-white/30 hover:border-white/50 transition-all duration-200"
+              className="text-white hover:text-purple-100 px-8 py-4 rounded-full text-lg font-medium border-2 border-white/30 hover:border-white/50 transition-all duration-200"
             >
               Already have an account?
             </Link>
           </div>
           
-          <div className="mt-12 flex flex-wrap justify-center items-center gap-8 text-blue-100">
+          <div className="mt-12 flex flex-wrap justify-center items-center gap-8 text-purple-100">
             <div className="flex items-center">
               <CheckCircle className="w-5 h-5 mr-2" weight="fill" />
               <span>No credit card required</span>
