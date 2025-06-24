@@ -71,7 +71,7 @@ const LandingPage: React.FC = () => {
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
-              TAPA is your Technologically Augmented Personal Assistant. 
+              TAPA is your <b>T</b>echnologically <b>A</b>ugmented <b>P</b>ersonal <b>A</b>ssistant. 
             </p>
 
             <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
