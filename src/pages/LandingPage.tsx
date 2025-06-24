@@ -71,9 +71,11 @@ const LandingPage: React.FC = () => {
             </h1>
             
             <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
-              TAPA makes AI simple and accessible. Chat with multiple AI models, 
-              learn from your friendly mascot guide, and unlock the power of artificial intelligence 
-              without the complexity.
+              TAPA is your Technologically Augmented Personal Assistant. 
+            </p>
+
+            <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
+              Chat with multiple AI models in one place, learn from a friendly mascot guide, and unlock               the power of artificial intelligence without the complexity.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
