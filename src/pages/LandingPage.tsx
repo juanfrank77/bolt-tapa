@@ -82,9 +82,12 @@ const LandingPage: React.FC = () => {
                 Start Your AI Journey
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" weight="bold" />
               </Link>
-              <button className="text-gray-600 hover:text-gray-900 px-8 py-4 rounded-full text-lg font-medium border-2 border-gray-200 hover:border-gray-300 transition-all duration-200">
-                Watch Demo
-              </button>
+              <Link 
+                to="/dashboard"
+                className="text-gray-600 hover:text-gray-900 px-8 py-4 rounded-full text-lg font-medium border-2 border-gray-200 hover:border-gray-300 transition-all duration-200"
+              >
+                Try for Free
+              </Link>
             </div>
             
             <div className="mt-16 flex items-center justify-center space-x-8 text-sm text-gray-500">
