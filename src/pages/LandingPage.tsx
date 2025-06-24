@@ -23,8 +23,6 @@ const LandingPage: React.FC = () => {
                 alt="TAPA Logo" 
                 className="w-10 h-10"
               />
-                className="w-12 h-12"
-              />
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 TAPA
               </span>
