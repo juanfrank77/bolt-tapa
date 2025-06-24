@@ -100,10 +100,6 @@ const LandingPage: React.FC = () => {
                 <span>4.9/5 Rating</span>
               </div>
               <div className="flex items-center">
-                <Users className="w-5 h-5 text-blue-500 mr-1" weight="fill" />
-                <span>10K+ Users</span>
-              </div>
-              <div className="flex items-center">
                 <Shield className="w-5 h-5 text-green-500 mr-1" weight="fill" />
                 <span>100% Secure</span>
               </div>
@@ -120,8 +116,8 @@ const LandingPage: React.FC = () => {
               Why Choose TAPA?
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              We've designed TAPA to be the most user-friendly AI platform, 
-              perfect for beginners and experts alike.
+              TAPA is designed to be the most user-friendly AI platform, 
+              perfect for beginners and non-technical users.
             </p>
           </div>
           
@@ -132,8 +128,8 @@ const LandingPage: React.FC = () => {
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Multiple AI Models</h3>
               <p className="text-gray-600 leading-relaxed">
-                Access various AI models from one platform. Compare responses, 
-                find the best fit for your needs, and switch seamlessly between different AI assistants.
+                Access several AI models from one platform. Compare responses, 
+                find the best fit for your needs, and switch seamlessly between models.
               </p>
             </div>
             
@@ -143,7 +139,7 @@ const LandingPage: React.FC = () => {
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Friendly Mascot Guide</h3>
               <p className="text-gray-600 leading-relaxed">
-                Meet your AI companion who will guide you through every step. 
+                Meet TAPA, your AI companion who will guide you every step. 
                 Learn AI concepts, get personalized tips, and never feel lost in the world of artificial intelligence.
               </p>
             </div>
@@ -154,8 +150,7 @@ const LandingPage: React.FC = () => {
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Simple & Secure</h3>
               <p className="text-gray-600 leading-relaxed">
-                No technical knowledge required. Our intuitive interface makes AI accessible to everyone, 
-                while enterprise-grade security keeps your data safe.
+                No technical knowledge required. Our intuitive interface makes AI accessible to everyone, while enterprise-grade security keeps your data safe & private.
               </p>
             </div>
           </div>
@@ -218,7 +213,7 @@ const LandingPage: React.FC = () => {
             Ready to Explore AI?
           </h2>
           <p className="text-xl text-blue-100 mb-12 max-w-2xl mx-auto">
-            Join the AI revolution today. Start with our free plan and discover 
+            Join the AI revolution today. Start with a free trial and discover 
             how TAPA can transform the way you interact with artificial intelligence.
           </p>
           
