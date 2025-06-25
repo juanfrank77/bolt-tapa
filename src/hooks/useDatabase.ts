@@ -91,7 +91,7 @@ export const useModelAccess = (modelName?: string) => {
 
     // Guest users only have access to free models
     if (isGuestUser(user)) {
-      const freeModels = ['gpt-3.5-turbo', 'claude-3-haiku', 'llama-2-7b']
+      const freeModels = ['gpt-3.5-turbo', 'claude-3.5-haiku', 'llama-3-7b']
       setHasAccess(freeModels.includes(modelName))
       setLoading(false)
       return
