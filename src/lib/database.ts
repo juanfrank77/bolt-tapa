@@ -31,14 +31,36 @@ export const updateUserProfile = async (userId: string, updates: {
 
 // Model Access operations
 export const checkModelAccess = async (userId: string, modelName: string) => {
-  const { data, error } = await supabase
-    .rpc('has_model_access', {
-      p_user_id: userId,
-      p_model_name: modelName
-    })
+  // For now, implement basic access logic based on subscription status
+  // Free models: gpt-3.5-turbo, claude-3-haiku
+  // Premium models: gpt-4, claude-3-sonnet  
+  // Enterprise models: gpt-4-turbo, claude-3-opus
+  
+  const freeModels = ['gpt-3.5-turbo', 'claude-3-haiku'];
+  const premiumModels = ['gpt-4', 'claude-3-sonnet'];
+  const enterpriseModels = ['gpt-4-turbo', 'claude-3-opus'];
+  
+  // Get user's subscription status
+  const { data: profile, error } = await supabase
+    .from('user_profiles')
+    .select('subscription_status')
+    .eq('user_id', userId)
+    .single()
 
   if (error) throw error
-  return data as boolean
+  
+  const subscriptionStatus = profile?.subscription_status || 'free';
+  
+  // Check access based on subscription
+  if (freeModels.includes(modelName)) {
+    return true; // Everyone has access to free models
+  } else if (premiumModels.includes(modelName)) {
+    return subscriptionStatus === 'premium' || subscriptionStatus === 'enterprise';
+  } else if (enterpriseModels.includes(modelName)) {
+    return subscriptionStatus === 'enterprise';
+  }
+  
+  return false; // Default to no access
 }
 
 export const getUserModelAccess = async (userId: string) => {
