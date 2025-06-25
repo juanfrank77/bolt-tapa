@@ -6,14 +6,14 @@ export const AI_MODEL_CONFIG = {
     color: 'from-green-500 to-emerald-600',
     avatar: 'bg-gradient-to-r from-green-500 to-emerald-600'
   },
-  'claude-3-haiku': {
-    name: 'Claude 3 Haiku',
+  'claude-3.5-haiku': {
+    name: 'Claude 3.5 Haiku',
     icon: 'Lightning',
     color: 'from-blue-500 to-cyan-600',
     avatar: 'bg-gradient-to-r from-blue-500 to-cyan-600'
   },
-  'gpt-4': {
-    name: 'GPT-4',
+  'gpt-4o': {
+    name: 'GPT-4o',
     icon: 'Brain',
     color: 'from-purple-500 to-violet-600',
     avatar: 'bg-gradient-to-r from-purple-500 to-violet-600'
@@ -24,8 +24,8 @@ export const AI_MODEL_CONFIG = {
     color: 'from-orange-500 to-amber-600',
     avatar: 'bg-gradient-to-r from-orange-500 to-amber-600'
   },
-  'gpt-4-turbo': {
-    name: 'GPT-4 Turbo',
+  'gpt-4.1': {
+    name: 'GPT-4.1',
     icon: 'Crown',
     color: 'from-gray-700 to-gray-900',
     avatar: 'bg-gradient-to-r from-gray-700 to-gray-900'
@@ -49,8 +49,8 @@ export const AI_MODELS = [
     features: ['Fast responses', 'General knowledge', 'Code assistance']
   },
   {
-    id: 'claude-3-haiku',
-    name: 'Claude 3 Haiku',
+    id: 'claude-3.5-haiku',
+    name: 'Claude 3.5 Haiku',
     description: 'Anthropic\'s fastest model, great for simple tasks and quick interactions.',
     minSubscription: 'free' as const,
     icon: 'Lightning',
@@ -58,8 +58,8 @@ export const AI_MODELS = [
     features: ['Lightning fast', 'Concise answers', 'Task-focused']
   },
   {
-    id: 'gpt-4',
-    name: 'GPT-4',
+    id: 'gpt-4o',
+    name: 'GPT-4o',
     description: 'Advanced reasoning and complex problem-solving capabilities for professional use.',
     minSubscription: 'premium' as const,
     icon: 'Brain',
@@ -67,8 +67,8 @@ export const AI_MODELS = [
     features: ['Advanced reasoning', 'Complex tasks', 'High accuracy']
   },
   {
-    id: 'claude-3-sonnet',
-    name: 'Claude 3 Sonnet',
+    id: 'claude-3.5-sonnet',
+    name: 'Claude 3.5 Sonnet',
     description: 'Balanced performance for a wide range of tasks with excellent reasoning.',
     minSubscription: 'premium' as const,
     icon: 'Star',
@@ -76,8 +76,8 @@ export const AI_MODELS = [
     features: ['Balanced performance', 'Creative writing', 'Analysis']
   },
   {
-    id: 'gpt-4-turbo',
-    name: 'GPT-4 Turbo',
+    id: 'gpt-4.1',
+    name: 'GPT-4.1',
     description: 'The most advanced model with enhanced capabilities and latest knowledge.',
     minSubscription: 'enterprise' as const,
     icon: 'Crown',
