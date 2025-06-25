@@ -178,7 +178,7 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({
             className="w-10 h-10 rounded-full bg-white p-1"
           />
           <div>
-            <h3 className="font-bold text-white">TAPA Guide</h3>
+            <h3 className="font-bold text-white">TAPA</h3>
             <p className="text-sm text-purple-100">Your AI Companion</p>
           </div>
         </div>
