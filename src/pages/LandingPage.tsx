@@ -1,4 +1,5 @@
 import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Brain, 
@@ -7,10 +8,22 @@ import {
   Shield, 
   ArrowRight,
   CheckCircle,
-  Star
+  Star,
+  List,
+  X
 } from '@phosphor-icons/react';
 
 const LandingPage: React.FC = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
@@ -27,7 +40,9 @@ const LandingPage: React.FC = () => {
                 TAPA
               </span>
             </div>
-            <nav className="hidden md:flex items-center space-x-8">
+            
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex items-center space-x-8">
               <a href="#features" className="text-gray-600 hover:text-gray-900 transition-colors">
                 Features
               </a>
@@ -50,7 +65,63 @@ const LandingPage: React.FC = () => {
                 Get Started
               </Link>
             </nav>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={toggleMobileMenu}
+              className="lg:hidden p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+              aria-label="Toggle mobile menu"
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <List className="w-6 h-6" />
+              )}
+            </button>
           </div>
+
+          {/* Mobile Navigation Menu */}
+          {isMobileMenuOpen && (
+            <div className="lg:hidden border-t border-gray-100 py-4">
+              <nav className="flex flex-col space-y-4">
+                <a 
+                  href="#features" 
+                  onClick={closeMobileMenu}
+                  className="text-gray-600 hover:text-gray-900 transition-colors px-2 py-1"
+                >
+                  Features
+                </a>
+                <a 
+                  href="#how-it-works" 
+                  onClick={closeMobileMenu}
+                  className="text-gray-600 hover:text-gray-900 transition-colors px-2 py-1"
+                >
+                  How it Works
+                </a>
+                <a 
+                  href="#pricing" 
+                  onClick={closeMobileMenu}
+                  className="text-gray-600 hover:text-gray-900 transition-colors px-2 py-1"
+                >
+                  Pricing
+                </a>
+                <Link 
+                  to="/login" 
+                  onClick={closeMobileMenu}
+                  className="text-blue-600 hover:text-blue-700 font-medium transition-colors px-2 py-1"
+                >
+                  Sign In
+                </Link>
+                <Link 
+                  to="/signup" 
+                  onClick={closeMobileMenu}
+                  className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-200 font-medium text-center"
+                >
+                  Get Started
+                </Link>
+              </nav>
+            </div>
+          )}
         </div>
       </header>
 

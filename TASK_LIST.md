@@ -68,8 +68,8 @@
 - [x] Ensure accessibility with proper ARIA labels and keyboard navigation
 
 ### [ ] **[Medium]** Page Layout & Navigation
-- [ ] Implement a consistent header and footer across pages
-- [ ] Set up responsive navigation menus for both desktop and mobile views
+- [x] Implement a consistent header and footer across pages
+- [x] Set up responsive navigation menus for both desktop and mobile views
 - [ ] Ensure all pages follow the friendly and approachable design guidelines
 
 ---
