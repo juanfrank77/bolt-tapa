@@ -70,7 +70,7 @@
 ### [ ] **[Medium]** Page Layout & Navigation
 - [x] Implement a consistent header and footer across pages
 - [x] Set up responsive navigation menus for both desktop and mobile views
-- [ ] Ensure all pages follow the friendly and approachable design guidelines
+- [x] Ensure all pages follow the friendly and approachable design guidelines
 
 ---
 
