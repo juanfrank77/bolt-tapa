@@ -54,10 +54,10 @@
 - [x] Add proper access control and error handling
 
 ### [ ] **[Medium]** Interactive Mascot Guide (Scope: Basic Integration)
-- [ ] Create a Mascot Chat Component that offers a chat-like interface
-- [ ] Develop basic static content that guides users on how to use the app
-- [ ] Plan for future enhancements to enable dynamic and personalized interactions
-- [ ] (Optional) Integrate FAQs and tutorial prompts within the mascot guide
+- [x] Create a Mascot Chat Component that offers a chat-like interface
+- [x] Develop basic static content that guides users on how to use the app
+- [x] Plan for future enhancements to enable dynamic and personalized interactions
+- [x] Integrate FAQs and tutorial prompts within the mascot guide
 
 ---
 

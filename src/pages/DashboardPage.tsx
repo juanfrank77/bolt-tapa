@@ -15,6 +15,7 @@ import {
 } from '@phosphor-icons/react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { MascotGuide } from '../components';
 
 // Define available AI models
 const AI_MODELS = [
@@ -159,6 +160,7 @@ const DashboardPage: React.FC = () => {
   const { user, signOut } = useAuth();
   const { profile, loading: profileLoading } = useUserProfile();
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
+  const [isMascotMinimized, setIsMascotMinimized] = useState(false);
   const navigate = useNavigate();
   const isGuest = user ? isGuestUser(user) : false;
 
@@ -345,6 +347,15 @@ const DashboardPage: React.FC = () => {
           </div>
         </div>
         )}
+
+        {/* Mascot Guide Section */}
+        <div className="mb-8">
+          <MascotGuide 
+            className={isMascotMinimized ? '' : 'max-w-md'}
+            isMinimized={isMascotMinimized}
+            onToggleMinimize={() => setIsMascotMinimized(!isMascotMinimized)}
+          />
+        </div>
 
         {/* Upgrade CTA for Free Users */}
         {(isGuest || profile?.subscription_status === 'free') && (
