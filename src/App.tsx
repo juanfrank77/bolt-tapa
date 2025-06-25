@@ -31,7 +31,7 @@ function App() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route 
-          path="/chat/:modelId" 
+          path="/chat" 
           element={
             <ProtectedRoute>
               <ChatPage />

@@ -17,7 +17,6 @@ interface MascotMessage {
 }
 
 interface MascotGuideProps {
-  className?: string;
   isMinimized?: boolean;
   onToggleMinimize?: () => void;
 }
@@ -71,7 +70,6 @@ const MASCOT_RESPONSES: { [key: string]: string } = {
 };
 
 export const MascotGuide: React.FC<MascotGuideProps> = ({ 
-  className = "", 
   isMinimized = false, 
   onToggleMinimize 
 }) => {
@@ -168,7 +166,7 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({
   }
 
   return (
-    <div className={`fixed bottom-6 right-6 z-50 bg-white rounded-2xl shadow-xl border border-gray-200 max-w-md w-full max-h-[600px] ${className}`}>
+    <div className="fixed bottom-6 right-6 z-50 bg-white rounded-2xl shadow-xl border border-gray-200 max-w-md w-full max-h-[600px]">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-gray-100 bg-gradient-to-r from-[#812dea] to-[#4ea6fd] rounded-t-2xl">
         <div className="flex items-center space-x-3">

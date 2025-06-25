@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { useUserProfile, useModelAccess, useInteractionHistory } from '../hooks/useDatabase';
 import tapaIcon from '../assets/tapa-icon.png';
+import { AI_MODEL_CONFIG, AI_MODELS } from '../constants/aiModels';
 import { 
   Brain, 
   ArrowLeft, 
@@ -19,44 +20,13 @@ import {
   Warning
 } from '@phosphor-icons/react';
 
-// AI Model configurations
-const AI_MODEL_CONFIG = {
-  'gpt-3.5-turbo': {
-    name: 'GPT-3.5 Turbo',
-    icon: ChatCircle,
-    color: 'from-green-500 to-emerald-600',
-    avatar: 'bg-gradient-to-r from-green-500 to-emerald-600'
-  },
-  'claude-3-haiku': {
-    name: 'Claude 3 Haiku',
-    icon: Lightning,
-    color: 'from-blue-500 to-cyan-600',
-    avatar: 'bg-gradient-to-r from-blue-500 to-cyan-600'
-  },
-  'gpt-4': {
-    name: 'GPT-4',
-    icon: Brain,
-    color: 'from-purple-500 to-violet-600',
-    avatar: 'bg-gradient-to-r from-purple-500 to-violet-600'
-  },
-  'claude-3-sonnet': {
-    name: 'Claude 3 Sonnet',
-    icon: Star,
-    color: 'from-orange-500 to-amber-600',
-    avatar: 'bg-gradient-to-r from-orange-500 to-amber-600'
-  },
-  'gpt-4-turbo': {
-    name: 'GPT-4 Turbo',
-    icon: Crown,
-    color: 'from-gray-700 to-gray-900',
-    avatar: 'bg-gradient-to-r from-gray-700 to-gray-900'
-  },
-  'claude-3-opus': {
-    name: 'Claude 3 Opus',
-    icon: Crown,
-    color: 'from-indigo-600 to-purple-700',
-    avatar: 'bg-gradient-to-r from-indigo-600 to-purple-700'
-  }
+// Icon mapping for dynamic icon rendering
+const ICON_MAP = {
+  ChatCircle,
+  Lightning,
+  Brain,
+  Star,
+  Crown
 };
 
 interface Message {
@@ -167,20 +137,20 @@ const TypingIndicator: React.FC<{ modelConfig: any }> = ({ modelConfig }) => (
 );
 
 const ChatPage: React.FC = () => {
-  const { modelId } = useParams<{ modelId: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
   const { profile } = useUserProfile();
-  const { hasAccess, loading: accessLoading } = useModelAccess(modelId);
   const { logNewInteraction } = useInteractionHistory();
   
+  const [selectedModelId, setSelectedModelId] = useState<string>('gpt-3.5-turbo');
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const modelConfig = modelId ? AI_MODEL_CONFIG[modelId as keyof typeof AI_MODEL_CONFIG] : null;
+  const { hasAccess, loading: accessLoading } = useModelAccess(selectedModelId);
+  const modelConfig = AI_MODEL_CONFIG[selectedModelId as keyof typeof AI_MODEL_CONFIG];
 
   // Scroll to bottom when new messages are added
   useEffect(() => {
@@ -198,14 +168,20 @@ const ChatPage: React.FC = () => {
       };
       setMessages([welcomeMessage]);
     }
-  }, [modelConfig]);
+  }, [modelConfig, selectedModelId]);
 
-  // Check access and redirect if necessary
+  // Reset messages when model changes
   useEffect(() => {
-    if (!accessLoading && !hasAccess && modelId) {
-      navigate('/dashboard');
+    if (modelConfig) {
+      const welcomeMessage: Message = {
+        id: 'welcome',
+        content: `Hello! I'm ${modelConfig.name}. How can I help you today?`,
+        isUser: false,
+        timestamp: new Date()
+      };
+      setMessages([welcomeMessage]);
     }
-  }, [hasAccess, accessLoading, modelId, navigate]);
+  }, [selectedModelId]);
 
   const simulateAIResponse = async (userMessage: string): Promise<string> => {
     // Simulate API delay
@@ -225,7 +201,7 @@ const ChatPage: React.FC = () => {
   };
 
   const handleSendMessage = async () => {
-    if (!inputValue.trim() || isLoading || !modelId || !user) return;
+    if (!inputValue.trim() || isLoading || !selectedModelId || !user || !hasAccess) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -241,7 +217,7 @@ const ChatPage: React.FC = () => {
 
     try {
       const startTime = Date.now();
-      const aiResponse = await simulateAIResponse(userMessage.content);
+      const aiResponse = await simulateAIResponse(userMessage.content, selectedModelId);
       const endTime = Date.now();
       const responseTime = endTime - startTime;
       const estimatedTokens = Math.floor(aiResponse.length / 4); // Rough token estimation
@@ -262,7 +238,7 @@ const ChatPage: React.FC = () => {
       // Log interaction to database
       try {
         await logNewInteraction(
-          modelId,
+          selectedModelId,
           userMessage.content,
           aiResponse,
           estimatedTokens,
@@ -286,6 +262,10 @@ const ChatPage: React.FC = () => {
     }
   };
 
+  const handleModelChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedModelId(e.target.value);
+  };
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -304,27 +284,8 @@ const ChatPage: React.FC = () => {
     );
   }
 
-  if (!hasAccess || !modelConfig) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
-        <div className="text-center max-w-md">
-          <Warning className="w-16 h-16 text-red-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Access Denied</h2>
-          <p className="text-gray-600 mb-6">
-            You don't have access to this AI model. Please check your subscription or try a different model.
-          </p>
-          <Link
-            to="/dashboard"
-            className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-6 py-3 rounded-lg font-medium hover:shadow-lg transition-all duration-200"
-          >
-            Back to Dashboard
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  const IconComponent = modelConfig.icon;
+  // Get the icon component dynamically
+  const IconComponent = ICON_MAP[modelConfig.icon as keyof typeof ICON_MAP] || Brain;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex flex-col">
@@ -343,8 +304,18 @@ const ChatPage: React.FC = () => {
                 <div className={`w-10 h-10 bg-gradient-to-r ${modelConfig.color} rounded-xl flex items-center justify-center`}>
                   <IconComponent className="w-6 h-6 text-white" weight="bold" />
                 </div>
-                <div>
-                  <h1 className="text-xl font-bold text-gray-900">{modelConfig.name}</h1>
+                <div className="flex-1">
+                  <select
+                    value={selectedModelId}
+                    onChange={handleModelChange}
+                    className="text-xl font-bold text-gray-900 bg-transparent border-none focus:outline-none focus:ring-0 cursor-pointer"
+                  >
+                    {AI_MODELS.map((model) => (
+                      <option key={model.id} value={model.id}>
+                        {model.name}
+                      </option>
+                    ))}
+                  </select>
                   <p className="text-sm text-gray-600">AI Assistant</p>
                 </div>
               </div>
@@ -378,6 +349,18 @@ const ChatPage: React.FC = () => {
 
             {/* Input Area */}
             <div className="border-t border-gray-100 p-6">
+              {/* Access denied message */}
+              {!hasAccess && (
+                <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <div className="flex items-center">
+                    <Warning className="w-5 h-5 text-yellow-600 mr-2" />
+                    <p className="text-yellow-800 text-sm">
+                      You don't have access to this model. Please upgrade your plan or select a different model.
+                    </p>
+                  </div>
+                </div>
+              )}
+              
               <div className="flex items-end space-x-4">
                 <div className="flex-1">
                   <textarea
@@ -387,14 +370,14 @@ const ChatPage: React.FC = () => {
                     placeholder={`Message ${modelConfig.name}...`}
                     className="w-full resize-none border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 max-h-32"
                     rows={1}
-                    disabled={isLoading}
+                    disabled={isLoading || !hasAccess}
                   />
                 </div>
                 <button
                   onClick={handleSendMessage}
-                  disabled={!inputValue.trim() || isLoading}
+                  disabled={!inputValue.trim() || isLoading || !hasAccess}
                   className={`p-3 rounded-xl font-medium transition-all duration-200 ${
-                    inputValue.trim() && !isLoading
+                    inputValue.trim() && !isLoading && hasAccess
                       ? `bg-gradient-to-r ${modelConfig.color} text-white hover:shadow-lg transform hover:-translate-y-0.5`
                       : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   }`}

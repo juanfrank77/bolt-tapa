@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useAuth, isGuestUser } from '../hooks/useAuth';
-import { useUserProfile, useModelAccess } from '../hooks/useDatabase';
+import { useUserProfile } from '../hooks/useDatabase';
 import tapaIcon from '../assets/tapa-icon.png';
+import { Button } from '../components';
 import { 
   Brain, 
   SignOut, 
@@ -18,149 +19,11 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { MascotGuide } from '../components';
 
-// Define available AI models
-const AI_MODELS = [
-  {
-    id: 'gpt-3.5-turbo',
-    name: 'GPT-3.5 Turbo',
-    description: 'Fast and efficient conversational AI perfect for everyday tasks and quick responses.',
-    minSubscription: 'free' as const,
-    icon: ChatCircle,
-    color: 'from-green-500 to-emerald-600',
-    features: ['Fast responses', 'General knowledge', 'Code assistance']
-  },
-  {
-    id: 'claude-3-haiku',
-    name: 'Claude 3 Haiku',
-    description: 'Anthropic\'s fastest model, great for simple tasks and quick interactions.',
-    minSubscription: 'free' as const,
-    icon: Lightning,
-    color: 'from-blue-500 to-cyan-600',
-    features: ['Lightning fast', 'Concise answers', 'Task-focused']
-  },
-  {
-    id: 'gpt-4',
-    name: 'GPT-4',
-    description: 'Advanced reasoning and complex problem-solving capabilities for professional use.',
-    minSubscription: 'premium' as const,
-    icon: Brain,
-    color: 'from-purple-500 to-violet-600',
-    features: ['Advanced reasoning', 'Complex tasks', 'High accuracy']
-  },
-  {
-    id: 'claude-3-sonnet',
-    name: 'Claude 3 Sonnet',
-    description: 'Balanced performance for a wide range of tasks with excellent reasoning.',
-    minSubscription: 'premium' as const,
-    icon: Star,
-    color: 'from-orange-500 to-amber-600',
-    features: ['Balanced performance', 'Creative writing', 'Analysis']
-  },
-  {
-    id: 'gpt-4-turbo',
-    name: 'GPT-4 Turbo',
-    description: 'The most advanced model with enhanced capabilities and latest knowledge.',
-    minSubscription: 'enterprise' as const,
-    icon: Crown,
-    color: 'from-gray-700 to-gray-900',
-    features: ['Latest knowledge', 'Enhanced capabilities', 'Premium support']
-  },
-  {
-    id: 'claude-3-opus',
-    name: 'Claude 3 Opus',
-    description: 'Anthropic\'s most powerful model for the most complex and nuanced tasks.',
-    minSubscription: 'enterprise' as const,
-    icon: Crown,
-    color: 'from-indigo-600 to-purple-700',
-    features: ['Maximum capability', 'Complex reasoning', 'Enterprise features']
-  }
-];
 
-const ModelCard: React.FC<{
-  model: typeof AI_MODELS[0];
-  userSubscription: string;
-  hasAccess: boolean;
-  loading: boolean;
-  isGuest: boolean;
-  onSelectModel: (modelId: string) => void;
-}> = ({ model, userSubscription, hasAccess, loading, isGuest, onSelectModel }) => {
-  const IconComponent = model.icon;
-  const isAccessible = hasAccess;
-  const needsUpgrade = !isAccessible && model.minSubscription !== 'free';
-
-  const getSubscriptionBadge = (subscription: string) => {
-    switch (subscription) {
-      case 'free':
-        return <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">Free</span>;
-      case 'premium':
-        return <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">Premium</span>;
-      case 'enterprise':
-        return <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">Enterprise</span>;
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <div className={`bg-white rounded-2xl shadow-lg p-6 border-2 transition-all duration-300 ${
-      isAccessible 
-        ? 'border-transparent hover:border-blue-200 hover:shadow-xl transform hover:-translate-y-1' 
-        : 'border-gray-200 opacity-75'
-    }`}>
-      <div className="flex items-start justify-between mb-4">
-        <div className={`w-12 h-12 bg-gradient-to-r ${model.color} rounded-xl flex items-center justify-center`}>
-          <IconComponent className="w-6 h-6 text-white" weight="bold" />
-        </div>
-        {getSubscriptionBadge(model.minSubscription)}
-      </div>
-      
-      <h3 className="text-xl font-bold text-gray-900 mb-2">{model.name}</h3>
-      <p className="text-gray-600 mb-4 text-sm leading-relaxed">{model.description}</p>
-      
-      <div className="mb-4">
-        <div className="flex flex-wrap gap-2">
-          {model.features.map((feature, index) => (
-            <span key={index} className="inline-flex items-center px-2 py-1 rounded-md text-xs bg-gray-100 text-gray-700">
-              <CheckCircle className="w-3 h-3 mr-1 text-green-500" weight="fill" />
-              {feature}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {loading ? (
-        <button disabled className="w-full bg-gray-200 text-gray-500 px-4 py-3 rounded-lg font-medium cursor-not-allowed">
-          <div className="flex items-center justify-center">
-            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-400 mr-2"></div>
-            Checking access...
-          </div>
-        </button>
-      ) : isAccessible ? (
-        <button
-          onClick={() => onSelectModel(model.id)}
-          className={`w-full bg-gradient-to-r ${model.color} text-white px-4 py-3 rounded-lg font-medium hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center`}
-        >
-          <ChatCircle className="w-4 h-4 mr-2" weight="bold" />
-          {isGuest ? 'Try as Guest' : 'Start Chatting'}
-        </button>
-      ) : needsUpgrade ? (
-        <button className="w-full bg-gray-100 text-gray-600 px-4 py-3 rounded-lg font-medium cursor-not-allowed flex items-center justify-center">
-          <Lock className="w-4 h-4 mr-2" />
-          {isGuest ? 'Sign up for access' : `Upgrade to ${model.minSubscription} required`}
-        </button>
-      ) : (
-        <button className="w-full bg-gray-100 text-gray-600 px-4 py-3 rounded-lg font-medium cursor-not-allowed">
-          Access Denied
-        </button>
-      )}
-    </div>
-  );
-};
 
 const DashboardPage: React.FC = () => {
   const { user, signOut } = useAuth();
   const { profile, loading: profileLoading } = useUserProfile();
-  const [selectedModel, setSelectedModel] = useState<string | null>(null);
   const [isMascotMinimized, setIsMascotMinimized] = useState(false);
   const navigate = useNavigate();
   const isGuest = user ? isGuestUser(user) : false;
@@ -169,9 +32,8 @@ const DashboardPage: React.FC = () => {
     await signOut();
   };
 
-  const handleSelectModel = (modelId: string) => {
-    setSelectedModel(modelId);
-    navigate(`/chat/${modelId}`);
+  const handleStartChatting = () => {
+    navigate('/chat');
   };
 
   if (profileLoading) {
@@ -291,59 +153,44 @@ const DashboardPage: React.FC = () => {
         )}
 
         {/* AI Models Section */}
-        <div className="mb-12">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold text-gray-900">Available AI Models</h2>
-            {!isGuest && (
-            <div className="text-sm text-gray-600">
-              Your plan: <span className="font-medium capitalize">{profile?.subscription_status || 'free'}</span>
+        <div className="text-center mb-12">
+          <div className="bg-white rounded-2xl shadow-lg p-8 max-w-2xl mx-auto">
+            <div className="w-16 h-16 bg-gradient-to-r from-[#812dea] to-[#4ea6fd] rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <Brain className="w-8 h-8 text-white" weight="bold" />
             </div>
-            )}
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {AI_MODELS.map((model) => {
-              const ModelAccessWrapper: React.FC = () => {
-                const { hasAccess, loading } = useModelAccess(model.id);
-                return (
-                  <ModelCard
-                    key={model.id}
-                    model={model}
-                    userSubscription={profile?.subscription_status || 'free'}
-                    hasAccess={hasAccess}
-                    loading={loading}
-                    isGuest={isGuest}
-                    onSelectModel={handleSelectModel}
-                  />
-                );
-              };
-              return <ModelAccessWrapper key={model.id} />;
-            })}
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Start Your AI Conversation</h2>
+            <p className="text-gray-600 mb-8 text-lg">
+              Access multiple AI models in one place. Choose your preferred model and start chatting right away.
+            </p>
+            <Button
+              onClick={handleStartChatting}
+              size="lg"
+              icon={<ChatCircle className="w-5 h-5" weight="bold" />}
+              className="text-lg px-8 py-4"
+            >
+              Start Chatting
+            </Button>
           </div>
         </div>
 
         {/* Quick Stats */}
         {!isGuest && (
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">Quick Stats</h3>
+          <h3 className="text-xl font-bold text-gray-900 mb-4">Your Account</h3>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600 mb-1">
-                {AI_MODELS.filter(m => m.minSubscription === 'free').length}
+              <div className="text-2xl font-bold text-green-600 mb-1 capitalize">
+                {profile?.subscription_status || 'free'}
               </div>
-              <div className="text-sm text-gray-600">Free Models Available</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-purple-600 mb-1">
-                {profile?.subscription_status === 'premium' || profile?.subscription_status === 'enterprise' 
-                  ? AI_MODELS.filter(m => m.minSubscription === 'premium' || m.minSubscription === 'free').length
-                  : AI_MODELS.filter(m => m.minSubscription === 'free').length}
-              </div>
-              <div className="text-sm text-gray-600">Models You Can Access</div>
+              <div className="text-sm text-gray-600">Current Plan</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-green-600 mb-1">0</div>
               <div className="text-sm text-gray-600">Conversations Today</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-blue-600 mb-1">6</div>
+              <div className="text-sm text-gray-600">AI Models Available</div>
             </div>
           </div>
         </div>
@@ -356,6 +203,34 @@ const DashboardPage: React.FC = () => {
             onToggleMinimize={() => setIsMascotMinimized(!isMascotMinimized)}
           />
         </div>
+
+        {/* Upgrade CTA for Free Users */}
+        {(isGuest || profile?.subscription_status === 'free') && (
+          <div className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] rounded-2xl p-8 text-white text-center">
+            <Crown className="w-12 h-12 mx-auto mb-4" weight="bold" />
+            <h3 className="text-2xl font-bold mb-4">
+              {isGuest ? 'Sign Up to Unlock More' : 'Unlock Premium AI Models'}
+            </h3>
+            <p className="text-purple-100 mb-6 max-w-2xl mx-auto">
+              {isGuest 
+                ? 'Create an account to save your conversations, access premium models, and unlock the full potential of TAPA.'
+                : 'Upgrade to Premium and get access to GPT-4, Claude 3 Sonnet, and other advanced models with enhanced capabilities.'
+              }
+            </p>
+            {isGuest ? (
+              <Link
+                to="/signup"
+                className="bg-white text-[#812dea] px-8 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+              >
+                Sign Up Free
+              </Link>
+            ) : (
+            <button className="bg-white text-[#812dea] px-8 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
+              Upgrade to Premium
+            </button>
+            )}
+          </div>
+        )}
       </main>
     </div>
   );
