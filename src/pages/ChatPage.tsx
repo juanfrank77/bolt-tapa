@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { useUserProfile, useModelAccess, useInteractionHistory } from '../hooks/useDatabase';
+import tapaIcon from '../assets/tapa-icon.png';
 import { 
   Brain, 
   ArrowLeft, 
@@ -350,7 +351,7 @@ const ChatPage: React.FC = () => {
             </div>
             <Link to="/" className="flex items-center space-x-2">
               <img 
-                src="/src/assets/tapa-icon.png" 
+                src={tapaIcon} 
                 alt="TAPA Logo" 
                 className="w-8 h-8"
               />

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import tapaIcon from '../assets/tapa-icon.png';
 import { Brain, Eye, EyeSlash, EnvelopeSimple, Lock } from '@phosphor-icons/react';
 import { supabase } from '../lib/supabase';
 
@@ -41,7 +42,7 @@ const LoginPage: React.FC = () => {
         <div className="text-center mt-8">
           <Link to="/" className="inline-flex items-center space-x-2 mb-8">
             <img 
-              src="/src/assets/tapa-icon.png" 
+              src={tapaIcon} 
               alt="TAPA Logo" 
               className="w-12 h-12"
             />

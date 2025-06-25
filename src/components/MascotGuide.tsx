@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import tapaMascot from '../assets/Tapa-mascot3.png';
 import { 
   ChatCircle, 
   Sparkle, 
@@ -157,7 +158,7 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({
           className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white p-4 rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
         >
           <img 
-            src="/src/assets/Tapa-mascot3.png" 
+            src={tapaMascot} 
             alt="TAPA Mascot" 
             className="w-8 h-8"
           />
@@ -172,7 +173,7 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({
       <div className="flex items-center justify-between p-4 border-b border-gray-100 bg-gradient-to-r from-[#812dea] to-[#4ea6fd] rounded-t-2xl">
         <div className="flex items-center space-x-3">
           <img 
-            src="/src/assets/Tapa-mascot3.png" 
+            src={tapaMascot} 
             alt="TAPA Mascot" 
             className="w-10 h-10 rounded-full bg-white p-1"
           />
@@ -199,7 +200,7 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({
           <div key={message.id} className={`flex gap-3 ${message.isUser ? 'flex-row-reverse' : ''}`}>
             {!message.isUser && (
               <img 
-                src="/src/assets/Tapa-mascot3.png" 
+                src={tapaMascot} 
                 alt="TAPA Mascot" 
                 className="w-8 h-8 rounded-full flex-shrink-0"
               />

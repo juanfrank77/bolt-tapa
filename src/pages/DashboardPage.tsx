@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth, isGuestUser } from '../hooks/useAuth';
 import { useUserProfile, useModelAccess } from '../hooks/useDatabase';
+import tapaIcon from '../assets/tapa-icon.png';
 import { 
   Brain, 
   SignOut, 
@@ -192,7 +193,7 @@ const DashboardPage: React.FC = () => {
           <div className="flex justify-between items-center py-4">
             <Link to="/" className="flex items-center space-x-2">
               <img 
-                src="/src/assets/tapa-icon.png" 
+                src={tapaIcon} 
                 alt="TAPA Logo" 
                 className="w-10 h-10"
               />
