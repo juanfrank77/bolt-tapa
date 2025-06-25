@@ -356,34 +356,6 @@ const DashboardPage: React.FC = () => {
             onToggleMinimize={() => setIsMascotMinimized(!isMascotMinimized)}
           />
         </div>
-
-        {/* Upgrade CTA for Free Users */}
-        {(isGuest || profile?.subscription_status === 'free') && (
-          <div className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] rounded-2xl p-8 text-white text-center">
-            <Crown className="w-12 h-12 mx-auto mb-4" weight="bold" />
-            <h3 className="text-2xl font-bold mb-4">
-              {isGuest ? 'Sign Up to Unlock More' : 'Unlock Premium AI Models'}
-            </h3>
-            <p className="text-purple-100 mb-6 max-w-2xl mx-auto">
-              {isGuest 
-                ? 'Create an account to save your conversations, access premium models, and unlock the full potential of TAPA.'
-                : 'Upgrade to Premium and get access to GPT-4, Claude 3 Sonnet, and other advanced models with enhanced capabilities.'
-              }
-            </p>
-            {isGuest ? (
-              <Link
-                to="/signup"
-                className="bg-white text-[#812dea] px-8 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
-              >
-                Sign Up Free
-              </Link>
-            ) : (
-            <button className="bg-white text-[#812dea] px-8 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
-              Upgrade to Premium
-            </button>
-            )}
-          </div>
-        )}
       </main>
     </div>
   );
