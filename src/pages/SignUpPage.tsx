@@ -302,10 +302,10 @@ const SignUpPage: React.FC = () => {
         </div>
 
         {/* Back to Home */}
-        <div className="text-center">
+        <div className="text-center mb-8">
           <Link
             to="/"
-            className="text-gray-600 hover:text-gray-900 text-sm transition-colors mb-8"
+            className="text-gray-600 hover:text-gray-900 text-sm transition-colors"
           >
             ← Back to home
           </Link>
