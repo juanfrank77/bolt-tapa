@@ -18,8 +18,8 @@ export const AI_MODEL_CONFIG = {
     color: 'from-purple-500 to-violet-600',
     avatar: 'bg-gradient-to-r from-purple-500 to-violet-600'
   },
-  'claude-3-sonnet': {
-    name: 'Claude 3 Sonnet',
+  'claude-3.5-sonnet': {
+    name: 'Claude 3.5 Sonnet',
     icon: 'Star',
     color: 'from-orange-500 to-amber-600',
     avatar: 'bg-gradient-to-r from-orange-500 to-amber-600'
