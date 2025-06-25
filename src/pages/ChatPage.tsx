@@ -190,10 +190,10 @@ const ChatPage: React.FC = () => {
     // Simple response simulation based on model
     const responses = {
       'gpt-3.5-turbo': `I understand you're asking about "${userMessage}". As GPT-3.5 Turbo, I can help you with a wide range of tasks including answering questions, writing, coding, and problem-solving. What specific aspect would you like me to focus on?`,
-      'claude-3-haiku': `Thanks for your message about "${userMessage}". I'm Claude 3 Haiku, designed for quick and efficient responses. I can help you with various tasks while being concise and to the point. How can I assist you further?`,
-      'gpt-4': `Regarding "${userMessage}" - I'm GPT-4, and I can provide detailed analysis and sophisticated reasoning. I'd be happy to explore this topic in depth with you. What particular angle or aspect interests you most?`,
-      'claude-3-sonnet': `I see you're interested in "${userMessage}". As Claude 3 Sonnet, I can offer balanced and thoughtful responses across many domains. I'm particularly good at creative tasks and nuanced analysis. What would you like to explore?`,
-      'gpt-4-turbo': `Thank you for bringing up "${userMessage}". I'm GPT-4 Turbo with enhanced capabilities and the latest knowledge. I can provide comprehensive assistance with complex tasks. How can I best help you with this?`,
+      'claude-3.5-haiku': `Thanks for your message about "${userMessage}". I'm Claude 3.5 Haiku, designed for quick and efficient responses. I can help you with various tasks while being concise and to the point. How can I assist you further?`,
+      'gpt-4o': `Regarding "${userMessage}" - I'm GPT-4o, and I can provide detailed analysis and sophisticated reasoning. I'd be happy to explore this topic in depth with you. What particular angle or aspect interests you most?`,
+      'claude-3.5-sonnet': `I see you're interested in "${userMessage}". As Claude 3.5 Sonnet, I can offer balanced and thoughtful responses across many domains. I'm particularly good at creative tasks and nuanced analysis. What would you like to explore?`,
+      'gpt-4.1': `Thank you for bringing up "${userMessage}". I'm GPT-4.1 with enhanced capabilities and the latest knowledge. I can provide comprehensive assistance with complex tasks. How can I best help you with this?`,
       'claude-3-opus': `Regarding "${userMessage}" - I'm Claude 3 Opus, Anthropic's most capable model. I excel at complex reasoning and nuanced understanding. I'm here to provide thoughtful, detailed assistance. What specific help do you need?`
     };
 
