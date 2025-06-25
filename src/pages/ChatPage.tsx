@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link, useLoaderData, useFetcher } from 'react-router';
 import { useModelAccess } from '../hooks/useDatabase';
 import tapaIcon from '../assets/tapa-icon.png';
+import { ThemeToggle } from '../components';
 import { AI_MODEL_CONFIG, AI_MODELS } from '../constants/aiModels';
 import type { ChatLoaderData } from '../routes/chat';
 import { 
@@ -288,11 +289,26 @@ const ChatPage: React.FC = () => {
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between py-4">
-            <div className="flex items-center space-x-4">
+          <div className="grid grid-cols-3 items-center py-4">
+            {/* Left: TAPA Logo */}
+            <div className="flex items-center justify-start">
+              <Link to="/" className="flex items-center space-x-2">
+                <img 
+                  src={tapaIcon} 
+                  alt="TAPA Logo" 
+                  className="w-8 h-8"
+                />
+                <span className="text-lg font-bold bg-gradient-to-r from-[#812dea] to-[#4ea6fd] bg-clip-text text-transparent">
+                  TAPA
+                </span>
+              </Link>
+            </div>
+
+            {/* Center: Model Selector */}
+            <div className="flex items-center justify-center">
               <button
                 onClick={() => navigate('/dashboard')}
-                className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors mr-3"
               >
                 <ArrowLeft className="w-5 h-5" />
               </button>
@@ -300,11 +316,11 @@ const ChatPage: React.FC = () => {
                 <div className={`w-10 h-10 bg-gradient-to-r ${modelConfig.color} rounded-xl flex items-center justify-center`}>
                   <IconComponent className="w-6 h-6 text-white" weight="bold" />
                 </div>
-                <div className="flex-1">
+                <div>
                   <select
                     value={selectedModelId}
                     onChange={handleModelChange}
-                    className="text-xl font-bold text-gray-900 bg-transparent border-none focus:outline-none focus:ring-0 cursor-pointer"
+                    className="text-lg font-bold text-gray-900 bg-transparent border-none focus:outline-none focus:ring-0 cursor-pointer min-w-0"
                   >
                     {AI_MODELS.map((model) => (
                       <option key={model.id} value={model.id}>
@@ -316,16 +332,11 @@ const ChatPage: React.FC = () => {
                 </div>
               </div>
             </div>
-            <Link to="/" className="flex items-center space-x-2">
-              <img 
-                src={tapaIcon} 
-                alt="TAPA Logo" 
-                className="w-8 h-8"
-              />
-              <span className="text-lg font-bold bg-gradient-to-r from-[#812dea] to-[#4ea6fd] bg-clip-text text-transparent">
-                TAPA
-              </span>
-            </Link>
+
+            {/* Right: Theme Toggle */}
+            <div className="flex items-center justify-end">
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </header>
