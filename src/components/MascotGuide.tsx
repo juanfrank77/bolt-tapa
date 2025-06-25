@@ -4,7 +4,7 @@ import {
   Sparkle, 
   ArrowRight, 
   X,
-  Minimize,
+  Minus,
   Maximize
 } from '@phosphor-icons/react';
 
@@ -187,7 +187,7 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({
               onClick={onToggleMinimize}
               className="p-1.5 text-white hover:bg-white/20 rounded-lg transition-colors"
             >
-              <Minimize className="w-4 h-4" />
+              <Minus className="w-4 h-4" />
             </button>
           )}
         </div>
