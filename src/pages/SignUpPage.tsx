@@ -108,7 +108,7 @@ const SignUpPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+      <div className="max-w-md w-full space-y-8 mb-8">
         {/* Header */}
         <div className="text-center mt-8">
           <Link to="/" className="inline-flex items-center space-x-2 mb-8">
@@ -302,7 +302,7 @@ const SignUpPage: React.FC = () => {
         </div>
 
         {/* Back to Home */}
-        <div className="text-center mb-8">
+        <div className="text-center">
           <Link
             to="/"
             className="text-gray-600 hover:text-gray-900 text-sm transition-colors"
