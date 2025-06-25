@@ -25,7 +25,7 @@ interface MascotGuideProps {
 const MASCOT_MESSAGES = [
   {
     id: '1',
-    content: "Hi there! I'm TAPA, your friendly AI companion! 🍕 Welcome to the world of artificial intelligence!",
+    content: "Hi there! I'm TAPA, your friendly AI companion! Welcome to the wonderful world of AI!",
     timestamp: new Date(Date.now() - 5000),
   },
   {
@@ -40,12 +40,7 @@ const MASCOT_MESSAGES = [
   },
   {
     id: '4',
-    content: "Want to try something more advanced? Premium models like GPT-4 offer enhanced reasoning and can handle more complex tasks. Just upgrade your plan when you're ready!",
-    timestamp: new Date(Date.now() - 2000),
-  },
-  {
-    id: '5',
-    content: "Feel free to ask me anything about using TAPA, understanding AI models, or getting the most out of your conversations. I'm here to help! 😊",
+    content: "Feel free to ask me anything about using this app, understanding AI models, or getting the most out of your conversations. I'm here to help! 😊",
     timestamp: new Date(Date.now() - 1000),
   }
 ];
