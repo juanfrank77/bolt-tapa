@@ -64,8 +64,8 @@
 ## UI/UX Design & Components
 
 ### [ ] **[Easy]** UI Component Development
-- [ ] Create reusable UI components (Buttons, Inputs, Modals) with Tailwind CSS
-- [ ] Ensure accessibility with proper ARIA labels and keyboard navigation
+- [x] Create reusable UI components (Buttons, Inputs, Modals) with Tailwind CSS
+- [x] Ensure accessibility with proper ARIA labels and keyboard navigation
 
 ### [ ] **[Medium]** Page Layout & Navigation
 - [ ] Implement a consistent header and footer across pages
@@ -75,11 +75,6 @@
 ---
 
 ## Testing & Quality Assurance
-
-### [ ] **[Medium]** Unit & Integration Testing
-- [ ] Write unit tests for React components (Landing, Login/Sign-Up, Home Page)
-- [ ] Create integration tests for authentication flows using Supabase
-- [ ] Test the model selection flow and ensure proper routing/navigation
 
 ### [ ] **[Medium]** User Acceptance Testing (UAT)
 - [ ] Prepare test cases based on user flows (Landing → Login/Sign-Up → Home → Model Selection)
@@ -94,11 +89,6 @@
 - [ ] Configure the deployment process (consider using Vercel, Netlify, or similar for SPAs)
 - [ ] Set up CI/CD pipelines to automate tests and deployment
 - [ ] Ensure environment variables and Supabase setup are correctly configured for production
-
-### [ ] **[Easy]** Post-Deployment Verification
-- [ ] Perform smoke tests on the production deployment
-- [ ] Monitor error logs and user feedback for any immediate issues
-- [ ] Plan for incremental updates based on performance and user insights
 
 ---
 
