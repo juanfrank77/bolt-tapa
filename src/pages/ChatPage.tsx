@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link, useLoaderData, useFetcher } from 'react-router';
 import { useModelAccess } from '../hooks/useDatabase';
 import tapaIcon from '../assets/tapa-icon.png';
-import { ThemeToggle } from '../components';
+import { ThemeToggle, MascotGuide } from '../components';
 import { AI_MODEL_CONFIG, AI_MODELS } from '../constants/aiModels';
 import type { ChatLoaderData } from '../routes/chat';
 import { 
@@ -147,6 +147,7 @@ const ChatPage: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isMascotMinimized, setIsMascotMinimized] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const { hasAccess, loading: accessLoading } = useModelAccess(selectedModelId);
@@ -404,6 +405,12 @@ const ChatPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Mascot Guide */}
+      <MascotGuide 
+        isMinimized={isMascotMinimized}
+        onToggleMinimize={() => setIsMascotMinimized(!isMascotMinimized)}
+      />
     </div>
   );
 };
