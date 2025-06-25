@@ -351,7 +351,6 @@ const DashboardPage: React.FC = () => {
         {/* Mascot Guide Section */}
         <div className="mb-8">
           <MascotGuide 
-            className={isMascotMinimized ? '' : 'max-w-md'}
             isMinimized={isMascotMinimized}
             onToggleMinimize={() => setIsMascotMinimized(!isMascotMinimized)}
           />

@@ -167,7 +167,7 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({
   }
 
   return (
-    <div className={`bg-white rounded-2xl shadow-xl border border-gray-200 ${className}`}>
+    <div className={`fixed bottom-6 right-6 z-50 bg-white rounded-2xl shadow-xl border border-gray-200 max-w-md w-full max-h-[600px] ${className}`}>
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-gray-100 bg-gradient-to-r from-[#812dea] to-[#4ea6fd] rounded-t-2xl">
         <div className="flex items-center space-x-3">
@@ -194,7 +194,7 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({
       </div>
 
       {/* Messages */}
-      <div className="h-80 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4" style={{ height: '320px' }}>
         {messages.map((message) => (
           <div key={message.id} className={`flex gap-3 ${message.isUser ? 'flex-row-reverse' : ''}`}>
             {!message.isUser && (
