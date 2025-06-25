@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import tapaIcon from '../assets/tapa-icon.png';
 import { Brain, Eye, EyeSlash, EnvelopeSimple, Lock } from '@phosphor-icons/react';
 import { supabase } from '../lib/supabase';

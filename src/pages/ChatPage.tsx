@@ -217,7 +217,7 @@ const ChatPage: React.FC = () => {
 
     try {
       const startTime = Date.now();
-      const aiResponse = await simulateAIResponse(userMessage.content, selectedModelId);
+      const aiResponse = await simulateAIResponse(userMessage.content);
       const endTime = Date.now();
       const responseTime = endTime - startTime;
       const estimatedTokens = Math.floor(aiResponse.length / 4); // Rough token estimation
