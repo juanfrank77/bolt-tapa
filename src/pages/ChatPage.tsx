@@ -86,7 +86,7 @@ const ChatMessage: React.FC<{ message: Message; modelConfig: any }> = ({ message
         </div>
 
         {/* Action buttons for AI messages */}
-        {!message.isUser && (
+        {!message.isUser && message.id !== 'welcome' && (
           <div className="flex items-center gap-2 mt-2">
             <button
               onClick={handleCopy}
