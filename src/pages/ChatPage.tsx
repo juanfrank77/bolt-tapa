@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, Link } from 'react-router';
-import { useAuth } from '../hooks/useAuth';
-import { useUserProfile, useModelAccess, useInteractionHistory } from '../hooks/useDatabase';
+import { useNavigate, Link, useLoaderData, useFetcher } from 'react-router';
+import { useModelAccess } from '../hooks/useDatabase';
 import tapaIcon from '../assets/tapa-icon.png';
 import { AI_MODEL_CONFIG, AI_MODELS } from '../constants/aiModels';
+import type { ChatLoaderData } from '../routes/chat';
 import { 
   Brain, 
   ArrowLeft, 
@@ -138,9 +138,8 @@ const TypingIndicator: React.FC<{ modelConfig: any }> = ({ modelConfig }) => (
 
 const ChatPage: React.FC = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const { profile } = useUserProfile();
-  const { logNewInteraction } = useInteractionHistory();
+  const { user, profile } = useLoaderData() as ChatLoaderData;
+  const fetcher = useFetcher();
   
   const [selectedModelId, setSelectedModelId] = useState<string>('gpt-3.5-turbo');
   const [messages, setMessages] = useState<Message[]>([]);
@@ -197,11 +196,11 @@ const ChatPage: React.FC = () => {
       'claude-3-opus': `Regarding "${userMessage}" - I'm Claude 3 Opus, Anthropic's most capable model. I excel at complex reasoning and nuanced understanding. I'm here to provide thoughtful, detailed assistance. What specific help do you need?`
     };
 
-    return responses[modelId as keyof typeof responses] || "I'm here to help! Could you please rephrase your question?";
+    return responses[selectedModelId as keyof typeof responses] || "I'm here to help! Could you please rephrase your question?";
   };
 
   const handleSendMessage = async () => {
-    if (!inputValue.trim() || isLoading || !selectedModelId || !user || !hasAccess) return;
+    if (!inputValue.trim() || isLoading || !selectedModelId || !hasAccess) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -235,18 +234,15 @@ const ChatPage: React.FC = () => {
 
       setMessages(prev => [...prev, aiMessage]);
 
-      // Log interaction to database
-      try {
-        await logNewInteraction(
-          selectedModelId,
-          userMessage.content,
-          aiResponse,
-          estimatedTokens,
-          responseTime
-        );
-      } catch (error) {
-        console.error('Failed to log interaction:', error);
-      }
+      // Log interaction to database using fetcher
+      const formData = new FormData();
+      formData.append('modelName', selectedModelId);
+      formData.append('prompt', userMessage.content);
+      formData.append('response', aiResponse);
+      formData.append('tokensUsed', estimatedTokens.toString());
+      formData.append('responseTimeMs', responseTime.toString());
+      
+      fetcher.submit(formData, { method: 'post' });
 
     } catch (error) {
       setIsTyping(false);
