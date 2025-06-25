@@ -19,6 +19,7 @@ interface MascotMessage {
 interface MascotGuideProps {
   isMinimized?: boolean;
   onToggleMinimize?: () => void;
+  className?: string;
 }
 
 const MASCOT_MESSAGES = [
@@ -71,7 +72,8 @@ const MASCOT_RESPONSES: { [key: string]: string } = {
 
 export const MascotGuide: React.FC<MascotGuideProps> = ({ 
   isMinimized = false, 
-  onToggleMinimize 
+  onToggleMinimize,
+  className = ''
 }) => {
   const [messages, setMessages] = useState<MascotMessage[]>([]);
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
