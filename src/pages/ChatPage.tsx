@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router';
 import { useAuth } from '../hooks/useAuth';
 import { useUserProfile, useModelAccess, useInteractionHistory } from '../hooks/useDatabase';
 import tapaIcon from '../assets/tapa-icon.png';
