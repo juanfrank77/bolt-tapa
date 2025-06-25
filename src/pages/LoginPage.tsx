@@ -179,7 +179,7 @@ const LoginPage: React.FC = () => {
         <div className="text-center">
           <Link
             to="/"
-            className="text-gray-600 hover:text-gray-900 text-sm transition-colors"
+            className="text-gray-600 hover:text-gray-900 text-sm transition-colors mb-8"
           >
             ← Back to home
           </Link>
