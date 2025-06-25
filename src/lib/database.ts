@@ -32,13 +32,13 @@ export const updateUserProfile = async (userId: string, updates: {
 // Model Access operations
 export const checkModelAccess = async (userId: string, modelName: string) => {
   // For now, implement basic access logic based on subscription status
-  // Free models: gpt-3.5-turbo, claude-3-haiku
-  // Premium models: gpt-4, claude-3-sonnet  
-  // Enterprise models: gpt-4-turbo, claude-3-opus
+  // Free models: gpt-3.5-turbo, claude-3.5-haiku
+  // Premium models: gpt-4o, claude-3.5-sonnet  
+  // Enterprise models: gpt-4.1, claude-3-opus
   
-  const freeModels = ['gpt-3.5-turbo', 'claude-3-haiku'];
-  const premiumModels = ['gpt-4', 'claude-3-sonnet'];
-  const enterpriseModels = ['gpt-4-turbo', 'claude-3-opus'];
+  const freeModels = ['gpt-3.5-turbo', 'claude-3.5-haiku'];
+  const premiumModels = ['gpt-4o', 'claude-3.5-sonnet'];
+  const enterpriseModels = ['gpt-4.1', 'claude-3-opus'];
   
   // Get user's subscription status
   const { data: profile, error } = await supabase
