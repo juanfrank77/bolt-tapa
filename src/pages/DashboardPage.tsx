@@ -10,11 +10,7 @@ import {
   User, 
   Sparkle, 
   Crown, 
-  Lightning, 
-  ChatCircle,
-  Lock,
-  CheckCircle,
-  Star
+  ChatCircle
 } from '@phosphor-icons/react';
 import { Link, useNavigate } from 'react-router';
 import { MascotGuide } from '../components';

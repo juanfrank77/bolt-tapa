@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link, useLoaderData, useFetcher } from 'react-router';
-import { useModelAccess } from '../hooks/useDatabase';
 import { useModels, useSelectedModel } from '../context/ModelContext';
 import tapaIcon from '../assets/tapa-icon.png';
 import { ThemeToggle, MascotGuide } from '../components';
-import { AI_MODEL_CONFIG, AI_MODELS } from '../constants/aiModels';
 import { getDisplayName } from '../lib/openrouter';
 import type { ChatLoaderData } from '../routes/chat';
 import { 
@@ -13,24 +11,10 @@ import {
   PaperPlaneTilt, 
   User, 
   Robot,
-  Lightning,
-  Crown,
-  Star,
-  ChatCircle,
   Copy,
   ThumbsUp,
   ThumbsDown,
-  Warning
 } from '@phosphor-icons/react';
-
-// Icon mapping for dynamic icon rendering
-const ICON_MAP = {
-  ChatCircle,
-  Lightning,
-  Brain,
-  Star,
-  Crown
-};
 
 interface Message {
   id: string;
@@ -308,8 +292,6 @@ const ChatPage: React.FC = () => {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex flex-col">
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -341,7 +323,7 @@ const ChatPage: React.FC = () => {
                   <Brain className="w-6 h-6 text-white" weight="bold" />
                 </div>
                 <div>
-                  <select
+                  <Brain className="w-6 h-6 text-white" weight="bold" />
                     value={selectedModel?.id || ''}
                     onChange={handleModelChange}
                     className="text-lg font-bold text-gray-900 bg-transparent border-none focus:outline-none focus:ring-0 cursor-pointer min-w-0"
@@ -380,18 +362,6 @@ const ChatPage: React.FC = () => {
 
             {/* Input Area */}
             <div className="border-t border-gray-100 p-6">
-              <div className="flex items-end space-x-4">
-                <div className="flex-1">
-                  <textarea
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    placeholder={`Message ${modelConfig.name}...`}
-                    className="w-full resize-none border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 max-h-32"
-                    rows={1}
-                    disabled={isLoading || !selectedModel}
-                  />
-                </div>
                 <button
                   onClick={handleSendMessage}
                   disabled={!inputValue.trim() || isLoading || !selectedModel}
@@ -401,7 +371,7 @@ const ChatPage: React.FC = () => {
                       : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   }`}
                 >
-                  {isLoading ? (
+                    disabled={isLoading || !selectedModel}
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-current"></div>
                   ) : (
                     <PaperPlaneTilt className="w-5 h-5" weight="bold" />

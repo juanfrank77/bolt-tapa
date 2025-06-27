@@ -75,49 +75,4 @@ export const useUserProfile = () => {
   }
 }
 
-// Hook for model access
-export const useModelAccess = (modelName?: string) => {
-  const { user } = useAuth()
-  const [hasAccess, setHasAccess] = useState<boolean>(false)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    if (!user || !modelName) {
-      setHasAccess(false)
-      setLoading(false)
-      return
-    }
-
-    // Guest users only have access to free models
-    if (isGuestUser(user)) {
-      const freeModels = ['gpt-3.5-turbo', 'claude-3.5-haiku', 'llama-3-7b']
-      setHasAccess(freeModels.includes(modelName))
-      setLoading(false)
-      return
-    }
-
-    const checkAccess = async () => {
-      try {
-        setLoading(true)
-        const access = await db.checkModelAccess(user.id, modelName)
-        setHasAccess(access)
-        setError(null)
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to check access')
-        setHasAccess(false)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    checkAccess()
-  }, [user, modelName])
-
-  return {
-    hasAccess,
-    loading,
-    error
-  }
-}
 
