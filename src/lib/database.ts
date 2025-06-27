@@ -16,7 +16,7 @@ export const getUserProfile = async (userId: string) => {
 export const updateUserProfile = async (userId: string, updates: {
   full_name?: string
   avatar_url?: string
-  subscription_status?: 'free' | 'premium' | 'enterprise'
+  subscription_status?: 'free' | 'premium'
 }) => {
   const { data, error } = await supabase
     .from('user_profiles')
@@ -37,8 +37,7 @@ export const checkModelAccess = async (userId: string, modelName: string) => {
   // Enterprise models: gpt-4.1, claude-3-opus
   
   const freeModels = ['gpt-3.5-turbo', 'claude-3.5-haiku'];
-  const premiumModels = ['gpt-4o', 'claude-3.5-sonnet'];
-  const enterpriseModels = ['gpt-4.1', 'claude-3-opus'];
+  const premiumModels = ['gpt-4o', 'claude-3.5-sonnet', 'gpt-4.1', 'claude-3-opus'];
   
   // Get user's subscription status
   const { data: profile, error } = await supabase
@@ -55,9 +54,7 @@ export const checkModelAccess = async (userId: string, modelName: string) => {
   if (freeModels.includes(modelName)) {
     return true; // Everyone has access to free models
   } else if (premiumModels.includes(modelName)) {
-    return subscriptionStatus === 'premium' || subscriptionStatus === 'enterprise';
-  } else if (enterpriseModels.includes(modelName)) {
-    return subscriptionStatus === 'enterprise';
+    return subscriptionStatus === 'premium';
   }
   
   return false; // Default to no access

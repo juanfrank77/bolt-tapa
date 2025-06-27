@@ -72,8 +72,6 @@ const DashboardPage: React.FC = () => {
                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                   profile?.subscription_status === 'premium' 
                     ? 'bg-purple-100 text-purple-800'
-                    : profile?.subscription_status === 'enterprise'
-                    ? 'bg-gray-100 text-gray-800'
                     : 'bg-green-100 text-green-800'
                 }`}>
                   {profile?.subscription_status || 'free'}
@@ -204,16 +202,16 @@ const DashboardPage: React.FC = () => {
         </div>
 
         {/* Upgrade CTA for Free Users */}
-        {(isGuest || profile?.subscription_status === 'free') && (
+        {isGuest || profile?.subscription_status === 'free' ? (
           <div className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] rounded-2xl p-8 text-white text-center">
             <Crown className="w-12 h-12 mx-auto mb-4" weight="bold" />
             <h3 className="text-2xl font-bold mb-4">
-              {isGuest ? 'Sign Up to Unlock More' : 'Unlock Premium AI Models'}
+              {isGuest ? 'Sign Up to Unlock Premium' : 'Upgrade to Premium'}
             </h3>
             <p className="text-purple-100 mb-6 max-w-2xl mx-auto">
               {isGuest 
                 ? 'Create an account to save your conversations, access premium models, and unlock the full potential of TAPA.'
-                : 'Upgrade to Premium and get access to GPT-4, Claude 3 Sonnet, and other advanced models with enhanced capabilities.'
+                : 'Upgrade to Premium and get access to GPT-4o, Claude 3.5 Sonnet, GPT-4.1, Claude 3 Opus, and other advanced models.'
               }
             </p>
             {isGuest ? (
@@ -229,7 +227,7 @@ const DashboardPage: React.FC = () => {
             </button>
             )}
           </div>
-        )}
+        ) : null}
       </main>
     </div>
   );

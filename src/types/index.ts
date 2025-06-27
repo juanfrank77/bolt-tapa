@@ -11,7 +11,7 @@ export interface UserProfile {
   user_id: string
   full_name?: string
   avatar_url?: string
-  subscription_status: 'free' | 'premium' | 'enterprise'
+  subscription_status: 'free' | 'premium'
   created_at: string
   updated_at: string
 }

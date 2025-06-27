@@ -79,7 +79,7 @@ export const AI_MODELS = [
     id: 'gpt-4.1',
     name: 'GPT-4.1',
     description: 'The most advanced model with enhanced capabilities and latest knowledge.',
-    minSubscription: 'enterprise' as const,
+    minSubscription: 'premium' as const,
     icon: 'Crown',
     color: 'from-gray-700 to-gray-900',
     features: ['Latest knowledge', 'Enhanced capabilities', 'Premium support']
@@ -88,9 +88,9 @@ export const AI_MODELS = [
     id: 'claude-3-opus',
     name: 'Claude 3 Opus',
     description: 'Anthropic\'s most powerful model for the most complex and nuanced tasks.',
-    minSubscription: 'enterprise' as const,
+    minSubscription: 'premium' as const,
     icon: 'Crown',
     color: 'from-indigo-600 to-purple-700',
-    features: ['Maximum capability', 'Complex reasoning', 'Enterprise features']
+    features: ['Maximum capability', 'Complex reasoning', 'Advanced features']
   }
 ];

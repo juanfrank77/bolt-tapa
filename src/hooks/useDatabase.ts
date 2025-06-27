@@ -53,7 +53,7 @@ export const useUserProfile = () => {
   const updateProfile = async (updates: {
     full_name?: string
     avatar_url?: string
-    subscription_status?: 'free' | 'premium' | 'enterprise'
+    subscription_status?: 'free' | 'premium'
   }) => {
     if (!user || isGuestUser(user)) return
 
