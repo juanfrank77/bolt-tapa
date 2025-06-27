@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link, useLoaderData, useFetcher } from 'react-router';
+import ReactMarkdown from 'react-markdown';
 import { useModels, useSelectedModel } from '../context/ModelContext';
 import { sendMessageToModel, getDisplayName, type ChatMessage } from '../lib/openrouter';
 import tapaIcon from '../assets/tapa-icon.png';
@@ -57,7 +58,86 @@ const ChatMessage: React.FC<{ message: Message; modelConfig: any }> = ({ message
             ? 'bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white' 
             : 'bg-white border border-gray-200 text-gray-900'
         }`}>
-          <div className="whitespace-pre-wrap leading-relaxed">{message.content}</div>
+          {message.isUser ? (
+            <div className="whitespace-pre-wrap leading-relaxed">{message.content}</div>
+          ) : (
+            <div className="prose prose-sm max-w-none leading-relaxed">
+              <ReactMarkdown
+                components={{
+                  // Customize code blocks
+                  code: ({ node, inline, className, children, ...props }) => {
+                    return inline ? (
+                      <code
+                        className="bg-gray-100 text-gray-800 px-1 py-0.5 rounded text-sm font-mono"
+                        {...props}
+                      >
+                        {children}
+                      </code>
+                    ) : (
+                      <pre className="bg-gray-100 text-gray-800 p-3 rounded-lg overflow-x-auto">
+                        <code className="font-mono text-sm" {...props}>
+                          {children}
+                        </code>
+                      </pre>
+                    );
+                  },
+                  // Customize links
+                  a: ({ children, href, ...props }) => (
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 underline"
+                      {...props}
+                    >
+                      {children}
+                    </a>
+                  ),
+                  // Customize headings
+                  h1: ({ children, ...props }) => (
+                    <h1 className="text-xl font-bold mb-2 text-gray-900" {...props}>
+                      {children}
+                    </h1>
+                  ),
+                  h2: ({ children, ...props }) => (
+                    <h2 className="text-lg font-bold mb-2 text-gray-900" {...props}>
+                      {children}
+                    </h2>
+                  ),
+                  h3: ({ children, ...props }) => (
+                    <h3 className="text-base font-bold mb-1 text-gray-900" {...props}>
+                      {children}
+                    </h3>
+                  ),
+                  // Customize lists
+                  ul: ({ children, ...props }) => (
+                    <ul className="list-disc list-inside mb-2 space-y-1" {...props}>
+                      {children}
+                    </ul>
+                  ),
+                  ol: ({ children, ...props }) => (
+                    <ol className="list-decimal list-inside mb-2 space-y-1" {...props}>
+                      {children}
+                    </ol>
+                  ),
+                  // Customize paragraphs
+                  p: ({ children, ...props }) => (
+                    <p className="mb-2 last:mb-0" {...props}>
+                      {children}
+                    </p>
+                  ),
+                  // Customize blockquotes
+                  blockquote: ({ children, ...props }) => (
+                    <blockquote className="border-l-4 border-gray-300 pl-4 italic text-gray-700 mb-2" {...props}>
+                      {children}
+                    </blockquote>
+                  ),
+                }}
+              >
+                {message.content}
+              </ReactMarkdown>
+            </div>
+          )}
           
           {/* Message metadata for AI responses */}
           {!message.isUser && (message.tokens || message.responseTime) && (
