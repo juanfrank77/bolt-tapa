@@ -1,6 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router';
+import { ModelProvider } from './context/ModelContext';
 import { LandingPage, LoginPage, SignUpPage, DashboardPage, ChatPage } from './pages';
 import { aiChatLoader, aiChatAction } from './routes/chat';
 import './index.css';
@@ -32,6 +33,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <ModelProvider>
+      <RouterProvider router={router} />
+    </ModelProvider>
   </StrictMode>
 );

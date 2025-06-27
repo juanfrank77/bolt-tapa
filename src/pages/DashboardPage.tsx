@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth, isGuestUser } from '../hooks/useAuth';
 import { useUserProfile } from '../hooks/useDatabase';
+import { useModels } from '../context/ModelContext';
 import tapaIcon from '../assets/tapa-icon.png';
 import { Button } from '../components';
 import { 
@@ -23,6 +24,7 @@ import { MascotGuide } from '../components';
 const DashboardPage: React.FC = () => {
   const { user, signOut } = useAuth();
   const { profile, loading: profileLoading } = useUserProfile();
+  const { availableModels, loading: modelsLoading, error: modelsError } = useModels();
   const [isMascotMinimized, setIsMascotMinimized] = useState(false);
   const navigate = useNavigate();
   const isGuest = user ? isGuestUser(user) : false;
@@ -35,12 +37,14 @@ const DashboardPage: React.FC = () => {
     navigate('/chat');
   };
 
-  if (profileLoading) {
+  if (profileLoading || modelsLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading your dashboard...</p>
+          <p className="text-gray-600">
+            {profileLoading ? 'Loading your dashboard...' : 'Loading AI models...'}
+          </p>
         </div>
       </div>
     );
@@ -186,11 +190,27 @@ const DashboardPage: React.FC = () => {
               <div className="text-sm text-gray-600">Conversations Today</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600 mb-1">6</div>
+              <div className="text-2xl font-bold text-blue-600 mb-1">{availableModels.length}</div>
               <div className="text-sm text-gray-600">AI Models Available</div>
             </div>
           </div>
         </div>
+        )}
+
+        {/* Models Error Display */}
+        {modelsError && (
+          <div className="bg-red-50 border border-red-200 rounded-2xl p-6 mb-8">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                <Brain className="w-5 h-5 text-red-600" weight="bold" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-red-900">Unable to Load AI Models</h3>
+                <p className="text-red-700">{modelsError}</p>
+                <p className="text-red-600 text-sm mt-1">You can still use the chat with fallback models.</p>
+              </div>
+            </div>
+          </div>
         )}
 
         {/* Mascot Guide Section */}

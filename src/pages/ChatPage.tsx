@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link, useLoaderData, useFetcher } from 'react-router';
 import { useModelAccess } from '../hooks/useDatabase';
+import { useModels, useSelectedModel } from '../context/ModelContext';
 import tapaIcon from '../assets/tapa-icon.png';
 import { ThemeToggle, MascotGuide } from '../components';
 import { AI_MODEL_CONFIG, AI_MODELS } from '../constants/aiModels';
+import { getDisplayName } from '../lib/openrouter';
 import type { ChatLoaderData } from '../routes/chat';
 import { 
   Brain, 
@@ -140,9 +142,10 @@ const TypingIndicator: React.FC<{ modelConfig: any }> = ({ modelConfig }) => (
 const ChatPage: React.FC = () => {
   const navigate = useNavigate();
   const { user, profile } = useLoaderData() as ChatLoaderData;
+  const { availableModels, loading: modelsLoading, error: modelsError } = useModels();
+  const { selectedModel, setSelectedModel } = useSelectedModel();
   const fetcher = useFetcher();
   
-  const [selectedModelId, setSelectedModelId] = useState<string>('gpt-3.5-turbo');
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -150,8 +153,16 @@ const ChatPage: React.FC = () => {
   const [isMascotMinimized, setIsMascotMinimized] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const { hasAccess, loading: accessLoading } = useModelAccess(selectedModelId);
-  const modelConfig = AI_MODEL_CONFIG[selectedModelId as keyof typeof AI_MODEL_CONFIG];
+  // For backward compatibility, we'll use a fallback model config
+  const modelConfig = selectedModel ? {
+    name: getDisplayName(selectedModel),
+    avatar: 'bg-gradient-to-r from-blue-500 to-purple-600',
+    color: 'from-blue-500 to-purple-600'
+  } : {
+    name: 'AI Assistant',
+    avatar: 'bg-gradient-to-r from-gray-500 to-gray-600',
+    color: 'from-gray-500 to-gray-600'
+  };
 
   // Scroll to bottom when new messages are added
   useEffect(() => {
@@ -160,49 +171,41 @@ const ChatPage: React.FC = () => {
 
   // Initialize with welcome message
   useEffect(() => {
-    if (modelConfig && messages.length === 0) {
+    if (selectedModel && messages.length === 0) {
       const welcomeMessage: Message = {
         id: 'welcome',
-        content: `Hello! I'm ${modelConfig.name}. How can I help you today?`,
+        content: `Hello! I'm ${getDisplayName(selectedModel)}. How can I help you today?`,
         isUser: false,
         timestamp: new Date()
       };
       setMessages([welcomeMessage]);
     }
-  }, [modelConfig, selectedModelId]);
+  }, [selectedModel]);
 
   // Reset messages when model changes
   useEffect(() => {
-    if (modelConfig) {
+    if (selectedModel) {
       const welcomeMessage: Message = {
         id: 'welcome',
-        content: `Hello! I'm ${modelConfig.name}. How can I help you today?`,
+        content: `Hello! I'm ${getDisplayName(selectedModel)}. How can I help you today?`,
         isUser: false,
         timestamp: new Date()
       };
       setMessages([welcomeMessage]);
     }
-  }, [selectedModelId]);
+  }, [selectedModel]);
 
   const simulateAIResponse = async (userMessage: string): Promise<string> => {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
     
-    // Simple response simulation based on model
-    const responses = {
-      'gpt-3.5-turbo': `I understand you're asking about "${userMessage}". As GPT-3.5 Turbo, I can help you with a wide range of tasks including answering questions, writing, coding, and problem-solving. What specific aspect would you like me to focus on?`,
-      'claude-3.5-haiku': `Thanks for your message about "${userMessage}". I'm Claude 3.5 Haiku, designed for quick and efficient responses. I can help you with various tasks while being concise and to the point. How can I assist you further?`,
-      'gpt-4o': `Regarding "${userMessage}" - I'm GPT-4o, and I can provide detailed analysis and sophisticated reasoning. I'd be happy to explore this topic in depth with you. What particular angle or aspect interests you most?`,
-      'claude-3.5-sonnet': `I see you're interested in "${userMessage}". As Claude 3.5 Sonnet, I can offer balanced and thoughtful responses across many domains. I'm particularly good at creative tasks and nuanced analysis. What would you like to explore?`,
-      'gpt-4.1': `Thank you for bringing up "${userMessage}". I'm GPT-4.1 with enhanced capabilities and the latest knowledge. I can provide comprehensive assistance with complex tasks. How can I best help you with this?`,
-      'claude-3-opus': `Regarding "${userMessage}" - I'm Claude 3 Opus, Anthropic's most capable model. I excel at complex reasoning and nuanced understanding. I'm here to provide thoughtful, detailed assistance. What specific help do you need?`
-    };
-
-    return responses[selectedModelId as keyof typeof responses] || "I'm here to help! Could you please rephrase your question?";
+    // Simple response simulation
+    const modelName = selectedModel ? getDisplayName(selectedModel) : 'AI Assistant';
+    return `I understand you're asking about "${userMessage}". As ${modelName}, I can help you with a wide range of tasks including answering questions, writing, coding, and problem-solving. What specific aspect would you like me to focus on?`;
   };
 
   const handleSendMessage = async () => {
-    if (!inputValue.trim() || isLoading || !selectedModelId || !hasAccess) return;
+    if (!inputValue.trim() || isLoading || !selectedModel) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -238,7 +241,7 @@ const ChatPage: React.FC = () => {
 
       // Log interaction to database using fetcher
       const formData = new FormData();
-      formData.append('modelName', selectedModelId);
+      formData.append('modelName', selectedModel?.id || 'unknown');
       formData.append('prompt', userMessage.content);
       formData.append('response', aiResponse);
       formData.append('tokensUsed', estimatedTokens.toString());
@@ -261,7 +264,9 @@ const ChatPage: React.FC = () => {
   };
 
   const handleModelChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedModelId(e.target.value);
+    const modelId = e.target.value;
+    const model = availableModels.find(m => m.id === modelId);
+    setSelectedModel(model || null);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -271,19 +276,37 @@ const ChatPage: React.FC = () => {
     }
   };
 
-  if (accessLoading) {
+  if (modelsLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Checking access...</p>
+          <p className="text-gray-600">Loading AI models...</p>
         </div>
       </div>
     );
   }
 
-  // Get the icon component dynamically
-  const IconComponent = ICON_MAP[modelConfig.icon as keyof typeof ICON_MAP] || Brain;
+  // Show error if models failed to load
+  if (modelsError) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
+        <div className="text-center max-w-md">
+          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Brain className="w-8 h-8 text-red-600" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Unable to Load Models</h2>
+          <p className="text-gray-600 mb-6">{modelsError}</p>
+          <button
+            onClick={() => navigate('/dashboard')}
+            className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-6 py-3 rounded-lg font-medium hover:shadow-lg transition-all duration-200"
+          >
+            Back to Dashboard
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex flex-col">
@@ -315,17 +338,17 @@ const ChatPage: React.FC = () => {
               </button>
               <div className="flex items-center space-x-3">
                 <div className={`w-10 h-10 bg-gradient-to-r ${modelConfig.color} rounded-xl flex items-center justify-center`}>
-                  <IconComponent className="w-6 h-6 text-white" weight="bold" />
+                  <Brain className="w-6 h-6 text-white" weight="bold" />
                 </div>
                 <div>
                   <select
-                    value={selectedModelId}
+                    value={selectedModel?.id || ''}
                     onChange={handleModelChange}
                     className="text-lg font-bold text-gray-900 bg-transparent border-none focus:outline-none focus:ring-0 cursor-pointer min-w-0"
                   >
-                    {AI_MODELS.map((model) => (
+                    {availableModels.map((model) => (
                       <option key={model.id} value={model.id}>
-                        {model.name}
+                        {getDisplayName(model)}
                       </option>
                     ))}
                   </select>
@@ -357,18 +380,6 @@ const ChatPage: React.FC = () => {
 
             {/* Input Area */}
             <div className="border-t border-gray-100 p-6">
-              {/* Access denied message */}
-              {!hasAccess && (
-                <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                  <div className="flex items-center">
-                    <Warning className="w-5 h-5 text-yellow-600 mr-2" />
-                    <p className="text-yellow-800 text-sm">
-                      You don't have access to this model. Please upgrade your plan or select a different model.
-                    </p>
-                  </div>
-                </div>
-              )}
-              
               <div className="flex items-end space-x-4">
                 <div className="flex-1">
                   <textarea
@@ -378,14 +389,14 @@ const ChatPage: React.FC = () => {
                     placeholder={`Message ${modelConfig.name}...`}
                     className="w-full resize-none border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 max-h-32"
                     rows={1}
-                    disabled={isLoading || !hasAccess}
+                    disabled={isLoading || !selectedModel}
                   />
                 </div>
                 <button
                   onClick={handleSendMessage}
-                  disabled={!inputValue.trim() || isLoading || !hasAccess}
+                  disabled={!inputValue.trim() || isLoading || !selectedModel}
                   className={`p-3 rounded-xl font-medium transition-all duration-200 ${
-                    inputValue.trim() && !isLoading && hasAccess
+                    inputValue.trim() && !isLoading && selectedModel
                       ? `bg-gradient-to-r ${modelConfig.color} text-white hover:shadow-lg transform hover:-translate-y-0.5`
                       : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   }`}
