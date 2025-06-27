@@ -364,7 +364,7 @@ const ChatPage: React.FC = () => {
 
             {/* Input Area */}
             <div className="border-t border-gray-100 p-6">
-              <div className="flex items-end gap-4">
+              <div className="flex items-center gap-4">
                 <textarea
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
@@ -373,11 +373,7 @@ const ChatPage: React.FC = () => {
                   rows={1}
                   maxLength={2000}
                   disabled={isLoading || !selectedModel}
-                  className="flex-1 resize-none rounded-xl border border-gray-200 p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:text-gray-500"
-                  style={{
-                    minHeight: '46px',
-                    maxHeight: '200px'
-                  }}
+                  className="flex-1 resize-none rounded-xl border border-gray-200 focus:border-blue-500 focus:ring focus:ring-blue-200 transition-all duration-200 p-4 font-medium placeholder:text-gray-400 disabled:bg-gray-50 disabled:cursor-not-allowed"
                 />
                 <button
                   onClick={handleSendMessage}
