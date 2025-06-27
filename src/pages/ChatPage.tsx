@@ -425,7 +425,8 @@ const ChatPage: React.FC = () => {
                     ))}
                   </select>
                   <p className="text-sm text-gray-600">
-                   '-' {selectedModel ? getProviderName(selectedModel) : 'AI Model'}
+                  <p className="text-sm text-gray-600 pl-1">
+                    {selectedModel ? getProviderName(selectedModel) : 'AI Model'}
                   </p>
                 </div>
               </div>
