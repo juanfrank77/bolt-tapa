@@ -137,3 +137,97 @@ export function categorizeModels(models: OpenRouterModel[]): Record<string, Open
   
   return categories;
 }
+
+// Chat completion types
+export interface ChatMessage {
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+}
+
+export interface ChatCompletionResponse {
+  id: string;
+  object: string;
+  created: number;
+  model: string;
+  choices: Array<{
+    index: number;
+    message: {
+      role: string;
+      content: string;
+    };
+    finish_reason: string;
+  }>;
+  usage: {
+    prompt_tokens: number;
+    completion_tokens: number;
+    total_tokens: number;
+  };
+}
+
+export interface SendMessageResult {
+  content: string;
+  tokensUsed: number;
+  responseTime: number;
+}
+
+/**
+ * Sends a message to the specified model via OpenRouter API
+ * @param modelId The OpenRouter model ID to use
+ * @param messages Array of chat messages for context
+ * @returns Promise<SendMessageResult> The AI response with metadata
+ * @throws Error if the API request fails
+ */
+export async function sendMessageToModel(
+  modelId: string,
+  messages: ChatMessage[]
+): Promise<SendMessageResult> {
+  const startTime = Date.now();
+  
+  try {
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: modelId,
+        messages: messages,
+        temperature: 0.7,
+        max_tokens: 1000,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`OpenRouter API request failed: ${response.status} ${response.statusText} - ${errorText}`);
+    }
+
+    const result: ChatCompletionResponse = await response.json();
+    const endTime = Date.now();
+    const responseTime = endTime - startTime;
+
+    // Extract the AI's response
+    const aiMessage = result.choices?.[0]?.message?.content;
+    if (!aiMessage) {
+      throw new Error('No response content received from the model');
+    }
+
+    // Extract token usage
+    const tokensUsed = result.usage?.total_tokens || 0;
+
+    return {
+      content: aiMessage,
+      tokensUsed,
+      responseTime,
+    };
+  } catch (error) {
+    const endTime = Date.now();
+    const responseTime = endTime - startTime;
+    
+    if (error instanceof Error) {
+      throw new Error(`Failed to send message to model: ${error.message}`);
+    }
+    throw new Error('Failed to send message to model: Unknown error');
+  }
+}

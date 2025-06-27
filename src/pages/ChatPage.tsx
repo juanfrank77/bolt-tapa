@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link, useLoaderData, useFetcher } from 'react-router';
 import { useModels, useSelectedModel } from '../context/ModelContext';
+import { sendMessageToModel, getDisplayName, type ChatMessage } from '../lib/openrouter';
 import tapaIcon from '../assets/tapa-icon.png';
 import { ThemeToggle, MascotGuide } from '../components';
-import { getDisplayName } from '../lib/openrouter';
 import type { ChatLoaderData } from '../routes/chat';
 import { 
   Brain, 
@@ -14,6 +14,7 @@ import {
   Copy,
   ThumbsUp,
   ThumbsDown,
+  Warning
 } from '@phosphor-icons/react';
 
 interface Message {
@@ -179,13 +180,14 @@ const ChatPage: React.FC = () => {
     }
   }, [selectedModel]);
 
-  const simulateAIResponse = async (userMessage: string): Promise<string> => {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
-    
-    // Simple response simulation
-    const modelName = selectedModel ? getDisplayName(selectedModel) : 'AI Assistant';
-    return `I understand you're asking about "${userMessage}". As ${modelName}, I can help you with a wide range of tasks including answering questions, writing, coding, and problem-solving. What specific aspect would you like me to focus on?`;
+  // Convert our messages to OpenRouter format
+  const convertToOpenRouterMessages = (messages: Message[]): ChatMessage[] => {
+    return messages
+      .filter(msg => msg.id !== 'welcome') // Exclude welcome message
+      .map(msg => ({
+        role: msg.isUser ? 'user' as const : 'assistant' as const,
+        content: msg.content
+      }));
   };
 
   const handleSendMessage = async () => {
@@ -204,21 +206,21 @@ const ChatPage: React.FC = () => {
     setIsTyping(true);
 
     try {
-      const startTime = Date.now();
-      const aiResponse = await simulateAIResponse(userMessage.content);
-      const endTime = Date.now();
-      const responseTime = endTime - startTime;
-      const estimatedTokens = Math.floor(aiResponse.length / 4); // Rough token estimation
+      // Prepare messages for OpenRouter API
+      const chatMessages = convertToOpenRouterMessages([...messages, userMessage]);
+      
+      // Send message to OpenRouter API
+      const result = await sendMessageToModel(selectedModel.id, chatMessages);
 
       setIsTyping(false);
 
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: aiResponse,
+        content: result.content,
         isUser: false,
         timestamp: new Date(),
-        tokens: estimatedTokens,
-        responseTime
+        tokens: result.tokensUsed,
+        responseTime: result.responseTime
       };
 
       setMessages(prev => [...prev, aiMessage]);
@@ -227,17 +229,23 @@ const ChatPage: React.FC = () => {
       const formData = new FormData();
       formData.append('modelName', selectedModel?.id || 'unknown');
       formData.append('prompt', userMessage.content);
-      formData.append('response', aiResponse);
-      formData.append('tokensUsed', estimatedTokens.toString());
-      formData.append('responseTimeMs', responseTime.toString());
+      formData.append('response', result.content);
+      formData.append('tokensUsed', result.tokensUsed.toString());
+      formData.append('responseTimeMs', result.responseTime.toString());
       
       fetcher.submit(formData, { method: 'post' });
 
     } catch (error) {
+      console.error('Error sending message:', error);
       setIsTyping(false);
+      
+      const errorContent = error instanceof Error 
+        ? `Sorry, I encountered an error: ${error.message}` 
+        : 'Sorry, I encountered an unexpected error. Please try again.';
+      
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: 'Sorry, I encountered an error. Please try again.',
+        content: errorContent,
         isUser: false,
         timestamp: new Date()
       };
@@ -364,6 +372,18 @@ const ChatPage: React.FC = () => {
 
             {/* Input Area */}
             <div className="border-t border-gray-100 p-6">
+              {/* API Error Notice */}
+              {!selectedModel && (
+                <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <div className="flex items-center">
+                    <Warning className="w-5 h-5 text-yellow-600 mr-2" />
+                    <p className="text-yellow-800 text-sm">
+                      No model selected. Please select a model to start chatting.
+                    </p>
+                  </div>
+                </div>
+              )}
+              
               <div className="flex items-center space-x-4">
                 <textarea
                   value={inputValue}
