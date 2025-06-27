@@ -424,7 +424,9 @@ const ChatPage: React.FC = () => {
                       </option>
                     ))}
                   </select>
-                  <p className="text-sm text-gray-600">AI Assistant</p>
+                  <p className="text-sm text-gray-600">
+                    {selectedModel ? getProviderName(selectedModel) : 'AI Assistant'}
+                  </p>
                 </div>
               </div>
             </div>
