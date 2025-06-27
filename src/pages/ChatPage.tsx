@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link, useLoaderData, useFetcher } from 'react-router';
 import ReactMarkdown from 'react-markdown';
 import { useModels, useSelectedModel } from '../context/ModelContext';
-import { sendMessageToModel, getDisplayName, type ChatMessage } from '../lib/openrouter';
+import { sendMessageToModel, getDisplayName, getProviderName, type ChatMessage } from '../lib/openrouter';
 import tapaIcon from '../assets/tapa-icon.png';
 import { ThemeToggle, MascotGuide } from '../components';
 import type { ChatLoaderData } from '../routes/chat';

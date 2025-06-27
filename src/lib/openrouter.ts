@@ -89,6 +89,45 @@ export function isModelAvailable(
 }
 
 /**
+ * Extracts the provider name from an OpenRouter model ID
+ * @param model OpenRouter model
+ * @returns Provider name (e.g., "OpenAI", "Anthropic", etc.)
+ */
+export function getProviderName(model: OpenRouterModel): string {
+  // Extract provider from the model ID (first part before '/')
+  const parts = model.id.split('/');
+  if (parts.length > 1) {
+    const provider = parts[0];
+    
+    // Capitalize and format common provider names
+    switch (provider.toLowerCase()) {
+      case 'openai':
+        return 'OpenAI';
+      case 'anthropic':
+        return 'Anthropic';
+      case 'meta-llama':
+      case 'meta':
+        return 'Meta';
+      case 'google':
+        return 'Google';
+      case 'mistralai':
+        return 'Mistral AI';
+      case 'deepseek':
+        return 'DeepSeek';
+      case 'qwen':
+        return 'Qwen';
+      case 'microsoft':
+        return 'Microsoft';
+      default:
+        // Capitalize first letter of provider name
+        return provider.charAt(0).toUpperCase() + provider.slice(1);
+    }
+  }
+  
+  return 'Unknown Provider';
+}
+
+/**
  * Gets a display-friendly model name by cleaning up the OpenRouter model name
  * @param model OpenRouter model
  * @returns Cleaned model name
