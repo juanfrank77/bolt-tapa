@@ -292,6 +292,8 @@ const ChatPage: React.FC = () => {
     );
   }
 
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex flex-col">
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -323,7 +325,7 @@ const ChatPage: React.FC = () => {
                   <Brain className="w-6 h-6 text-white" weight="bold" />
                 </div>
                 <div>
-                  <Brain className="w-6 h-6 text-white" weight="bold" />
+                  <select
                     value={selectedModel?.id || ''}
                     onChange={handleModelChange}
                     className="text-lg font-bold text-gray-900 bg-transparent border-none focus:outline-none focus:ring-0 cursor-pointer min-w-0"
@@ -362,6 +364,21 @@ const ChatPage: React.FC = () => {
 
             {/* Input Area */}
             <div className="border-t border-gray-100 p-6">
+              <div className="flex items-end gap-4">
+                <textarea
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onKeyDown={handleKeyPress}
+                  placeholder="Type your message..."
+                  rows={1}
+                  maxLength={2000}
+                  disabled={isLoading || !selectedModel}
+                  className="flex-1 resize-none rounded-xl border border-gray-200 p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:text-gray-500"
+                  style={{
+                    minHeight: '46px',
+                    maxHeight: '200px'
+                  }}
+                />
                 <button
                   onClick={handleSendMessage}
                   disabled={!inputValue.trim() || isLoading || !selectedModel}
@@ -371,7 +388,7 @@ const ChatPage: React.FC = () => {
                       : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   }`}
                 >
-                    disabled={isLoading || !selectedModel}
+                  {isLoading ? (
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-current"></div>
                   ) : (
                     <PaperPlaneTilt className="w-5 h-5" weight="bold" />
