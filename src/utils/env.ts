@@ -13,3 +13,6 @@ export const isProduction = () => import.meta.env.PROD
 // Supabase environment variables
 export const SUPABASE_URL = getEnvVar('VITE_SUPABASE_URL')
 export const SUPABASE_ANON_KEY = getEnvVar('VITE_SUPABASE_ANON_KEY')
+
+// Openrouter environment variable
+export const OPENROUTER_API_KEY = getEnvVar('VITE_OPENROUTER_API_KEY')
