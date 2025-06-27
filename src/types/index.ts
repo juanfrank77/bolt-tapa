@@ -34,3 +34,17 @@ export interface ModelAccess {
   expires_at?: string
   created_at: string
 }
+
+// Re-export OpenRouter types
+export type {
+  OpenRouterModel,
+  OpenRouterModelsResponse,
+  OpenRouterArchitecture,
+  OpenRouterTopProvider,
+  OpenRouterPricing,
+  OpenRouterPerRequestLimits,
+  AIModel,
+  AIModelConfig,
+  SubscriptionTier,
+  ModelCategory
+} from './openrouter';
