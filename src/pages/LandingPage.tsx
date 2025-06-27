@@ -53,12 +53,6 @@ const LandingPage: React.FC = () => {
                 Pricing
               </a>
               <Link 
-                to="/login" 
-                className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
-              >
-                Sign In
-              </Link>
-              <Link 
                 to="/signup" 
                 className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-6 py-2 rounded-full hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 font-medium"
               >
@@ -106,13 +100,6 @@ const LandingPage: React.FC = () => {
                   Pricing
                 </a>
                 <Link 
-                  to="/login" 
-                  onClick={closeMobileMenu}
-                  className="text-blue-600 hover:text-blue-700 font-medium transition-colors px-2 py-1"
-                >
-                  Sign In
-                </Link>
-                <Link 
                   to="/signup" 
                   onClick={closeMobileMenu}
                   className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-200 font-medium text-center"
@@ -149,7 +136,7 @@ const LandingPage: React.FC = () => {
               Chat with multiple AI models in one place, learn from a friendly mascot, and unlock               the power of <b>AI</b> without the complexity.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex flex-col gap-4 justify-center items-center">
               <Link 
                 to="/signup"
                 className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 flex items-center group"
@@ -293,7 +280,7 @@ const LandingPage: React.FC = () => {
               to="/signup"
               className="bg-white text-[#812dea] px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 flex items-center group"
             >
-              Get Started Free
+              Start Your AI Journey
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" weight="bold" />
             </Link>
             <Link 
