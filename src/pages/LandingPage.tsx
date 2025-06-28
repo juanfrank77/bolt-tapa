@@ -308,6 +308,23 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
+      {/* Bolt Badge */}
+      <div className="fixed bottom-6 right-6 z-40">
+        <a 
+          href="https://bolt.new" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="block w-12 h-12 hover:scale-110 transition-transform duration-200"
+          title="Built with Bolt"
+        >
+          <img 
+            src="/white_circle_360x360.svg" 
+            alt="Built with Bolt" 
+            className="w-full h-full drop-shadow-lg"
+          />
+        </a>
+      </div>
+
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
