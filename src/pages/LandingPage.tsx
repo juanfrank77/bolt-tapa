@@ -325,7 +325,7 @@ const LandingPage: React.FC = () => {
                 Making AI accessible to everyone. Your friendly companion in the world of artificial intelligence.
               </p>
               <div className="text-sm text-gray-500">
-                © 2024 TAPA. All rights reserved.
+                © {new Date().getFullYear()} TAPA. All rights reserved.
               </div>
             </div>
             

@@ -185,7 +185,7 @@ const TermsOfServicePage: React.FC = () => {
               Making AI accessible to everyone.
             </p>
             <div className="text-sm text-gray-500">
-              © 2024 TAPA. All rights reserved.
+              © {new Date().getFullYear()} TAPA. All rights reserved.
             </div>
           </div>
         </div>
