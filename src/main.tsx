@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router';
 import { ModelProvider } from './context/ModelContext';
-import { LandingPage, LoginPage, SignUpPage, DashboardPage, ChatPage } from './pages';
+import { LandingPage, LoginPage, SignUpPage, DashboardPage, ChatPage, PrivacyPolicyPage, TermsOfServicePage } from './pages';
 import { aiChatLoader, aiChatAction } from './routes/chat';
 import './index.css';
 
@@ -28,6 +28,14 @@ const router = createBrowserRouter([
     element: <ChatPage />,
     loader: aiChatLoader,
     action: aiChatAction,
+  },
+  {
+    path: "/privacy-policy",
+    element: <PrivacyPolicyPage />,
+  },
+  {
+    path: "/terms-of-service",
+    element: <TermsOfServicePage />,
   },
 ]);
 
