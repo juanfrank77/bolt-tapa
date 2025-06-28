@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth, isGuestUser } from '../hooks/useAuth';
 import { useUserProfile } from '../hooks/useDatabase';
 import { useModels } from '../context/ModelContext';
+import { initiateCreemCheckout } from '../lib/creem';
 import tapaIcon from '../assets/tapa-icon.png';
 import { Button } from '../components';
 import { 
@@ -22,6 +23,7 @@ const DashboardPage: React.FC = () => {
   const { profile, loading: profileLoading } = useUserProfile();
   const { availableModels, loading: modelsLoading, error: modelsError } = useModels();
   const [isMascotMinimized, setIsMascotMinimized] = useState(false);
+  const [isUpgrading, setIsUpgrading] = useState(false);
   const navigate = useNavigate();
   const isGuest = user ? isGuestUser(user) : false;
 
@@ -31,6 +33,28 @@ const DashboardPage: React.FC = () => {
 
   const handleStartChatting = () => {
     navigate('/chat');
+  };
+
+  const handleUpgradeToPremium = async () => {
+    if (isGuest) {
+      navigate('/signup');
+      return;
+    }
+
+    setIsUpgrading(true);
+    try {
+      // Replace 'prod_premium_plan' with your actual Creem product ID
+      const checkoutUrl = await initiateCreemCheckout('prod_5fEbbXSXgkLAcjbGK2ENxc');
+      
+      // Redirect to Creem checkout
+      window.location.href = checkoutUrl;
+    } catch (error) {
+      console.error('Failed to initiate checkout:', error);
+      // You might want to show a user-friendly error message here
+      alert('Failed to start checkout process. Please try again later.');
+    } finally {
+      setIsUpgrading(false);
+    }
   };
 
   if (profileLoading || modelsLoading) {
@@ -231,15 +255,34 @@ const DashboardPage: React.FC = () => {
               }
             </p>
             {isGuest ? (
-              <Link
-                to="/signup"
-                className="bg-white text-[#812dea] px-8 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+              <button
+                onClick={handleUpgradeToPremium}
+                disabled={isUpgrading}
+                className="bg-white text-[#812dea] px-8 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
-                Sign Up Free
-              </Link>
+                {isUpgrading ? (
+                  <div className="flex items-center">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#812dea] mr-2"></div>
+                    Starting...
+                  </div>
+                ) : (
+                  'Sign Up Free'
+                )}
+              </button>
             ) : (
-            <button className="bg-white text-[#812dea] px-8 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
-              Upgrade to Premium
+            <button 
+              onClick={handleUpgradeToPremium}
+              disabled={isUpgrading}
+              className="bg-white text-[#812dea] px-8 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            >
+              {isUpgrading ? (
+                <div className="flex items-center">
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#812dea] mr-2"></div>
+                  Starting checkout...
+                </div>
+              ) : (
+                'Upgrade to Premium'
+              )}
             </button>
             )}
           </div>
