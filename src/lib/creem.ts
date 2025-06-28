@@ -11,7 +11,7 @@ export async function initiateCreemCheckout(product_id) {
     const response await fetch('https://test-api.creem.io/v1/checkouts', {
       method: 'POST',
       headers: {
-        'x-api-key': 'creem_test_LUo2MK2C0SxkiG0WOzY6L',
+        'x-api-key': CREEM_API_KEY,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
