@@ -1,9 +1,10 @@
 import { redirect } from 'react-router';
 import { supabase } from '../lib/supabase';
+import { GuestUser } from '../hooks/useAuth';
 import * as db from '../lib/database';
 
 export interface ChatLoaderData {
-  user: any;
+  user: any | GuestUser;
   profile: any;
 }
 
@@ -13,8 +14,17 @@ export async function aiChatLoader(): Promise<ChatLoaderData | Response> {
     const { data: { session } } = await supabase.auth.getSession();
     
     if (!session?.user) {
-      // Redirect to login if not authenticated
-      return redirect('/login');
+      // Create guest user if no authenticated session
+      const guestUser: GuestUser = {
+        id: 'guest',
+        email: 'guest@tapa.ai',
+        isGuest: true
+      };
+      
+      return {
+        user: guestUser,
+        profile: null
+      };
     }
 
     // Fetch user profile
@@ -26,8 +36,17 @@ export async function aiChatLoader(): Promise<ChatLoaderData | Response> {
     };
   } catch (error) {
     console.error('Error in aiChatLoader:', error);
-    // Redirect to login on any error
-    return redirect('/login');
+    // Return guest user on any error
+    const guestUser: GuestUser = {
+      id: 'guest',
+      email: 'guest@tapa.ai',
+      isGuest: true
+    };
+    
+    return {
+      user: guestUser,
+      profile: null
+    };
   }
 }
 
@@ -37,8 +56,9 @@ export async function aiChatAction({ request }: { request: Request }) {
     const { data: { session } } = await supabase.auth.getSession();
     
     if (!session?.user) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401,
+      // For guest users, just return success without logging to database
+      return new Response(JSON.stringify({ success: true, guest: true }), {
+        status: 200,
         headers: { 'Content-Type': 'application/json' }
       });
     }

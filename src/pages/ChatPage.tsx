@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link, useLoaderData, useFetcher } from 'react-router';
 import ReactMarkdown from 'react-markdown';
 import { useModels, useSelectedModel } from '../context/ModelContext';
+import { isGuestUser } from '../hooks/useAuth';
 import { sendMessageToModel, getDisplayName, getProviderName, type ChatMessage } from '../lib/openrouter';
 import tapaIcon from '../assets/tapa-icon.png';
 import { ThemeToggle, MascotGuide } from '../components';
@@ -15,8 +16,13 @@ import {
   Copy,
   ThumbsUp,
   ThumbsDown,
-  Warning
+  Warning,
+  Crown,
+  Sparkle
 } from '@phosphor-icons/react';
+
+// Guest user chat limit
+const GUEST_CHAT_LIMIT = 5;
 
 interface Message {
   id: string;
@@ -204,6 +210,36 @@ const TypingIndicator: React.FC<{ modelConfig: any }> = ({ modelConfig }) => (
   </div>
 );
 
+const GuestLimitReached: React.FC = () => (
+  <div className="border-t border-gray-100 p-6">
+    <div className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] rounded-2xl p-6 text-white text-center">
+      <Crown className="w-12 h-12 mx-auto mb-4" weight="bold" />
+      <h3 className="text-xl font-bold mb-2">You've reached your guest limit!</h3>
+      <p className="text-purple-100 mb-6">
+        You've used all 5 free messages as a guest. Sign up for a free account to continue chatting and unlock more features!
+      </p>
+      <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <Link
+          to="/signup"
+          className="bg-white text-[#812dea] px-6 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+        >
+          Sign Up Free
+        </Link>
+        <Link
+          to="/login"
+          className="border-2 border-white/30 text-white px-6 py-3 rounded-lg font-medium hover:border-white/50 transition-colors"
+        >
+          Sign In
+        </Link>
+      </div>
+      <div className="flex items-center justify-center mt-4 text-sm text-purple-100">
+        <Sparkle className="w-4 h-4 mr-2" weight="fill" />
+        <span>Free forever • No credit card required</span>
+      </div>
+    </div>
+  </div>
+);
+
 const ChatPage: React.FC = () => {
   const navigate = useNavigate();
   const { user, profile } = useLoaderData() as ChatLoaderData;
@@ -216,7 +252,12 @@ const ChatPage: React.FC = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isMascotMinimized, setIsMascotMinimized] = useState(true);
+  const [guestChatCount, setGuestChatCount] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Check if user is a guest
+  const isGuest = user ? isGuestUser(user) : false;
+  const hasReachedGuestLimit = isGuest && guestChatCount >= GUEST_CHAT_LIMIT;
 
   // For backward compatibility, we'll use a fallback model config
   const modelConfig = selectedModel ? {
@@ -257,8 +298,14 @@ const ChatPage: React.FC = () => {
         timestamp: new Date()
       };
       setMessages([welcomeMessage]);
+      setGuestChatCount(0); // Reset guest count when model changes
     }
   }, [selectedModel]);
+
+  // Reset guest count when user changes (e.g., guest logs in)
+  useEffect(() => {
+    setGuestChatCount(0);
+  }, [user]);
 
   // Convert our messages to OpenRouter format
   const convertToOpenRouterMessages = (messages: Message[]): ChatMessage[] => {
@@ -271,7 +318,7 @@ const ChatPage: React.FC = () => {
   };
 
   const handleSendMessage = async () => {
-    if (!inputValue.trim() || isLoading || !selectedModel) return;
+    if (!inputValue.trim() || isLoading || !selectedModel || hasReachedGuestLimit) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -284,6 +331,11 @@ const ChatPage: React.FC = () => {
     setInputValue('');
     setIsLoading(true);
     setIsTyping(true);
+
+    // Increment guest chat count for guest users
+    if (isGuest) {
+      setGuestChatCount(prev => prev + 1);
+    }
 
     try {
       // Prepare messages for OpenRouter API
@@ -305,15 +357,17 @@ const ChatPage: React.FC = () => {
 
       setMessages(prev => [...prev, aiMessage]);
 
-      // Log interaction to database using fetcher
-      const formData = new FormData();
-      formData.append('modelName', selectedModel?.id || 'unknown');
-      formData.append('prompt', userMessage.content);
-      formData.append('response', result.content);
-      formData.append('tokensUsed', result.tokensUsed.toString());
-      formData.append('responseTimeMs', result.responseTime.toString());
-      
-      fetcher.submit(formData, { method: 'post' });
+      // Log interaction to database using fetcher (only for authenticated users)
+      if (!isGuest) {
+        const formData = new FormData();
+        formData.append('modelName', selectedModel?.id || 'unknown');
+        formData.append('prompt', userMessage.content);
+        formData.append('response', result.content);
+        formData.append('tokensUsed', result.tokensUsed.toString());
+        formData.append('responseTimeMs', result.responseTime.toString());
+        
+        fetcher.submit(formData, { method: 'post' });
+      }
 
     } catch (error) {
       console.error('Error sending message:', error);
@@ -433,6 +487,14 @@ const ChatPage: React.FC = () => {
 
             {/* Right: Theme Toggle */}
             <div className="flex items-center justify-end">
+              {isGuest && (
+                <div className="hidden sm:flex items-center space-x-2 text-sm">
+                  <span className="text-gray-600">Guest:</span>
+                  <span className={`font-medium ${hasReachedGuestLimit ? 'text-red-600' : 'text-blue-600'}`}>
+                    {guestChatCount}/{GUEST_CHAT_LIMIT}
+                  </span>
+                </div>
+              )}
               <ThemeToggle />
             </div>
           </div>
@@ -443,6 +505,31 @@ const ChatPage: React.FC = () => {
       <div className="flex-1 overflow-hidden">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 h-full">
           <div className="bg-white rounded-2xl shadow-lg h-full flex flex-col">
+            {/* Guest Notice */}
+            {isGuest && !hasReachedGuestLimit && (
+              <div className="bg-blue-50 border-b border-blue-200 p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                      <User className="w-4 h-4 text-blue-600" weight="bold" />
+                    </div>
+                    <div>
+                      <p className="text-blue-900 font-medium">You're chatting as a guest</p>
+                      <p className="text-blue-700 text-sm">
+                        {GUEST_CHAT_LIMIT - guestChatCount} messages remaining. Sign up to continue unlimited chatting!
+                      </p>
+                    </div>
+                  </div>
+                  <Link
+                    to="/signup"
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+                  >
+                    Sign Up Free
+                  </Link>
+                </div>
+              </div>
+            )}
+
             {/* Messages Container */}
             <div className="flex-1 overflow-y-auto p-6 space-y-4">
               {messages.map((message) => (
@@ -452,7 +539,10 @@ const ChatPage: React.FC = () => {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input Area */}
+            {/* Input Area or Guest Limit Reached */}
+            {hasReachedGuestLimit ? (
+              <GuestLimitReached />
+            ) : (
             <div className="border-t border-gray-100 p-6">
               {/* API Error Notice */}
               {!selectedModel && (
@@ -474,14 +564,14 @@ const ChatPage: React.FC = () => {
                   placeholder="Type your message..."
                   rows={1}
                   maxLength={2000}
-                  disabled={isLoading || !selectedModel}
+                  disabled={isLoading || !selectedModel || hasReachedGuestLimit}
                   className="flex-1 resize-none rounded-xl border border-gray-200 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 p-4"
                 />
                 <button
                   onClick={handleSendMessage}
-                  disabled={!inputValue.trim() || isLoading || !selectedModel}
+                  disabled={!inputValue.trim() || isLoading || !selectedModel || hasReachedGuestLimit}
                   className={`p-3 rounded-xl font-medium transition-all duration-200 ${
-                    inputValue.trim() && !isLoading && selectedModel
+                    inputValue.trim() && !isLoading && selectedModel && !hasReachedGuestLimit
                       ? `bg-gradient-to-r ${modelConfig.color} text-white hover:shadow-lg transform hover:-translate-y-0.5`
                       : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   }`}
@@ -498,6 +588,7 @@ const ChatPage: React.FC = () => {
                 <span>{inputValue.length}/2000</span>
               </div>
             </div>
+            )}
           </div>
         </div>
       </div>
