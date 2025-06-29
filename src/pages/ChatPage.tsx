@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, Link, useLoaderData, useFetcher } from 'react-router';
+import { useNavigate, useLoaderData, useFetcher } from 'react-router';
 import ReactMarkdown from 'react-markdown';
+import { useAuth, isGuestUser } from '../hooks/useAuth';
 import { useModels, useSelectedModel } from '../context/ModelContext';
-import { isGuestUser } from '../hooks/useAuth';
 import { sendMessageToModel, getDisplayName, getProviderName, type ChatMessage } from '../lib/openrouter';
-import tapaIcon from '../assets/tapa-icon.png';
-import { ThemeToggle, MascotGuide } from '../components';
+import { Header, MascotGuide } from '../components';
 import type { ChatLoaderData } from '../routes/chat';
 import { 
   Brain, 
-  ArrowLeft, 
   PaperPlaneTilt, 
   User, 
   Robot,
@@ -20,6 +18,7 @@ import {
   Crown,
   Sparkle
 } from '@phosphor-icons/react';
+import { Link } from 'react-router';
 
 // Guest user chat limit
 const GUEST_CHAT_LIMIT = 5;
@@ -242,7 +241,8 @@ const GuestLimitReached: React.FC = () => (
 
 const ChatPage: React.FC = () => {
   const navigate = useNavigate();
-  const { user, profile } = useLoaderData() as ChatLoaderData;
+  const { user } = useAuth();
+  const { profile } = useLoaderData() as ChatLoaderData;
   const { availableModels, loading: modelsLoading, error: modelsError } = useModels();
   const { selectedModel, setSelectedModel } = useSelectedModel();
   const fetcher = useFetcher();
@@ -404,10 +404,13 @@ const ChatPage: React.FC = () => {
 
   if (modelsLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading AI models...</p>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        <Header variant="chat" showBackButton backTo="/dashboard" />
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading AI models...</p>
+          </div>
         </div>
       </div>
     );
@@ -416,19 +419,22 @@ const ChatPage: React.FC = () => {
   // Show error if models failed to load
   if (modelsError) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
-        <div className="text-center max-w-md">
-          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Brain className="w-8 h-8 text-red-600" />
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        <Header variant="chat" showBackButton backTo="/dashboard" />
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center max-w-md">
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Brain className="w-8 h-8 text-red-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Unable to Load Models</h2>
+            <p className="text-gray-600 mb-6">{modelsError}</p>
+            <button
+              onClick={() => navigate('/dashboard')}
+              className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-6 py-3 rounded-lg font-medium hover:shadow-lg transition-all duration-200"
+            >
+              Back to Dashboard
+            </button>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Unable to Load Models</h2>
-          <p className="text-gray-600 mb-6">{modelsError}</p>
-          <button
-            onClick={() => navigate('/dashboard')}
-            className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-6 py-3 rounded-lg font-medium hover:shadow-lg transition-all duration-200"
-          >
-            Back to Dashboard
-          </button>
         </div>
       </div>
     );
@@ -437,75 +443,68 @@ const ChatPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex flex-col">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-3 items-center py-4">
-            {/* Left: TAPA Logo */}
-            <div className="flex items-center justify-start">
-              <Link to="/" className="flex items-center space-x-2">
-                <img 
-                  src={tapaIcon} 
-                  alt="TAPA Logo" 
-                  className="w-8 h-8"
-                />
-                <span className="text-lg font-bold bg-gradient-to-r from-[#812dea] to-[#4ea6fd] bg-clip-text text-transparent">
-                  TAPA
-                </span>
-              </Link>
-            </div>
-
-            {/* Center: Model Selector */}
-            <div className="flex items-center justify-center">
-              <button
-                onClick={() => navigate('/dashboard')}
-                className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors mr-3"
-              >
-                <ArrowLeft className="w-5 h-5" />
-              </button>
-              <div className="flex items-center space-x-3">
-                <div className={`w-10 h-10 bg-gradient-to-r ${modelConfig.color} rounded-xl flex items-center justify-center`}>
-                  <Brain className="w-6 h-6 text-white" weight="bold" />
-                </div>
-                <div>
-                  <select
-                    value={selectedModel?.id || ''}
-                    onChange={handleModelChange}
-                    className="text-lg font-bold text-gray-900 bg-transparent border-none focus:outline-none focus:ring-0 cursor-pointer min-w-0"
-                  >
-                    {availableModels.map((model) => (
-                      <option key={model.id} value={model.id}>
-                        {getDisplayName(model)}
-                      </option>
-                    ))}
-                  </select>
-                  <p className="text-sm text-gray-600 pl-1">
-                    {selectedModel ? getProviderName(selectedModel) : 'AI Model'}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Right: Theme Toggle */}
-            <div className="flex items-center justify-end">
-              {isGuest && (
-                <div className="hidden sm:flex items-center space-x-2 text-sm">
-                  <span className="text-gray-600">Guest:</span>
-                  <span className={`font-medium ${hasReachedGuestLimit ? 'text-red-600' : 'text-blue-600'}`}>
-                    {guestChatCount}/{GUEST_CHAT_LIMIT}
-                  </span>
-                </div>
-              )}
-              <ThemeToggle />
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header variant="chat" showBackButton backTo="/dashboard" />
 
       {/* Chat Messages */}
       <div className="flex-1 overflow-hidden">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 h-full">
           <div className="bg-white rounded-2xl shadow-lg h-full flex flex-col">
-            {/* Guest Notice */}
+            {/* Model Selector Header */}
+            <div className="border-b border-gray-100 p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className={`w-10 h-10 bg-gradient-to-r ${modelConfig.color} rounded-xl flex items-center justify-center`}>
+                    <Brain className="w-6 h-6 text-white" weight="bold" />
+                  </div>
+                  <div>
+                    <select
+                      value={selectedModel?.id || ''}
+                      onChange={handleModelChange}
+                      className="text-lg font-bold text-gray-900 bg-transparent border-none focus:outline-none focus:ring-0 cursor-pointer min-w-0"
+                    >
+                      {availableModels.map((model) => (
+                        <option key={model.id} value={model.id}>
+                          {getDisplayName(model)}
+                        </option>
+                      ))}
+                    </select>
+                    <p className="text-sm text-gray-600">
+                      {selectedModel ? getProviderName(selectedModel) : 'AI Model'}
+                    </p>
+                  </div>
+                </div>
+                
+                {/* User Status Display */}
+                <div className="flex items-center space-x-3">
+                  {isGuest ? (
+                    <div className="flex items-center space-x-2 text-sm">
+                      <span className="text-gray-600">Guest:</span>
+                      <span className={`font-medium ${hasReachedGuestLimit ? 'text-red-600' : 'text-blue-600'}`}>
+                        {guestChatCount}/{GUEST_CHAT_LIMIT}
+                      </span>
+                    </div>
+                  ) : user && (
+                    <div className="flex items-center space-x-2 text-sm">
+                      <User className="w-4 h-4 text-gray-600" />
+                      <span className="text-gray-700">
+                        {profile?.full_name?.split(' ')[0] || user.email?.split('@')[0] || 'User'}
+                      </span>
+                      {profile?.subscription_status && (
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                          profile.subscription_status === 'premium' 
+                            ? 'bg-purple-100 text-purple-800'
+                            : 'bg-green-100 text-green-800'
+                        }`}>
+                          {profile.subscription_status}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Authentication Status Notice */}
             {isGuest && !hasReachedGuestLimit && (
               <div className="bg-blue-50 border-b border-blue-200 p-4">
                 <div className="flex items-center justify-between">

@@ -3,33 +3,24 @@ import { useAuth, isGuestUser } from '../hooks/useAuth';
 import { useUserProfile } from '../hooks/useDatabase';
 import { useModels } from '../context/ModelContext';
 import { initiateCreemCheckout } from '../lib/creem';
-import tapaIcon from '../assets/tapa-icon.png';
-import { Button } from '../components';
+import { Header, Button, MascotGuide } from '../components';
 import { 
   Brain, 
-  SignOut, 
   User, 
   Sparkle, 
   Crown, 
   ChatCircle
 } from '@phosphor-icons/react';
-import { Link, useNavigate } from 'react-router';
-import { MascotGuide } from '../components';
-
-
+import { useNavigate } from 'react-router';
 
 const DashboardPage: React.FC = () => {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const { profile, loading: profileLoading } = useUserProfile();
   const { availableModels, loading: modelsLoading, error: modelsError } = useModels();
   const [isMascotMinimized, setIsMascotMinimized] = useState(false);
   const [isUpgrading, setIsUpgrading] = useState(false);
   const navigate = useNavigate();
   const isGuest = user ? isGuestUser(user) : false;
-
-  const handleSignOut = async () => {
-    await signOut();
-  };
 
   const handleStartChatting = () => {
     navigate('/chat');
@@ -59,12 +50,15 @@ const DashboardPage: React.FC = () => {
 
   if (profileLoading || modelsLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">
-            {profileLoading ? 'Loading your dashboard...' : 'Loading AI models...'}
-          </p>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        <Header />
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">
+              {profileLoading ? 'Loading your dashboard...' : 'Loading AI models...'}
+            </p>
+          </div>
         </div>
       </div>
     );
@@ -73,63 +67,7 @@ const DashboardPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <Link to="/" className="flex items-center space-x-2">
-              <img 
-                src={tapaIcon} 
-                alt="TAPA Logo" 
-                className="w-10 h-10"
-              />
-              <span className="text-2xl font-bold bg-gradient-to-r from-[#812dea] to-[#4ea6fd] bg-clip-text text-transparent">
-                TAPA
-              </span>
-            </Link>
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <User className="w-5 h-5 text-gray-600" />
-                <span className="text-gray-700">
-                  {isGuest ? 'Guest' : (profile?.full_name || user?.email)}
-                </span>
-                {!isGuest && (
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                  profile?.subscription_status === 'premium' 
-                    ? 'bg-purple-100 text-purple-800'
-                    : 'bg-green-100 text-green-800'
-                }`}>
-                  {profile?.subscription_status || 'free'}
-                </span>
-                )}
-              </div>
-              {isGuest ? (
-                <div className="flex items-center space-x-2">
-                  <Link
-                    to="/login"
-                    className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
-                  >
-                    Sign In
-                  </Link>
-                  <Link
-                    to="/signup"
-                    className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-4 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-200"
-                  >
-                    Sign Up
-                  </Link>
-                </div>
-              ) : (
-              <button
-                onClick={handleSignOut}
-                className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                <SignOut className="w-5 h-5" />
-                <span>Sign Out</span>
-              </button>
-              )}
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -270,7 +208,7 @@ const DashboardPage: React.FC = () => {
                 )}
               </button>
             ) : (
-            <button 
+              <button 
               onClick={handleUpgradeToPremium}
               disabled={isUpgrading}
               className="bg-white text-[#812dea] px-8 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router';
-import tapaIcon from '../assets/tapa-icon.png';
+import { Header } from '../components';
 import { 
   Brain, 
   Sparkle, 
@@ -8,109 +8,14 @@ import {
   Shield, 
   ArrowRight,
   CheckCircle,
-  Star,
-  List,
-  X
+  Star
 } from '@phosphor-icons/react';
 
 const LandingPage: React.FC = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
-  const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-2">
-              <img 
-                src={tapaIcon} 
-                alt="TAPA Logo" 
-                className="w-10 h-10"
-              />
-              <span className="text-2xl font-bold bg-gradient-to-r from-[#812dea] to-[#4ea6fd] bg-clip-text text-transparent">
-                TAPA
-              </span>
-            </div>
-            
-            {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center space-x-8">
-              <a href="#features" className="text-gray-600 hover:text-gray-900 transition-colors">
-                Features
-              </a>
-              <a href="#how-it-works" className="text-gray-600 hover:text-gray-900 transition-colors">
-                How it Works
-              </a>
-              <a href="#pricing" className="text-gray-600 hover:text-gray-900 transition-colors">
-                Pricing
-              </a>
-              <Link 
-                to="/signup" 
-                className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-6 py-2 rounded-full hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 font-medium"
-              >
-                Get Started
-              </Link>
-            </nav>
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={toggleMobileMenu}
-              className="lg:hidden p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-              aria-label="Toggle mobile menu"
-            >
-              {isMobileMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <List className="w-6 h-6" />
-              )}
-            </button>
-          </div>
-
-          {/* Mobile Navigation Menu */}
-          {isMobileMenuOpen && (
-            <div className="lg:hidden border-t border-gray-100 py-4">
-              <nav className="flex flex-col space-y-4">
-                <a 
-                  href="#features" 
-                  onClick={closeMobileMenu}
-                  className="text-gray-600 hover:text-gray-900 transition-colors px-2 py-1"
-                >
-                  Features
-                </a>
-                <a 
-                  href="#how-it-works" 
-                  onClick={closeMobileMenu}
-                  className="text-gray-600 hover:text-gray-900 transition-colors px-2 py-1"
-                >
-                  How it Works
-                </a>
-                <a 
-                  href="#pricing" 
-                  onClick={closeMobileMenu}
-                  className="text-gray-600 hover:text-gray-900 transition-colors px-2 py-1"
-                >
-                  Pricing
-                </a>
-                <Link 
-                  to="/signup" 
-                  onClick={closeMobileMenu}
-                  className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-200 font-medium text-center"
-                >
-                  Get Started
-                </Link>
-              </nav>
-            </div>
-          )}
-        </div>
-      </header>
+      <Header />
 
       {/* Hero Section */}
       <section className="pt-20 pb-32 px-4 sm:px-6 lg:px-8">
@@ -464,7 +369,7 @@ const LandingPage: React.FC = () => {
             <div className="col-span-2">
               <div className="flex items-center space-x-2 mb-6">
                 <img 
-                  src={tapaIcon} 
+                  src="/src/assets/tapa-icon.png" 
                   alt="TAPA Logo" 
                   className="w-10 h-10"
                 />
