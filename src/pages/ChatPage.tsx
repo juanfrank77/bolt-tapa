@@ -405,7 +405,7 @@ const ChatPage: React.FC = () => {
   if (modelsLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-        <Header variant="chat" showBackButton backTo="/dashboard" />
+        <Header showBackButton backTo="/dashboard" />
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
@@ -485,10 +485,6 @@ const ChatPage: React.FC = () => {
                     </div>
                   ) : user && (
                     <div className="flex items-center space-x-2 text-sm">
-                      <User className="w-4 h-4 text-gray-600" />
-                      <span className="text-gray-700">
-                        {profile?.full_name?.split(' ')[0] || user.email?.split('@')[0] || 'User'}
-                      </span>
                       {profile?.subscription_status && (
                         <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
                           profile.subscription_status === 'premium' 

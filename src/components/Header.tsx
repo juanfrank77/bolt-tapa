@@ -95,52 +95,52 @@ const Header: React.FC<HeaderProps> = ({
     );
   }
 
-  if (variant === 'chat') {
-    return (
-      <header className={`bg-white/80 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50 ${className}`}>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-3 items-center py-4">
-            {/* Left: TAPA Logo */}
-            <div className="flex items-center justify-start">
-              <Link to="/" className="flex items-center space-x-2">
-                <img 
-                  src={tapaIcon} 
-                  alt="TAPA Logo" 
-                  className="w-8 h-8"
-                />
-                <span className="text-lg font-bold bg-gradient-to-r from-[#812dea] to-[#4ea6fd] bg-clip-text text-transparent">
-                  TAPA
-                </span>
-              </Link>
-            </div>
+  // if (variant === 'chat') {
+  //   return (
+  //     <header className={`bg-white/80 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50 ${className}`}>
+  //       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+  //         <div className="grid grid-cols-3 items-center py-4">
+  //           {/* Left: TAPA Logo */}
+  //           <div className="flex items-center justify-start">
+  //             <Link to="/" className="flex items-center space-x-2">
+  //               <img 
+  //                 src={tapaIcon} 
+  //                 alt="TAPA Logo" 
+  //                 className="w-8 h-8"
+  //               />
+  //               <span className="text-lg font-bold bg-gradient-to-r from-[#812dea] to-[#4ea6fd] bg-clip-text text-transparent">
+  //                 TAPA
+  //               </span>
+  //             </Link>
+  //           </div>
 
-            {/* Center: Back Button or Title */}
-            <div className="flex items-center justify-center">
-              {showBackButton && (
-                <Link
-                  to={backTo}
-                  className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg px-3 py-2 transition-colors"
-                >
-                  <ArrowLeft className="w-5 h-5" />
-                  <span className="hidden sm:inline">Back</span>
-                </Link>
-              )}
-            </div>
+  //           {/* Center: Back Button or Title */}
+  //           <div className="flex items-center justify-center">
+  //             {showBackButton && (
+  //               <Link
+  //                 to={backTo}
+  //                 className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg px-3 py-2 transition-colors"
+  //               >
+  //                 <ArrowLeft className="w-5 h-5" />
+  //                 <span className="hidden sm:inline">Back</span>
+  //               </Link>
+  //             )}
+  //           </div>
 
-            {/* Right: User Info and Theme Toggle */}
-            <div className="flex items-center justify-end space-x-2">
-              {isGuest && (
-                <div className="hidden sm:flex items-center space-x-2 text-sm">
-                  <span className="text-gray-600">Guest</span>
-                </div>
-              )}
-              <ThemeToggle />
-            </div>
-          </div>
-        </div>
-      </header>
-    );
-  }
+  //           {/* Right: User Info and Theme Toggle */}
+  //           <div className="flex items-center justify-end space-x-2">
+  //             {isGuest && (
+  //               <div className="hidden sm:flex items-center space-x-2 text-sm">
+  //                 <span className="text-gray-600">Guest</span>
+  //               </div>
+  //             )}
+  //             <ThemeToggle />
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </header>
+  //   );
+  // }
 
   // Default variant - full navigation header
   return (
@@ -191,7 +191,9 @@ const Header: React.FC<HeaderProps> = ({
                 <div className="flex items-center space-x-2">
                   <User className="w-5 h-5 text-gray-600" />
                   <span className="text-gray-700">
-                    {profile?.full_name || user?.email}
+                    {('user_metadata' in user && user.user_metadata?.full_name) 
+                          ? user.user_metadata.full_name.split(' ')[0] 
+                          : user.email}
                   </span>
                   {profile?.subscription_status && (
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
