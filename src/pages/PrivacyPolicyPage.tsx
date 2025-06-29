@@ -1,6 +1,7 @@
 import React from 'react';
 import { Header } from '../components';
 import tapaIcon from '../assets/tapa-icon.png';
+import { Shield } from '@phosphor-icons/react';
 
 const PrivacyPolicyPage: React.FC = () => {
   return (

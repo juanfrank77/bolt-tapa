@@ -310,6 +310,7 @@ const SignUpPage: React.FC = () => {
         </div>
       </div>
     </div>
+    </div>
   );
 };
 
