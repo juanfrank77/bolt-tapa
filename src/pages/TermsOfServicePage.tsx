@@ -1,6 +1,7 @@
 import React from 'react';
 import { Header } from '../components';
 import { FileText, Users, Warning, CheckCircle } from '@phosphor-icons/react';
+import tapaIcon from '../assets/tapa-icon.png';
 
 const TermsOfServicePage: React.FC = () => {
   return (

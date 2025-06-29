@@ -4,6 +4,7 @@ import { useUserProfile } from '../hooks/useDatabase';
 import { useModels } from '../context/ModelContext';
 import { initiateCreemCheckout } from '../lib/creem';
 import { Header, Button, MascotGuide } from '../components';
+import { Link } from 'react-router';
 import { 
   Brain, 
   User, 
