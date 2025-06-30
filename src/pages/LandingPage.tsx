@@ -10,8 +10,22 @@ import {
   CheckCircle,
   Star
 } from '@phosphor-icons/react';
+import { useAuth } from '../hooks/useAuth';
+import { useNavigate } from 'react-router';
+import { isGuestUser } from '../hooks/useAuth';
+
+
 
 const LandingPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+
+  const authOrDashboard = (url: string) => {
+    isGuestUser(user) ? navigate(url) : navigate('/dashboard');
+  }
+
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
@@ -21,10 +35,6 @@ const LandingPage: React.FC = () => {
       <section className="pt-20 pb-32 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
-            <div className="inline-flex items-center px-4 py-2 bg-blue-100 rounded-full text-blue-800 text-sm font-medium mb-8">
-              <Sparkle className="w-4 h-4 mr-2" weight="fill" />
-              Your AI Assistant is Here
-            </div>
             
             <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-8 leading-tight">
               Meet Your
@@ -42,13 +52,13 @@ const LandingPage: React.FC = () => {
             </p>
             
             <div className="flex flex-col gap-4 justify-center items-center">
-              <Link 
-                to="/signup"
+              <button 
+                onClick={() =>authOrDashboard('/signup')}
                 className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 flex items-center group"
               >
                 Start Your AI Journey
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" weight="bold" />
-              </Link>
+              </button>
               <Link 
                 to="/dashboard"
                 className="text-gray-600 hover:text-gray-900 px-8 py-4 rounded-full text-lg font-medium border-2 border-gray-200 hover:border-gray-300 transition-all duration-200"
@@ -215,12 +225,12 @@ const LandingPage: React.FC = () => {
                 </li>
               </ul>
               
-              <Link
-                to="/signup"
+              <button 
+                onClick={() =>authOrDashboard('/signup')}
                 className="w-full bg-gray-900 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-800 transition-colors text-center block"
               >
                 Get Started Free
-              </Link>
+              </button>
             </div>
 
             {/* Premium Plan */}
@@ -270,19 +280,16 @@ const LandingPage: React.FC = () => {
                 </li>
               </ul>
               
-              <Link
-                to="/signup"
+              <button
+                onClick={() =>authOrDashboard('/signup')}
                 className="w-full bg-white text-[#812dea] py-3 px-6 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 text-center block"
               >
-                Start Premium Trial
-              </Link>
+                Get Premium Models
+              </button>
             </div>
           </div>
           
           <div className="text-center mt-12">
-            <p className="text-gray-600 mb-4">
-              All plans include a 7-day free trial. No credit card required to start.
-            </p>
             <div className="flex flex-wrap justify-center items-center gap-8 text-sm text-gray-500">
               <div className="flex items-center">
                 <CheckCircle className="w-4 h-4 mr-2 text-green-500" weight="fill" />
@@ -308,40 +315,26 @@ const LandingPage: React.FC = () => {
             Ready to Explore AI?
           </h2>
           <p className="text-xl text-blue-100 mb-12 max-w-2xl mx-auto">
-            Join the AI revolution today. Start with a free trial and discover 
-            how TAPA can transform the way you interact with artificial intelligence.
+            Join the AI revolution today. 
+            Discover how TAPA can transform the way you interact with artificial intelligence.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link 
-              to="/signup"
+            <button 
+              onClick={() =>authOrDashboard('/signup')}
               className="bg-white text-[#812dea] px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 flex items-center group"
             >
               Start Your AI Journey
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" weight="bold" />
-            </Link>
-            <Link 
-              to="/login"
+            </button>
+            <button 
+              onClick={() =>authOrDashboard('/login')}
               className="text-white hover:text-purple-100 px-8 py-4 rounded-full text-lg font-medium border-2 border-white/30 hover:border-white/50 transition-all duration-200"
             >
               Already have an account?
-            </Link>
+            </button>
           </div>
           
-          <div className="mt-12 flex flex-wrap justify-center items-center gap-8 text-purple-100">
-            <div className="flex items-center">
-              <CheckCircle className="w-5 h-5 mr-2" weight="fill" />
-              <span>No credit card required</span>
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="w-5 h-5 mr-2" weight="fill" />
-              <span>No commitments</span>
-            </div>
-            <div className="flex items-center">
-              <CheckCircle className="w-5 h-5 mr-2" weight="fill" />
-              <span>Cancel anytime</span>
-            </div>
-          </div>
         </div>
       </section>
 
