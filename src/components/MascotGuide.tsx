@@ -46,11 +46,9 @@ const MASCOT_MESSAGES = [
 ];
 
 const QUICK_QUESTIONS = [
-  "How do I choose the right AI model?",
   "What's the difference between free and premium models?",
   "How do I start a conversation?",
-  "Can you explain what tokens are?",
-  "How do I upgrade my plan?"
+  "Can you explain what tokens are?"
 ];
 
 const MASCOT_RESPONSES: { [key: string]: string } = {  
@@ -71,12 +69,6 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({
   const [userInput, setUserInput] = useState('');
   const [showQuickQuestions, setShowQuickQuestions] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  /** Auto-scroll to bottom when new messages are added
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-  **/
 
   // Auto-play initial messages
   useEffect(() => {
