@@ -106,10 +106,10 @@ const PaymentSuccessPage: React.FC = () => {
                   </p>
                 </div>
                 <p className="text-gray-600 mb-6">
-                  Your subscription has been activated successfully. You can now access GPT-4o, Claude 3.5 Sonnet, and other premium models.
+                  Your subscription has been activated successfully. You can now access GPT-4o, Claude 3.7 Sonnet, and the other premium models.
                 </p>
                 <div className="flex items-center justify-center text-sm text-gray-500 mb-4">
-                  <span>Redirecting to dashboard in 3 seconds...</span>
+                  <span>Redirecting to your dashboard in 3 seconds...</span>
                 </div>
                 <button
                   onClick={() => navigate('/dashboard')}
@@ -126,7 +126,7 @@ const PaymentSuccessPage: React.FC = () => {
                 <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Warning className="w-8 h-8 text-red-600" weight="bold" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Payment Processing Error</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Payment Processing Error ❌</h2>
                 <p className="text-red-600 mb-6">{error}</p>
                 <div className="space-y-3">
                   <button
@@ -143,7 +143,7 @@ const PaymentSuccessPage: React.FC = () => {
                   </button>
                 </div>
                 <p className="text-xs text-gray-500 mt-4">
-                  If you continue to experience issues, please contact our support team.
+                  If you continue to experience issues, please contact support.
                 </p>
               </>
             )}
