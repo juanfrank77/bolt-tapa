@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Header } from '../components';
 import { FileText, Users, Warning, CheckCircle } from '@phosphor-icons/react';
 import tapaIcon from '../assets/tapa-icon.png';
 
 const TermsOfServicePage: React.FC = () => {
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
