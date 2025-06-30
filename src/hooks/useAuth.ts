@@ -24,11 +24,29 @@ export const useAuth = () => {
   useEffect(() => {
     // Get initial session
     const getInitialSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
-      if (session?.user) {
-        setUser(session.user)
-      } else {
-        // Set guest user if no authenticated session
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession()
+        
+        if (error) {
+          // Clear any stale session data if there's an error
+          await supabase.auth.signOut()
+          throw error
+        }
+        
+        if (session?.user) {
+          setUser(session.user)
+        } else {
+          // Set guest user if no authenticated session
+          const guestUser: GuestUser = {
+            id: 'guest',
+            email: 'guest@tapa.ai',
+            isGuest: true
+          }
+          setUser(guestUser)
+        }
+      } catch (error) {
+        // If there's any error (including refresh token issues), clear session and set guest user
+        await supabase.auth.signOut()
         const guestUser: GuestUser = {
           id: 'guest',
           email: 'guest@tapa.ai',
@@ -44,10 +62,21 @@ export const useAuth = () => {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        if (session?.user) {
-          setUser(session.user)
-        } else {
-          // Set guest user if no authenticated session
+        try {
+          if (session?.user) {
+            setUser(session.user)
+          } else {
+            // Set guest user if no authenticated session
+            const guestUser: GuestUser = {
+              id: 'guest',
+              email: 'guest@tapa.ai',
+              isGuest: true
+            }
+            setUser(guestUser)
+          }
+        } catch (error) {
+          // Handle any errors during auth state changes
+          await supabase.auth.signOut()
           const guestUser: GuestUser = {
             id: 'guest',
             email: 'guest@tapa.ai',
