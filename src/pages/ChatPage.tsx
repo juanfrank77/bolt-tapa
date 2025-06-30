@@ -307,6 +307,41 @@ const ChatPage: React.FC = () => {
     setGuestChatCount(0);
   }, [user]);
 
+  // Sort available models to prioritize Llama 4 Scout and Gemma 3 14B
+  const sortedAvailableModels = React.useMemo(() => {
+    const priorityModels = ['llama-4-scout', 'gemma-3-14b'];
+    
+    return [...availableModels].sort((a, b) => {
+      const aIsPriority = priorityModels.some(priority => 
+        a.id.toLowerCase().includes(priority) || 
+        a.name.toLowerCase().includes(priority.replace('-', ' '))
+      );
+      const bIsPriority = priorityModels.some(priority => 
+        b.id.toLowerCase().includes(priority) || 
+        b.name.toLowerCase().includes(priority.replace('-', ' '))
+      );
+      
+      if (aIsPriority && !bIsPriority) return -1;
+      if (!aIsPriority && bIsPriority) return 1;
+      
+      // If both are priority models, maintain their relative order based on priority array
+      if (aIsPriority && bIsPriority) {
+        const aIndex = priorityModels.findIndex(priority => 
+          a.id.toLowerCase().includes(priority) || 
+          a.name.toLowerCase().includes(priority.replace('-', ' '))
+        );
+        const bIndex = priorityModels.findIndex(priority => 
+          b.id.toLowerCase().includes(priority) || 
+          b.name.toLowerCase().includes(priority.replace('-', ' '))
+        );
+        return aIndex - bIndex;
+      }
+      
+      // For non-priority models, maintain original order
+      return 0;
+    });
+  }, [availableModels]);
+
   // Convert our messages to OpenRouter format
   const convertToOpenRouterMessages = (messages: Message[]): ChatMessage[] => {
     return messages
@@ -391,7 +426,7 @@ const ChatPage: React.FC = () => {
 
   const handleModelChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const modelId = e.target.value;
-    const model = availableModels.find(m => m.id === modelId);
+    const model = sortedAvailableModels.find(m => m.id === modelId);
     setSelectedModel(model || null);
   };
 
@@ -462,7 +497,7 @@ const ChatPage: React.FC = () => {
                       onChange={handleModelChange}
                       className="text-lg font-bold text-gray-900 bg-transparent border-none focus:outline-none focus:ring-0 cursor-pointer min-w-0"
                     >
-                      {availableModels.map((model) => (
+                      {sortedAvailableModels.map((model) => (
                         <option key={model.id} value={model.id}>
                           {getDisplayName(model)}
                         </option>
