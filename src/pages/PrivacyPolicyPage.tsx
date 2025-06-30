@@ -21,10 +21,10 @@ const PrivacyPolicyPage: React.FC = () => {
               Privacy Policy
             </h1>
             <p className="text-xl text-gray-600">
-              Your privacy is important to us. This policy explains how we collect, use, and protect your information.
+              Your privacy is a big deal to us. This policy explains how we collect, use, and protect your information.
             </p>
             <div className="text-sm text-gray-500 mt-4">
-              Last updated: January 2025
+              Last updated: June 2025
             </div>
           </div>
 
@@ -37,21 +37,31 @@ const PrivacyPolicyPage: React.FC = () => {
               </div>
               <p className="text-gray-700 leading-relaxed">
                 We collect information you provide directly to us, such as when you create an account, 
-                use our AI chat services, or contact us for support. This may include your name, email 
-                address, and conversation history with our AI models.
+                use our AI chat service, or contact us for support. This may include your name, email 
+                address, and conversation history with the AI models.
               </p>
             </section>
 
             <section className="mb-8">
               <div className="flex items-center mb-4">
-                <Database className="w-6 h-6 text-purple-600 mr-3" weight="bold" />
-                <h2 className="text-2xl font-bold text-gray-900 mb-0">How We Use Your Information</h2>
+                <Lock className="w-6 h-6 text-red-600 mr-3" weight="bold" />
+                <h2 className="text-2xl font-bold text-gray-900 mb-0">How We Secure Your Data</h2>
               </div>
+              <p className="text-gray-700 leading-relaxed">
+                All data is encrypted in transit when sent from our servers to your browser. 
+                We make a great effort to secure your data at rest. Also, the database backups are encrypted.
+                We implement appropriate technical security measures to protect your personal information 
+                against unauthorized access, alteration, disclosure, or destruction. 
+              </p>
+            </section>
+            
+            <section className="mb-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-0">How We Use Your Information</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
                 We use the information we collect to:
               </p>
               <ul className="list-disc list-inside text-gray-700 space-y-2">
-                <li>Provide, maintain, and improve our AI chat services</li>
+                <li>Provide, maintain, and improve our AI chat service</li>
                 <li>Process transactions and send related information</li>
                 <li>Send technical notices, updates, and support messages</li>
                 <li>Respond to your comments, questions, and customer service requests</li>
@@ -60,42 +70,42 @@ const PrivacyPolicyPage: React.FC = () => {
             </section>
 
             <section className="mb-8">
-              <div className="flex items-center mb-4">
-                <Lock className="w-6 h-6 text-red-600 mr-3" weight="bold" />
-                <h2 className="text-2xl font-bold text-gray-900 mb-0">Data Security</h2>
-              </div>
-              <p className="text-gray-700 leading-relaxed">
-                We implement appropriate technical and organizational security measures to protect your 
-                personal information against unauthorized access, alteration, disclosure, or destruction. 
-                All data is encrypted in transit and at rest using industry-standard encryption protocols.
-              </p>
-            </section>
-
-            <section className="mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Information Sharing</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Information Access</h2>
               <p className="text-gray-700 leading-relaxed">
                 We do not sell, trade, or otherwise transfer your personal information to third parties 
-                without your consent, except as described in this policy. We may share your information 
-                with trusted service providers who assist us in operating our platform, conducting our 
-                business, or serving our users.
+                without your consent, except as described in this policy.
+                We use some third-party subprocessors to help run our application and provide you the service.
+                If at any point we need to access your content to help you with a support case, we will ask 
+                for your consent before proceeding.
               </p>
             </section>
 
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Your Rights</h2>
               <p className="text-gray-700 leading-relaxed mb-4">
-                You have the right to:
+                With respect to your data, you have the right to:
               </p>
               <ul className="list-disc list-inside text-gray-700 space-y-2">
+                <li>Know what personal information is collected, used, or shared</li>
                 <li>Access and update your personal information</li>
-                <li>Request deletion of your personal data</li>
-                <li>Opt out of certain communications from us</li>
+                <li>Request deletion of your personal data, subject to certain limitations under applicable law</li>
+                <li>Request restriction of how and why your personal information is used or processed</li>
+                <li>Opt out of certain communications from us by email</li>
                 <li>Request a copy of your data in a portable format</li>
               </ul>
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Contact Us</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Applicable Changes</h2>
+              <p className="text-gray-700 leading-relaxed">
+                We may update this policy as needed to comply with relevant regulations and reflect any new practices.
+                Whenever we make a significant change to these policies, we will refresh the date at the top of this page 
+                and take any other appropriate steps to notify you accordingly.
+              </p>
+            </section>
+
+            <section className="mb-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Quesions</h2>
               <p className="text-gray-700 leading-relaxed">
                 If you have any questions about this Privacy Policy, please contact us at{' '}
                 <a 
@@ -107,12 +117,6 @@ const PrivacyPolicyPage: React.FC = () => {
               </p>
             </section>
 
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-8">
-              <p className="text-blue-800 text-sm">
-                <strong>Note:</strong> This is a placeholder privacy policy. Please consult with legal 
-                professionals to ensure compliance with applicable privacy laws and regulations in your jurisdiction.
-              </p>
-            </div>
           </div>
         </div>
       </main>
