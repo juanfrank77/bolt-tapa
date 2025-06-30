@@ -20,6 +20,7 @@ const DashboardPage: React.FC = () => {
   const { availableModels, loading: modelsLoading, error: modelsError } = useModels();
   const [isMascotMinimized, setIsMascotMinimized] = useState(false);
   const [isUpgrading, setIsUpgrading] = useState(false);
+  const [upgradeError, setUpgradeError] = useState<string | null>(null);
   const navigate = useNavigate();
   const isGuest = user ? isGuestUser(user) : false;
 
@@ -28,6 +29,8 @@ const DashboardPage: React.FC = () => {
   };
 
   const handleUpgradeToPremium = async () => {
+    setUpgradeError(null);
+    
     if (isGuest) {
       navigate('/signup');
       return;
@@ -42,6 +45,19 @@ const DashboardPage: React.FC = () => {
       window.location.href = checkoutUrl;
     } catch (error) {
       console.error('Failed to initiate checkout:', error);
+      
+      // Set user-friendly error message based on error type
+      if (error instanceof Error) {
+        if (error.message.includes('API request failed')) {
+          setUpgradeError('Unable to connect to payment service. Please check your internet connection and try again.');
+        } else if (error.message.includes('No checkout URL')) {
+          setUpgradeError('Payment service is temporarily unavailable. Please try again in a few minutes.');
+        } else {
+          setUpgradeError('Something went wrong while setting up your upgrade. Please try again or contact support if the issue persists.');
+        }
+      } else {
+        setUpgradeError('An unexpected error occurred. Please try again or contact support if the issue persists.');
+      }
     } finally {
       setIsUpgrading(false);
     }
@@ -181,6 +197,24 @@ const DashboardPage: React.FC = () => {
         {/* Upgrade CTA for Free Users */}
         {isGuest || profile?.subscription_status === 'free' ? (
           <div className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] rounded-2xl p-8 text-white text-center">
+            {/* Error Message */}
+            {upgradeError && (
+              <div className="bg-red-500/20 border border-red-300/30 rounded-lg p-4 mb-6">
+                <div className="flex items-center justify-center space-x-2">
+                  <svg className="w-5 h-5 text-red-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p className="text-red-100 text-sm font-medium">{upgradeError}</p>
+                </div>
+                <button
+                  onClick={() => setUpgradeError(null)}
+                  className="mt-2 text-red-200 hover:text-white text-xs underline"
+                >
+                  Dismiss
+                </button>
+              </div>
+            )}
+            
             <Crown className="w-12 h-12 mx-auto mb-4" weight="bold" />
             <h3 className="text-2xl font-bold mb-4">
               {isGuest ? 'Sign Up to Unlock Premium' : 'Upgrade to Premium'}
@@ -195,7 +229,7 @@ const DashboardPage: React.FC = () => {
               <button
                 onClick={handleUpgradeToPremium}
                 disabled={isUpgrading}
-                className="bg-white text-[#812dea] px-8 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                className="bg-white text-[#812dea] px-8 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:shadow-none"
               >
                 {isUpgrading ? (
                   <div className="flex items-center">
@@ -210,7 +244,7 @@ const DashboardPage: React.FC = () => {
               <button 
               onClick={handleUpgradeToPremium}
               disabled={isUpgrading}
-              className="bg-white text-[#812dea] px-8 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              className="bg-white text-[#812dea] px-8 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:hover:shadow-none"
             >
               {isUpgrading ? (
                 <div className="flex items-center">
