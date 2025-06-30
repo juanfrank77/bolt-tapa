@@ -152,7 +152,7 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 bg-white rounded-2xl shadow-xl border border-gray-200 max-w-md w-full max-h-[600px] transition-all duration-300 ease-out opacity-0 animate-fade-in-up">
+    <div className="fixed bottom-6 right-6 z-50 bg-white rounded-2xl shadow-xl border border-gray-200 max-w-md w-full max-h-[600px] transition-all duration-300 ease-out animate-fade-in-up">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-gray-100 bg-gradient-to-r from-[#812dea] to-[#4ea6fd] rounded-t-2xl">
         <div className="flex items-center space-x-3">
@@ -181,7 +181,7 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4" style={{ height: '320px' }}>
         {messages.map((message) => (
-          <div key={message.id} className={`flex gap-3 ${message.isUser ? 'flex-row-reverse' : ''} opacity-0 animate-fade-in-up`}>
+          <div key={message.id} className={`flex gap-3 ${message.isUser ? 'flex-row-reverse' : ''} animate-fade-in-up`}>
             {!message.isUser && (
               <img 
                 src={tapaMascot} 
@@ -208,7 +208,7 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({
 
         {/* Quick Questions */}
         {showQuickQuestions && messages.length > 0 && (
-          <div className="space-y-2 opacity-0 animate-fade-in-up animate-delay-300">
+          <div className="space-y-2 animate-fade-in-up animate-delay-300">
             <div className="flex items-center gap-2 text-sm text-gray-600">
               <Sparkle className="w-4 h-4" weight="fill" />
               <span>Quick questions you can ask:</span>

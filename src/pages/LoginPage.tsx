@@ -36,13 +36,13 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 opacity-0 animate-fade-in">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
       <Header variant="minimal" />
 
       {/* Main Content */}
       <div className="flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
-        <div className="max-w-md w-full space-y-8 opacity-0 animate-fade-in-up">
+        <div className="max-w-md w-full space-y-8 animate-fade-in-up">
           {/* Header */}
           <div className="text-center">
             <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome back!</h2>
@@ -53,7 +53,7 @@ const LoginPage: React.FC = () => {
           <div className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-shadow duration-300">
             <form onSubmit={handleLogin} className="space-y-6">
               {error && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4 opacity-0 animate-fade-in">
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4 animate-fade-in">
                   <p className="text-red-600 text-sm">{error}</p>
                 </div>
               )}

@@ -180,7 +180,7 @@ const ChatMessage: React.FC<{ message: Message; modelConfig: any }> = ({ message
               <ThumbsDown className="w-4 h-4" />
             </button>
             {copied && (
-              <span className="text-xs text-green-600 font-medium opacity-0 animate-fade-in">Copied!</span>
+              <span className="text-xs text-green-600 font-medium animate-fade-in">Copied!</span>
             )}
           </div>
         )}
@@ -195,7 +195,7 @@ const ChatMessage: React.FC<{ message: Message; modelConfig: any }> = ({ message
 };
 
 const TypingIndicator: React.FC<{ modelConfig: any }> = ({ modelConfig }) => (
-  <div className="flex gap-4 mb-6 opacity-0 animate-fade-in-up">
+  <div className="flex gap-4 mb-6 animate-fade-in-up">
     <div className={`w-10 h-10 rounded-full flex items-center justify-center ${modelConfig.avatar}`}>
       <Robot className="w-5 h-5 text-white" weight="bold" />
     </div>
@@ -210,7 +210,7 @@ const TypingIndicator: React.FC<{ modelConfig: any }> = ({ modelConfig }) => (
 );
 
 const GuestLimitReached: React.FC = () => (
-  <div className="border-t border-gray-100 p-6 opacity-0 animate-fade-in-up">
+  <div className="border-t border-gray-100 p-6 animate-fade-in-up">
     <div className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] rounded-2xl p-6 text-white text-center">
       <Crown className="w-12 h-12 mx-auto mb-4" weight="bold" />
       <h3 className="text-xl font-bold mb-2">You've reached your guest limit!</h3>
@@ -441,13 +441,13 @@ const ChatPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex flex-col opacity-0 animate-fade-in">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex flex-col">
       {/* Header */}
       <Header variant="chat" showBackButton backTo="/dashboard" />
 
       {/* Chat Messages */}
       <div className="flex-1 flex flex-col">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex flex-col">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex flex-col animate-fade-in">
           <div className="bg-white rounded-2xl shadow-lg py-6 flex-1 flex flex-col">
             {/* Model Selector Header */}
             <div className="border-b border-gray-100 p-4">
@@ -526,9 +526,9 @@ const ChatPage: React.FC = () => {
             )}
 
             {/* Messages Container */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4 opacity-0 animate-fade-in animate-delay-200">
+            <div className="flex-1 overflow-y-auto p-6 space-y-4 animate-fade-in animate-delay-200">
               {messages.map((message) => (
-                <div key={message.id} className="opacity-0 animate-fade-in-up" style={{ animationDelay: `${Math.min(messages.indexOf(message) * 0.1, 1)}s` }}>
+                <div key={message.id} className="animate-fade-in-up" style={{ animationDelay: `${Math.min(messages.indexOf(message) * 0.1, 1)}s` }}>
                   <ChatMessage message={message} modelConfig={modelConfig} />
                 </div>
               ))}
@@ -543,7 +543,7 @@ const ChatPage: React.FC = () => {
             <div className="border-t border-gray-100 p-6">
               {/* API Error Notice */}
               {!selectedModel && (
-                <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg opacity-0 animate-fade-in-up">
+                <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg animate-fade-in-up">
                   <div className="flex items-center">
                     <Warning className="w-5 h-5 text-yellow-600 mr-2" />
                     <p className="text-yellow-800 text-sm">

@@ -27,12 +27,12 @@ const LandingPage: React.FC = () => {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 opacity-0 animate-fade-in">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
       <Header />
 
       {/* Hero Section */}
-      <section className="pt-20 pb-32 px-4 sm:px-6 lg:px-8 opacity-0 animate-fade-in-up">
+      <section className="pt-20 pb-32 px-4 sm:px-6 lg:px-8 animate-fade-in-up">
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
             
@@ -82,7 +82,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-24 bg-white opacity-0 animate-fade-in-up animate-delay-200">
+      <section id="features" className="py-24 bg-white animate-fade-in-up animate-delay-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
@@ -131,7 +131,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* How It Works Section */}
-      <section id="how-it-works" className="py-24 bg-gray-50 opacity-0 animate-fade-in-up animate-delay-300">
+      <section id="how-it-works" className="py-24 bg-gray-50 animate-fade-in-up animate-delay-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
@@ -180,7 +180,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-24 bg-white opacity-0 animate-fade-in-up animate-delay-400">
+      <section id="pricing" className="py-24 bg-white animate-fade-in-up animate-delay-400">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
@@ -309,7 +309,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-[#812dea] to-[#4ea6fd] opacity-0 animate-fade-in-up animate-delay-500">
+      <section className="py-24 bg-gradient-to-r from-[#812dea] to-[#4ea6fd] animate-fade-in-up animate-delay-500">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Ready to Explore AI?

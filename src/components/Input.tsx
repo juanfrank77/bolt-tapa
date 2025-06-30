@@ -73,7 +73,7 @@ const Input: React.FC<InputProps> = ({
       </div>
 
       {error && (
-        <p id={errorId} className="mt-1 text-sm text-red-600 opacity-0 animate-fade-in">
+        <p id={errorId} className="mt-1 text-sm text-red-600 animate-fade-in">
           {error}
         </p>
       )}
