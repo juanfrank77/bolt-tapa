@@ -35,7 +35,7 @@ const MASCOT_MESSAGES = [
   },
   {
     id: '3',
-    content: "You can choose from various AI models above - each one has unique strengths! Free models like GPT-3.5 and Claude Haiku are perfect for getting started.",
+    content: "You can choose from various AI models above - each one has unique strengths! Free models like Gemma 3 and Llama 4 Scout are perfect for getting started.",
     timestamp: new Date(Date.now() - 3000),
   },
   {
@@ -53,16 +53,12 @@ const QUICK_QUESTIONS = [
   "How do I upgrade my plan?"
 ];
 
-const MASCOT_RESPONSES: { [key: string]: string } = {
-  "How do I choose the right AI model?": "Great question! 🤔 Each AI model has different strengths:\n\n• **GPT-3.5 & Claude Haiku** (Free) - Perfect for everyday tasks, quick questions, and learning\n• **GPT-4 & Claude Sonnet** (Premium) - Better for complex reasoning, detailed analysis, and creative work\n• **Enterprise models** - Advanced features for professional use\n\nStart with free models to get comfortable, then upgrade when you need more power!",
-  
+const MASCOT_RESPONSES: { [key: string]: string } = {  
   "What's the difference between free and premium models?": "Excellent question! 💡 Here's the breakdown:\n\n**Free Models:**\n• Fast responses\n• Great for basic tasks\n• Perfect for learning AI\n• No cost!\n\n**Premium Models:**\n• More sophisticated reasoning\n• Better at complex tasks\n• Longer context memory\n• Enhanced creativity\n\nThink of it like upgrading from a bicycle to a sports car - both get you there, but one has more power! 🚗",
   
-  "How do I start a conversation?": "Super easy! 🚀 Just follow these steps:\n\n1. **Choose a model** from the cards above\n2. **Click 'Start Chatting'** on any available model\n3. **Type your message** in the chat box\n4. **Press Enter** to send\n\nThat's it! The AI will respond and you can have a natural conversation. Try asking about anything - from homework help to creative writing! ✨",
+  "How do I start a conversation?": "Super easy! 🚀 Just follow these steps:\n\n1. **Click 'Start Chatting'** on the button you'll find on the dashboard\n2. **Type your message** in the chat box\n4. **Press Enter** to send\n\nThat's it! The AI will respond and you can have a natural conversation. Try asking about anything - from help with your work to creative writing! ✨",
   
   "Can you explain what tokens are?": "Sure thing! 🎯 Tokens are like the 'words' that AI models understand:\n\n• **1 token ≈ 0.75 words** in English\n• **'Hello world'** = about 2 tokens\n• **Longer messages** = more tokens\n\nWhy does this matter? Some models have token limits for conversations, and premium services might charge based on tokens used. But don't worry - for normal chatting, you rarely need to think about this! 📊",
-  
-  "How do I upgrade my plan?": "Ready to unlock more power? 🔓 Here's how:\n\n1. **Click your profile** in the top right\n2. **Select 'Upgrade Plan'** from the menu\n3. **Choose Premium or Enterprise** based on your needs\n4. **Complete the payment** process\n\nPremium gives you access to GPT-4, Claude Sonnet, and other advanced models. Enterprise includes everything plus priority support and custom features! 💎"
 };
 
 export const MascotGuide: React.FC<MascotGuideProps> = ({ 
@@ -76,10 +72,11 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({
   const [showQuickQuestions, setShowQuickQuestions] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to bottom when new messages are added
+  /** Auto-scroll to bottom when new messages are added
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+  **/
 
   // Auto-play initial messages
   useEffect(() => {
@@ -117,7 +114,7 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({
     // Add mascot response
     setTimeout(() => {
       const response = MASCOT_RESPONSES[content] || 
-        "That's a great question! 🤔 While I have responses for common questions, I'm still learning. Try asking about choosing AI models, understanding plans, or how to get started with conversations!";
+        "That's a great question! 🤔 While I have responses for common questions, I'm still learning. Try asking about choosing AI models, understanding tokens, or how to get started with conversations!";
       
       const mascotResponse: MascotMessage = {
         id: `mascot-${Date.now()}`,
