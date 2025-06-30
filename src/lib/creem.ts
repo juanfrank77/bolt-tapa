@@ -19,7 +19,8 @@ export async function initiateCreemCheckout(product_id: string): Promise<string>
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        product_id
+        product_id,
+        success_url: "https://tapachat.com/dashboard"
       })
     });
 
