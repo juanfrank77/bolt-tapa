@@ -78,10 +78,10 @@ const TermsOfServicePage: React.FC = () => {
               <p className="text-gray-700 leading-relaxed">
                 Some features of our service require a paid subscription. Subscription fees are billed 
                 in advance on a monthly or annual basis and are non-refundable.
-                <br>
+                <br />
                 If you are using a free plan of service, it is really free. We do not ask you for your 
                 credit card information and we do not sell your data.
-                <br>
+                <br />
                 If you are upgrading from a free plan to a paid plan, we will charge your card immediately 
                 and your billing cycle starts on the day of the upgrade.
               </p>
@@ -92,10 +92,10 @@ const TermsOfServicePage: React.FC = () => {
               <p className="text-gray-700 leading-relaxed">
                 You may cancel your subscription at any time, and cancellation will take effect at the end of 
                 your current billing period.
-                <br>
+                <br />
                 All of your content and services will be inaccessible immediately upon account cancellation. 
                 Within 30 days, all content will be permanently deleted from active systems and logs.
-                <br>
+                <br />
                 We have the right to terminate or suspend your account and refuse access to the service
                 for any reason whatsoever at any time. Under our sole discretion we reserve the right to
                 provide access to the service for any reason including, but not limited to, a breach of
@@ -110,14 +110,14 @@ const TermsOfServicePage: React.FC = () => {
                 The service and its original content, features, and functionality are and will remain the exclusive 
                 property of TAPA and its licensors. You obtain no ownership rights to the service as a result of 
                 your use of it.
-                <br>
+                <br />
                 We do not pre-screen content, but we reserve the right in our sole discretion to refuse 
                 or remove any content that is available via the service.
-                <br>
+                <br />
                 You give us a limited license to use the content posted by you to provide you with the service, 
                 but we claim no ownership rights over those materials. All materials you submit to the service 
                 remain yours.
-                <br>
+                <br />
                 You may not reproduce, duplicate, distribute, exploit any part of the service, or create 
                 derivative works from our content without express written permission.
               </p>
