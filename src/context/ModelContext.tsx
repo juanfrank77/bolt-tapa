@@ -95,11 +95,24 @@ export const ModelProvider: React.FC<ModelProviderProps> = ({ children }) => {
       setPremiumModels(premium);
       setCategorizedModels(categorized);
       
-      // If no model is selected and we have available models, select the first one
+      // If no model is selected and we have available models, prioritize Llama 4 Scout
       if (!selectedModel && models.length > 0) {
-        const firstAvailable = userSubscription === 'premium' ? models[0] : free[0];
-        if (firstAvailable) {
-          setSelectedModel(firstAvailable);
+        const availableForUser = userSubscription === 'premium' ? models : free;
+        
+        // Try to find Llama 4 Scout first
+        const llamaScout = availableForUser.find(model => 
+          model.id.toLowerCase().includes('llama-4-scout') || 
+          model.name.toLowerCase().includes('llama 4 scout')
+        );
+        
+        if (llamaScout) {
+          setSelectedModel(llamaScout);
+        } else {
+          // Fallback to first available model
+          const firstAvailable = availableForUser[0];
+          if (firstAvailable) {
+            setSelectedModel(firstAvailable);
+          }
         }
       }
       
@@ -120,9 +133,19 @@ export const ModelProvider: React.FC<ModelProviderProps> = ({ children }) => {
   // Update selected model when subscription changes
   useEffect(() => {
     if (selectedModel && !isModelAvailable(selectedModel)) {
-      // Current model is no longer available, select first available model
-      const firstAvailable = availableModels[0];
-      setSelectedModel(firstAvailable || null);
+      // Current model is no longer available, prioritize Llama 4 Scout
+      const llamaScout = availableModels.find(model => 
+        model.id.toLowerCase().includes('llama-4-scout') || 
+        model.name.toLowerCase().includes('llama 4 scout')
+      );
+      
+      if (llamaScout) {
+        setSelectedModel(llamaScout);
+      } else {
+        // Fallback to first available model
+        const firstAvailable = availableModels[0];
+        setSelectedModel(firstAvailable || null);
+      }
     }
   }, [selectedModel, availableModels, isModelAvailable]);
 
