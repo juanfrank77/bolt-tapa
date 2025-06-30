@@ -12,7 +12,7 @@ export interface CreemCheckoutResponse {
  */
 export async function initiateCreemCheckout(product_id: string): Promise<string> {
   try {
-    const response = await fetch('https://test-api.creem.io/v1/checkouts', {
+    const response = await fetch('/api/creem/v1/checkouts', {
       method: 'POST',
       headers: {
         'x-api-key': CREEM_API_KEY,
