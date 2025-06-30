@@ -20,7 +20,7 @@ export async function initiateCreemCheckout(product_id: string): Promise<string>
       },
       body: JSON.stringify({
         product_id,
-        success_url: "https://tapachat.com/dashboard"
+        success_url: "https://tapachat.com/payment-success"
       })
     });
 
