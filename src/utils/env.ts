@@ -16,6 +16,3 @@ export const SUPABASE_ANON_KEY = getEnvVar('VITE_SUPABASE_ANON_KEY')
 
 // Openrouter environment variable
 export const OPENROUTER_API_KEY = getEnvVar('VITE_OPENROUTER_API_KEY')
-
-// Creem environment variable
-export const CREEM_API_KEY = getEnvVar('VITE_CREEM_API_KEY')

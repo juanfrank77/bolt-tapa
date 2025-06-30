@@ -6,13 +6,6 @@ export default defineConfig({
   plugins: [
     react()
   ],
-  server: {
-    proxy: {
-      '/api/creem': {
-        target: 'https://test-api.creem.io',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api\/creem/, '')
-      }
-    }
-  }
+  // Remove the proxy configuration since we're now using Supabase Edge Functions
+  // The proxy was only for development and doesn't work in production
 });

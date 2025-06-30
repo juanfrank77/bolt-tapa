@@ -1,4 +1,4 @@
-import { CREEM_API_KEY } from '../utils/env';
+import { SUPABASE_URL } from '../utils/env';
 
 export interface CreemCheckoutResponse {
   checkout_url: string;
@@ -12,26 +12,29 @@ export interface CreemCheckoutResponse {
  */
 export async function initiateCreemCheckout(product_id: string): Promise<string> {
   try {
-    const response = await fetch('/api/creem/v1/checkouts', {
+    // Use the Supabase Edge Function instead of direct API call
+    const response = await fetch(`${SUPABASE_URL}/functions/v1/creem-checkout`, {
       method: 'POST',
       headers: {
-        'x-api-key': CREEM_API_KEY,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        product_id,
-        success_url: "https://tapachat.com/payment-success"
+        product_id
       })
     });
 
     if (!response.ok) {
-      throw new Error(`Creem API request failed: ${response.status} ${response.statusText}`);
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(
+        errorData.error || 
+        `Checkout request failed: ${response.status} ${response.statusText}`
+      );
     }
 
     const data: CreemCheckoutResponse = await response.json();
     
     if (!data.checkout_url) {
-      throw new Error('No checkout URL received from Creem API');
+      throw new Error('No checkout URL received from payment service');
     }
 
     return data.checkout_url;
