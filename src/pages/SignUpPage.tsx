@@ -85,13 +85,13 @@ const SignUpPage: React.FC = () => {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 opacity-0 animate-fade-in">
         <Header variant="minimal" />
         <div className="flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
           <div className="max-w-md w-full text-center">
-            <div className="bg-white rounded-2xl shadow-xl p-8">
+            <div className="bg-white rounded-2xl shadow-xl p-8 opacity-0 animate-fade-in-up">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center opacity-0 animate-bounce-in animate-delay-200">
                   <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
@@ -110,13 +110,13 @@ const SignUpPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 opacity-0 animate-fade-in">
       {/* Header */}
       <Header variant="minimal" />
 
       {/* Main Content */}
       <div className="flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
-        <div className="max-w-md w-full space-y-8">
+        <div className="max-w-md w-full space-y-8 opacity-0 animate-fade-in-up">
           {/* Header */}
           <div className="text-center">
             <h2 className="text-3xl font-bold text-gray-900 mb-2">Create your account</h2>
@@ -124,10 +124,10 @@ const SignUpPage: React.FC = () => {
           </div>
 
           {/* Sign Up Form */}
-          <div className="bg-white rounded-2xl shadow-xl p-8">
+          <div className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-shadow duration-300">
             <form onSubmit={handleSignUp} className="space-y-6">
               {error && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4 opacity-0 animate-fade-in">
                   <p className="text-red-600 text-sm">{error}</p>
                 </div>
               )}
@@ -265,7 +265,7 @@ const SignUpPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-[#812dea] to-[#4ea6fd] hover:from-[#6d1fc7] hover:to-[#2b8ce6] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#812dea] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:-translate-y-0.5"
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-[#812dea] to-[#4ea6fd] hover:from-[#6d1fc7] hover:to-[#2b8ce6] hover:shadow-lg hover:shadow-purple-500/25 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#812dea] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:-translate-y-0.5 hover:scale-105 disabled:transform-none"
               >
                 {loading ? (
                   <div className="flex items-center">
@@ -291,7 +291,7 @@ const SignUpPage: React.FC = () => {
               <div className="mt-6 text-center">
                 <Link
                   to="/login"
-                  className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
+                  className="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-200"
                 >
                   Sign in instead
                 </Link>
@@ -303,7 +303,7 @@ const SignUpPage: React.FC = () => {
         <div className="text-center">
           <Link
             to="/"
-            className="text-gray-600 hover:text-gray-900 text-sm transition-colors"
+            className="text-gray-600 hover:text-gray-900 text-sm transition-colors duration-200"
           >
             ← Back to home
           </Link>

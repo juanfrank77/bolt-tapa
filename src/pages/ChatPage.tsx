@@ -44,7 +44,7 @@ const ChatMessage: React.FC<{ message: Message; modelConfig: any }> = ({ message
   return (
     <div className={`flex gap-4 mb-6 ${message.isUser ? 'flex-row-reverse' : ''}`}>
       {/* Avatar */}
-      <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+      <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-transform duration-200 hover:scale-110 ${
         message.isUser 
           ? 'bg-gradient-to-r from-[#812dea] to-[#4ea6fd]' 
           : modelConfig.avatar
@@ -58,7 +58,7 @@ const ChatMessage: React.FC<{ message: Message; modelConfig: any }> = ({ message
 
       {/* Message Content */}
       <div className={`flex-1 max-w-3xl ${message.isUser ? 'text-right' : ''}`}>
-        <div className={`inline-block p-4 rounded-2xl ${
+        <div className={`inline-block p-4 rounded-2xl transition-all duration-200 hover:shadow-md ${
           message.isUser 
             ? 'bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white' 
             : 'bg-white border border-gray-200 text-gray-900'
@@ -162,25 +162,25 @@ const ChatMessage: React.FC<{ message: Message; modelConfig: any }> = ({ message
           <div className="flex items-center gap-2 mt-2">
             <button
               onClick={handleCopy}
-              className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all duration-200 hover:scale-110 transform"
               title="Copy message"
             >
               <Copy className="w-4 h-4" />
             </button>
             <button
-              className="p-1.5 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+              className="p-1.5 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-all duration-200 hover:scale-110 transform"
               title="Good response"
             >
               <ThumbsUp className="w-4 h-4" />
             </button>
             <button
-              className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+              className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 hover:scale-110 transform"
               title="Poor response"
             >
               <ThumbsDown className="w-4 h-4" />
             </button>
             {copied && (
-              <span className="text-xs text-green-600 font-medium">Copied!</span>
+              <span className="text-xs text-green-600 font-medium opacity-0 animate-fade-in">Copied!</span>
             )}
           </div>
         )}
@@ -195,7 +195,7 @@ const ChatMessage: React.FC<{ message: Message; modelConfig: any }> = ({ message
 };
 
 const TypingIndicator: React.FC<{ modelConfig: any }> = ({ modelConfig }) => (
-  <div className="flex gap-4 mb-6">
+  <div className="flex gap-4 mb-6 opacity-0 animate-fade-in-up">
     <div className={`w-10 h-10 rounded-full flex items-center justify-center ${modelConfig.avatar}`}>
       <Robot className="w-5 h-5 text-white" weight="bold" />
     </div>
@@ -210,7 +210,7 @@ const TypingIndicator: React.FC<{ modelConfig: any }> = ({ modelConfig }) => (
 );
 
 const GuestLimitReached: React.FC = () => (
-  <div className="border-t border-gray-100 p-6">
+  <div className="border-t border-gray-100 p-6 opacity-0 animate-fade-in-up">
     <div className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] rounded-2xl p-6 text-white text-center">
       <Crown className="w-12 h-12 mx-auto mb-4" weight="bold" />
       <h3 className="text-xl font-bold mb-2">You've reached your guest limit!</h3>
@@ -220,13 +220,13 @@ const GuestLimitReached: React.FC = () => (
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
         <Link
           to="/signup"
-          className="bg-white text-[#812dea] px-6 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+          className="bg-white text-[#812dea] px-6 py-3 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 hover:scale-105 transition-all duration-200"
         >
           Sign Up Free
         </Link>
         <Link
           to="/login"
-          className="border-2 border-white/30 text-white px-6 py-3 rounded-lg font-medium hover:border-white/50 transition-colors"
+          className="border-2 border-white/30 text-white px-6 py-3 rounded-lg font-medium hover:border-white/50 transition-all duration-200 hover:scale-105 transform"
         >
           Sign In
         </Link>
@@ -441,7 +441,7 @@ const ChatPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex flex-col opacity-0 animate-fade-in">
       {/* Header */}
       <Header variant="chat" showBackButton backTo="/dashboard" />
 
@@ -526,9 +526,11 @@ const ChatPage: React.FC = () => {
             )}
 
             {/* Messages Container */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+            <div className="flex-1 overflow-y-auto p-6 space-y-4 opacity-0 animate-fade-in animate-delay-200">
               {messages.map((message) => (
-                <ChatMessage key={message.id} message={message} modelConfig={modelConfig} />
+                <div key={message.id} className="opacity-0 animate-fade-in-up" style={{ animationDelay: `${Math.min(messages.indexOf(message) * 0.1, 1)}s` }}>
+                  <ChatMessage message={message} modelConfig={modelConfig} />
+                </div>
               ))}
               {isTyping && <TypingIndicator modelConfig={modelConfig} />}
               <div ref={messagesEndRef} />
@@ -541,7 +543,7 @@ const ChatPage: React.FC = () => {
             <div className="border-t border-gray-100 p-6">
               {/* API Error Notice */}
               {!selectedModel && (
-                <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg opacity-0 animate-fade-in-up">
                   <div className="flex items-center">
                     <Warning className="w-5 h-5 text-yellow-600 mr-2" />
                     <p className="text-yellow-800 text-sm">
@@ -560,14 +562,14 @@ const ChatPage: React.FC = () => {
                   rows={1}
                   maxLength={2000}
                   disabled={isLoading || !selectedModel || hasReachedGuestLimit}
-                  className="flex-1 resize-none rounded-xl border border-gray-200 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 p-4"
+                  className="flex-1 resize-none rounded-xl border border-gray-200 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 p-4 transition-all duration-200 ease-in-out focus:scale-[1.02]"
                 />
                 <button
                   onClick={handleSendMessage}
                   disabled={!inputValue.trim() || isLoading || !selectedModel || hasReachedGuestLimit}
-                  className={`p-3 rounded-xl font-medium transition-all duration-200 ${
+                  className={`p-3 rounded-xl font-medium transition-all duration-200 hover:scale-110 transform active:scale-95 ${
                     inputValue.trim() && !isLoading && selectedModel && !hasReachedGuestLimit
-                      ? `bg-gradient-to-r ${modelConfig.color} text-white hover:shadow-lg transform hover:-translate-y-0.5`
+                      ? `bg-gradient-to-r ${modelConfig.color} text-white hover:shadow-lg hover:shadow-purple-500/25 hover:-translate-y-0.5`
                       : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   }`}
                 >

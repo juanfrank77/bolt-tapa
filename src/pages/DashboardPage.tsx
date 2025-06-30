@@ -80,14 +80,14 @@ const DashboardPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 opacity-0 animate-fade-in">
       {/* Header */}
       <Header />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Welcome Section */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 opacity-0 animate-fade-in-up">
           <div className="inline-flex items-center px-4 py-2 bg-blue-100 rounded-full text-blue-800 text-sm font-medium mb-6">
             <Sparkle className="w-4 h-4 mr-2" weight="fill" />
             {isGuest ? 'Welcome to TAPA' : 'Welcome to your AI Dashboard'}
@@ -105,7 +105,7 @@ const DashboardPage: React.FC = () => {
 
         {/* Guest Notice */}
         {isGuest && (
-          <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-8">
+          <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-8 opacity-0 animate-fade-in-up animate-delay-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
@@ -118,7 +118,7 @@ const DashboardPage: React.FC = () => {
               </div>
               <Link
                 to="/signup"
-                className="bg-[#812dea] text-white px-6 py-2 rounded-lg font-medium hover:bg-[#6d1fc7] transition-colors"
+                className="bg-[#812dea] text-white px-6 py-2 rounded-lg font-medium hover:bg-[#6d1fc7] transition-all duration-200 hover:scale-105 transform hover:shadow-lg"
               >
                 Sign Up Free
               </Link>
@@ -127,7 +127,7 @@ const DashboardPage: React.FC = () => {
         )}
 
         {/* AI Models Section */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 opacity-0 animate-fade-in-up animate-delay-300">
           <div className="bg-white rounded-2xl shadow-lg p-8 max-w-2xl mx-auto">
             <div className="w-16 h-16 bg-gradient-to-r from-[#812dea] to-[#4ea6fd] rounded-2xl flex items-center justify-center mx-auto mb-6">
               <Brain className="w-8 h-8 text-white" weight="bold" />
@@ -149,7 +149,7 @@ const DashboardPage: React.FC = () => {
 
         {/* Quick Stats */}
         {!isGuest && (
-        <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
+        <div className="bg-white rounded-2xl shadow-lg p-6 mb-8 opacity-0 animate-fade-in-up animate-delay-400">
           <h3 className="text-xl font-bold text-gray-900 mb-4">Your Account</h3>
           <div className="grid md:grid-cols-3 gap-6">
             <div className="text-center">
@@ -172,7 +172,7 @@ const DashboardPage: React.FC = () => {
 
         {/* Models Error Display */}
         {modelsError && (
-          <div className="bg-red-50 border border-red-200 rounded-2xl p-6 mb-8">
+          <div className="bg-red-50 border border-red-200 rounded-2xl p-6 mb-8 opacity-0 animate-fade-in animate-delay-500">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
                 <Brain className="w-5 h-5 text-red-600" weight="bold" />
@@ -199,7 +199,7 @@ const DashboardPage: React.FC = () => {
           <div className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] rounded-2xl p-8 text-white text-center">
             {/* Error Message */}
             {upgradeError && (
-              <div className="bg-red-500/20 border border-red-300/30 rounded-lg p-4 mb-6">
+              <div className="bg-red-500/20 border border-red-300/30 rounded-lg p-4 mb-6 opacity-0 animate-fade-in">
                 <div className="flex items-center justify-center space-x-2">
                   <svg className="w-5 h-5 text-red-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -208,7 +208,7 @@ const DashboardPage: React.FC = () => {
                 </div>
                 <button
                   onClick={() => setUpgradeError(null)}
-                  className="mt-2 text-red-200 hover:text-white text-xs underline"
+                  className="mt-2 text-red-200 hover:text-white text-xs underline transition-colors duration-200"
                 >
                   Dismiss
                 </button>

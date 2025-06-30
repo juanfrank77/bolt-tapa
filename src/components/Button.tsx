@@ -23,11 +23,11 @@ const Button: React.FC<ButtonProps> = ({
   const baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
 
   const variantClasses = {
-    primary: 'bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white hover:shadow-lg transform hover:-translate-y-0.5 focus:ring-blue-500',
-    secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-500',
-    outline: 'border-2 border-gray-300 text-gray-700 hover:border-gray-400 hover:bg-gray-50 focus:ring-gray-500',
-    ghost: 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:ring-gray-500',
-    danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500'
+    primary: 'bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white hover:shadow-lg hover:shadow-purple-500/25 transform hover:-translate-y-0.5 hover:scale-105 focus:ring-blue-500 active:scale-95',
+    secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200 hover:shadow-md transform hover:-translate-y-0.5 focus:ring-gray-500 active:scale-95',
+    outline: 'border-2 border-gray-300 text-gray-700 hover:border-gray-400 hover:bg-gray-50 hover:shadow-md transform hover:-translate-y-0.5 focus:ring-gray-500 active:scale-95',
+    ghost: 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 hover:shadow-sm transform hover:-translate-y-0.5 focus:ring-gray-500 active:scale-95',
+    danger: 'bg-red-600 text-white hover:bg-red-700 hover:shadow-lg hover:shadow-red-500/25 transform hover:-translate-y-0.5 hover:scale-105 focus:ring-red-500 active:scale-95'
   };
 
   const sizeClasses = {
@@ -67,7 +67,7 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <button
-      className={combinedClasses}
+      className={`${combinedClasses} disabled:transform-none disabled:hover:shadow-none`}
       disabled={disabled || loading}
       {...props}
     >

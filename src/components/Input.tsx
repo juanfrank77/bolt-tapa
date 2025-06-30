@@ -44,7 +44,7 @@ const Input: React.FC<InputProps> = ({
   const inputClasses = `${baseInputClasses} ${variantClasses[variant]} ${errorClasses} ${iconClasses} ${className}`;
 
   return (
-    <div className="w-full">
+    <div className={`w-full ${error ? 'animate-shake' : ''}`}>
       {label && (
         <label 
           htmlFor={inputId}
@@ -65,7 +65,7 @@ const Input: React.FC<InputProps> = ({
         
         <input
           id={inputId}
-          className={inputClasses}
+          className={`${inputClasses} transition-all duration-200 ease-in-out focus:scale-[1.02]`}
           aria-invalid={error ? 'true' : 'false'}
           aria-describedby={[errorId, helperTextId].filter(Boolean).join(' ') || undefined}
           {...props}
@@ -73,13 +73,13 @@ const Input: React.FC<InputProps> = ({
       </div>
 
       {error && (
-        <p id={errorId} className="mt-1 text-sm text-red-600">
+        <p id={errorId} className="mt-1 text-sm text-red-600 opacity-0 animate-fade-in">
           {error}
         </p>
       )}
 
       {helperText && !error && (
-        <p id={helperTextId} className="mt-1 text-sm text-gray-500">
+        <p id={helperTextId} className="mt-1 text-sm text-gray-500 transition-colors duration-200">
           {helperText}
         </p>
       )}

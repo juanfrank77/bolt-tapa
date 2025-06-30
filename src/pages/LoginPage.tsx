@@ -36,13 +36,13 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 opacity-0 animate-fade-in">
       {/* Header */}
       <Header variant="minimal" />
 
       {/* Main Content */}
       <div className="flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
-        <div className="max-w-md w-full space-y-8">
+        <div className="max-w-md w-full space-y-8 opacity-0 animate-fade-in-up">
           {/* Header */}
           <div className="text-center">
             <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome back!</h2>
@@ -50,10 +50,10 @@ const LoginPage: React.FC = () => {
           </div>
 
           {/* Login Form */}
-          <div className="bg-white rounded-2xl shadow-xl p-8">
+          <div className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-shadow duration-300">
             <form onSubmit={handleLogin} className="space-y-6">
               {error && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4 opacity-0 animate-fade-in">
                   <p className="text-red-600 text-sm">{error}</p>
                 </div>
               )}
@@ -136,7 +136,7 @@ const LoginPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-[#812dea] to-[#4ea6fd] hover:from-[#6d1fc7] hover:to-[#2b8ce6] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#812dea] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:-translate-y-0.5"
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-[#812dea] to-[#4ea6fd] hover:from-[#6d1fc7] hover:to-[#2b8ce6] hover:shadow-lg hover:shadow-purple-500/25 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#812dea] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:-translate-y-0.5 hover:scale-105 disabled:transform-none"
               >
                 {loading ? (
                   <div className="flex items-center">
@@ -162,7 +162,7 @@ const LoginPage: React.FC = () => {
               <div className="mt-6 text-center">
                 <Link
                   to="/signup"
-                  className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
+                  className="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-200"
                 >
                   Sign up for free
                 </Link>

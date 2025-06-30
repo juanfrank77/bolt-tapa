@@ -148,7 +148,7 @@ const Header: React.FC<HeaderProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
+          <Link to="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity duration-200">
             <img 
               src={tapaIcon} 
               alt="TAPA Logo" 
@@ -166,7 +166,7 @@ const Header: React.FC<HeaderProps> = ({
                 <a 
                   key={item.label}
                   href={item.href} 
-                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                  className="text-gray-600 hover:text-gray-900 transition-colors duration-200 hover:scale-105 transform"
                 >
                   {item.label}
                 </a>
@@ -174,7 +174,7 @@ const Header: React.FC<HeaderProps> = ({
                 <Link 
                   key={item.label}
                   to={item.href} 
-                  className={`transition-colors ${
+                  className={`transition-all duration-200 hover:scale-105 transform ${
                     location.pathname === item.href 
                       ? 'text-blue-600 font-medium' 
                       : 'text-gray-600 hover:text-gray-900'
@@ -207,7 +207,7 @@ const Header: React.FC<HeaderProps> = ({
                 </div>
                 <button
                   onClick={handleSignOut}
-                  className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors"
+                  className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-all duration-200 hover:scale-105 transform"
                 >
                   <SignOut className="w-5 h-5" />
                   <span>Sign Out</span>
@@ -217,13 +217,13 @@ const Header: React.FC<HeaderProps> = ({
               <div className="flex items-center space-x-2">
                 <Link
                   to="/login"
-                  className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
+                  className="text-blue-600 hover:text-blue-700 font-medium transition-all duration-200 hover:scale-105 transform"
                 >
                   Sign In
                 </Link>
                 <Link
                   to="/signup"
-                  className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-4 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-200"
+                  className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-4 py-2 rounded-lg font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-200 transform hover:-translate-y-0.5 hover:scale-105"
                 >
                   Sign Up
                 </Link>
@@ -231,7 +231,7 @@ const Header: React.FC<HeaderProps> = ({
             ) : (
               <Link 
                 to="/signup" 
-                className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-6 py-2 rounded-full hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 font-medium"
+                className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-6 py-2 rounded-full hover:shadow-lg hover:shadow-purple-500/25 transform hover:-translate-y-0.5 hover:scale-105 transition-all duration-200 font-medium"
               >
                 Get Started
               </Link>
@@ -241,7 +241,7 @@ const Header: React.FC<HeaderProps> = ({
           {/* Mobile Menu Button */}
           <button
             onClick={toggleMobileMenu}
-            className="lg:hidden p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+            className="lg:hidden p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-all duration-200 hover:scale-110 transform"
             aria-label="Toggle mobile menu"
           >
             {isMobileMenuOpen ? (
@@ -304,14 +304,14 @@ const Header: React.FC<HeaderProps> = ({
                   <Link
                     to="/login"
                     onClick={closeMobileMenu}
-                    className="block text-blue-600 hover:text-blue-700 font-medium transition-colors px-2 py-1"
+                    className="block text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200 px-2 py-1"
                   >
                     Sign In
                   </Link>
                   <Link
                     to="/signup"
                     onClick={closeMobileMenu}
-                    className="block bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-4 py-2 rounded-lg font-medium text-center"
+                    className="block bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-4 py-2 rounded-lg font-medium text-center transition-all duration-200 hover:shadow-lg"
                   >
                     Sign Up
                   </Link>
@@ -320,7 +320,7 @@ const Header: React.FC<HeaderProps> = ({
                 <Link 
                   to="/signup" 
                   onClick={closeMobileMenu}
-                  className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-6 py-2 rounded-full font-medium text-center"
+                  className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-6 py-2 rounded-full font-medium text-center transition-all duration-200 hover:shadow-lg"
                 >
                   Get Started
                 </Link>

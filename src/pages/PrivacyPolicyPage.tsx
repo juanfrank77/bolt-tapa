@@ -5,13 +5,13 @@ import { ArrowLeft, Shield, Eye, Database, Lock } from '@phosphor-icons/react';
 
 const PrivacyPolicyPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 opacity-0 animate-fade-in">
       {/* Header */}
       <Header variant="minimal" />
 
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
+        <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 opacity-0 animate-fade-in-up">
           {/* Header */}
           <div className="text-center mb-12">
             <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6">

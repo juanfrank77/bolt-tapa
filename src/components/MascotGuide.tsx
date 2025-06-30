@@ -152,7 +152,7 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 bg-white rounded-2xl shadow-xl border border-gray-200 max-w-md w-full max-h-[600px]">
+    <div className="fixed bottom-6 right-6 z-50 bg-white rounded-2xl shadow-xl border border-gray-200 max-w-md w-full max-h-[600px] transition-all duration-300 ease-out opacity-0 animate-fade-in-up">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-gray-100 bg-gradient-to-r from-[#812dea] to-[#4ea6fd] rounded-t-2xl">
         <div className="flex items-center space-x-3">
@@ -170,7 +170,7 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({
           {onToggleMinimize && (
             <button
               onClick={onToggleMinimize}
-              className="p-1.5 text-white hover:bg-white/20 rounded-lg transition-colors"
+              className="p-1.5 text-white hover:bg-white/20 rounded-lg transition-all duration-200 hover:scale-110 transform"
             >
               <Minus className="w-4 h-4" />
             </button>
@@ -181,7 +181,7 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4" style={{ height: '320px' }}>
         {messages.map((message) => (
-          <div key={message.id} className={`flex gap-3 ${message.isUser ? 'flex-row-reverse' : ''}`}>
+          <div key={message.id} className={`flex gap-3 ${message.isUser ? 'flex-row-reverse' : ''} opacity-0 animate-fade-in-up`}>
             {!message.isUser && (
               <img 
                 src={tapaMascot} 
@@ -208,7 +208,7 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({
 
         {/* Quick Questions */}
         {showQuickQuestions && messages.length > 0 && (
-          <div className="space-y-2">
+          <div className="space-y-2 opacity-0 animate-fade-in-up animate-delay-300">
             <div className="flex items-center gap-2 text-sm text-gray-600">
               <Sparkle className="w-4 h-4" weight="fill" />
               <span>Quick questions you can ask:</span>
@@ -218,7 +218,7 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({
                 <button
                   key={index}
                   onClick={() => handleQuickQuestion(question)}
-                  className="block w-full text-left p-2 text-sm bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg transition-colors"
+                  className="block w-full text-left p-2 text-sm bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-lg transition-all duration-200 hover:scale-105 transform hover:shadow-sm"
                 >
                   {question}
                 </button>
@@ -244,9 +244,9 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({
           <button
             onClick={() => handleSendMessage(userInput)}
             disabled={!userInput.trim()}
-            className={`p-2 rounded-lg transition-colors ${
+            className={`p-2 rounded-lg transition-all duration-200 hover:scale-110 transform ${
               userInput.trim()
-                ? 'bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white hover:shadow-lg'
+                ? 'bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white hover:shadow-lg hover:shadow-purple-500/25'
                 : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }`}
           >

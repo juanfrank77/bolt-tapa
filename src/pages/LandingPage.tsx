@@ -27,12 +27,12 @@ const LandingPage: React.FC = () => {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 opacity-0 animate-fade-in">
       {/* Header */}
       <Header />
 
       {/* Hero Section */}
-      <section className="pt-20 pb-32 px-4 sm:px-6 lg:px-8">
+      <section className="pt-20 pb-32 px-4 sm:px-6 lg:px-8 opacity-0 animate-fade-in-up">
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
             
@@ -54,14 +54,14 @@ const LandingPage: React.FC = () => {
             <div className="flex flex-col gap-4 justify-center items-center">
               <button 
                 onClick={() =>authOrDashboard('/signup')}
-                className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 flex items-center group"
+                className="bg-gradient-to-r from-[#812dea] to-[#4ea6fd] text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl hover:shadow-purple-500/25 transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 flex items-center group"
               >
                 Start Your AI Journey
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" weight="bold" />
               </button>
               <Link 
                 to="/dashboard"
-                className="text-gray-600 hover:text-gray-900 px-8 py-4 rounded-full text-lg font-medium border-2 border-gray-200 hover:border-gray-300 transition-all duration-200"
+                className="text-gray-600 hover:text-gray-900 px-8 py-4 rounded-full text-lg font-medium border-2 border-gray-200 hover:border-gray-300 hover:shadow-md transform hover:-translate-y-0.5 hover:scale-105 transition-all duration-200"
               >
                 Try for Free
               </Link>
@@ -82,7 +82,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-24 bg-white">
+      <section id="features" className="py-24 bg-white opacity-0 animate-fade-in-up animate-delay-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
@@ -95,7 +95,7 @@ const LandingPage: React.FC = () => {
           </div>
           
           <div className="grid md:grid-cols-3 gap-12">
-            <div className="text-center group">
+            <div className="text-center group transform hover:scale-105 transition-transform duration-300">
               <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                 <Brain className="w-8 h-8 text-white" weight="bold" />
               </div>
@@ -106,7 +106,7 @@ const LandingPage: React.FC = () => {
               </p>
             </div>
             
-            <div className="text-center group">
+            <div className="text-center group transform hover:scale-105 transition-transform duration-300">
               <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                 <Sparkle className="w-8 h-8 text-white" weight="bold" />
               </div>
@@ -117,7 +117,7 @@ const LandingPage: React.FC = () => {
               </p>
             </div>
             
-            <div className="text-center group">
+            <div className="text-center group transform hover:scale-105 transition-transform duration-300">
               <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                 <Shield className="w-8 h-8 text-white" weight="bold" />
               </div>
@@ -131,7 +131,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* How It Works Section */}
-      <section id="how-it-works" className="py-24 bg-gray-50">
+      <section id="how-it-works" className="py-24 bg-gray-50 opacity-0 animate-fade-in-up animate-delay-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
@@ -143,7 +143,7 @@ const LandingPage: React.FC = () => {
           </div>
           
           <div className="grid md:grid-cols-3 gap-12">
-            <div className="text-center">
+            <div className="text-center transform hover:scale-105 transition-transform duration-300">
               <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-6">
                 1
               </div>
@@ -154,7 +154,7 @@ const LandingPage: React.FC = () => {
               </p>
             </div>
             
-            <div className="text-center">
+            <div className="text-center transform hover:scale-105 transition-transform duration-300">
               <div className="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-6">
                 2
               </div>
@@ -165,7 +165,7 @@ const LandingPage: React.FC = () => {
               </p>
             </div>
             
-            <div className="text-center">
+            <div className="text-center transform hover:scale-105 transition-transform duration-300">
               <div className="w-12 h-12 bg-green-600 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-6">
                 3
               </div>
@@ -180,7 +180,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-24 bg-white">
+      <section id="pricing" className="py-24 bg-white opacity-0 animate-fade-in-up animate-delay-400">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
@@ -193,7 +193,7 @@ const LandingPage: React.FC = () => {
           
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Free Plan */}
-            <div className="bg-gray-50 rounded-2xl p-8 border-2 border-gray-200 relative">
+            <div className="bg-gray-50 rounded-2xl p-8 border-2 border-gray-200 relative transform hover:scale-105 transition-transform duration-300 hover:shadow-lg">
               <div className="text-center mb-8">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">Free Plan</h3>
                 <div className="text-4xl font-bold text-gray-900 mb-2">
@@ -227,14 +227,14 @@ const LandingPage: React.FC = () => {
               
               <button 
                 onClick={() =>authOrDashboard('/signup')}
-                className="w-full bg-gray-900 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-800 transition-colors text-center block"
+                className="w-full bg-gray-900 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-800 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 text-center block"
               >
                 Get Started Free
               </button>
             </div>
 
             {/* Premium Plan */}
-            <div className="bg-gradient-to-br from-[#812dea] to-[#4ea6fd] rounded-2xl p-8 text-white relative transform hover:scale-105 transition-transform duration-300">
+            <div className="bg-gradient-to-br from-[#812dea] to-[#4ea6fd] rounded-2xl p-8 text-white relative transform hover:scale-105 transition-transform duration-300 hover:shadow-xl hover:shadow-purple-500/25">
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                 <span className="bg-yellow-400 text-gray-900 px-4 py-1 rounded-full text-sm font-semibold">
                   Most Popular
@@ -282,7 +282,7 @@ const LandingPage: React.FC = () => {
               
               <button
                 onClick={() =>authOrDashboard('/signup')}
-                className="w-full bg-white text-[#812dea] py-3 px-6 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 text-center block"
+                className="w-full bg-white text-[#812dea] py-3 px-6 rounded-lg font-semibold hover:shadow-lg transform hover:-translate-y-0.5 hover:scale-105 transition-all duration-200 text-center block"
               >
                 Get Premium Models
               </button>
@@ -309,7 +309,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-[#812dea] to-[#4ea6fd]">
+      <section className="py-24 bg-gradient-to-r from-[#812dea] to-[#4ea6fd] opacity-0 animate-fade-in-up animate-delay-500">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
             Ready to Explore AI?
@@ -322,14 +322,14 @@ const LandingPage: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button 
               onClick={() =>authOrDashboard('/signup')}
-              className="bg-white text-[#812dea] px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 flex items-center group"
+              className="bg-white text-[#812dea] px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transform hover:-translate-y-1 hover:scale-105 transition-all duration-300 flex items-center group"
             >
               Start Your AI Journey
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" weight="bold" />
             </button>
             <button 
               onClick={() =>authOrDashboard('/login')}
-              className="text-white hover:text-purple-100 px-8 py-4 rounded-full text-lg font-medium border-2 border-white/30 hover:border-white/50 transition-all duration-200"
+              className="text-white hover:text-purple-100 px-8 py-4 rounded-full text-lg font-medium border-2 border-white/30 hover:border-white/50 hover:scale-105 transform transition-all duration-200"
             >
               Already have an account?
             </button>
@@ -380,8 +380,8 @@ const LandingPage: React.FC = () => {
               <h4 className="font-semibold mb-4">Product</h4>
               <ul className="space-y-2 text-gray-400">
                 <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
-                <li><a href="#pricing" className="hover:text-white transition-colors">Pricing</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
+                <li><a href="#pricing" className="hover:text-white transition-colors duration-200">Pricing</a></li>
+                <li><a href="#" className="hover:text-white transition-colors duration-200">Documentation</a></li>
               </ul>
             </div>
             
@@ -389,8 +389,8 @@ const LandingPage: React.FC = () => {
               <h4 className="font-semibold mb-4">Support</h4>
               <ul className="space-y-2 text-gray-400">
                 <li><a href="mailto:hello@tapachat.com" className="hover:text-white transition-colors">Contact Us</a></li>
-                <li><Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-                <li><Link to="/terms-of-service" className="hover:text-white transition-colors">Terms of Service</Link></li>
+                <li><Link to="/privacy-policy" className="hover:text-white transition-colors duration-200">Privacy Policy</Link></li>
+                <li><Link to="/terms-of-service" className="hover:text-white transition-colors duration-200">Terms of Service</Link></li>
               </ul>
             </div>
           </div>
