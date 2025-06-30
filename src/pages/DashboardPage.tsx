@@ -42,8 +42,6 @@ const DashboardPage: React.FC = () => {
       window.location.href = checkoutUrl;
     } catch (error) {
       console.error('Failed to initiate checkout:', error);
-      // You might want to show a user-friendly error message here
-      alert('Failed to start checkout process. Please try again later.');
     } finally {
       setIsUpgrading(false);
     }
