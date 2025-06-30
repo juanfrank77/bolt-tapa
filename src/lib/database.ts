@@ -29,17 +29,6 @@ export const updateUserProfile = async (userId: string, updates: {
   return data
 }
 
-export const getUserModelAccess = async (userId: string) => {
-  const { data, error } = await supabase
-    .from('model_access')
-    .select('*')
-    .eq('user_id', userId)
-    .eq('access_granted', true)
-
-  if (error) throw error
-  return data
-}
-
 // Interaction Logs operations
 export const logInteraction = async (
   userId: string,
