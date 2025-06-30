@@ -344,7 +344,7 @@ const LandingPage: React.FC = () => {
           href="https://bolt.new" 
           target="_blank" 
           rel="noopener noreferrer"
-          className="block w-12 h-12 hover:scale-110 transition-transform duration-200"
+          className="block w-20 h-20 hover:scale-110 transition-transform duration-200"
           title="Built with Bolt"
         >
           <img 
