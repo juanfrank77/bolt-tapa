@@ -10,6 +10,7 @@ import {
   CheckCircle,
   Star
 } from '@phosphor-icons/react';
+import tapaIcon from '../assets/tapa-icon.png';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router';
 import { isGuestUser } from '../hooks/useAuth';
@@ -362,7 +363,7 @@ const LandingPage: React.FC = () => {
             <div className="col-span-2">
               <div className="flex items-center space-x-2 mb-6">
                 <img 
-                  src="/src/assets/tapa-icon.png" 
+                  src={tapaIcon}
                   alt="TAPA Logo" 
                   className="w-10 h-10"
                 />
