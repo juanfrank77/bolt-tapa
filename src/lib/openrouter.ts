@@ -227,6 +227,8 @@ export async function sendMessageToModel(
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+        'HTTP-Referrer': 'https://tapachat.com',
+        'X-Title': 'TAPA Chat',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
