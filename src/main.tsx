@@ -1,11 +1,11 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router';
-import { ConvexProvider, ConvexReactClient } from 'convex/react';
+import { ConvexAuthProvider } from '@convex-dev/auth/react';
 import { convex } from './lib/convex';
 import { ModelProvider } from './context/ModelContext';
 import { LandingPage, LoginPage, SignUpPage, DashboardPage, ChatPage, PaymentSuccessPage, PrivacyPolicyPage, TermsOfServicePage } from './pages';
-import { aiChatLoader, aiChatAction } from './routes/chat';
+import { aiChatLoader } from './routes/chat';
 import './index.css';
 
 const router = createBrowserRouter([
@@ -28,8 +28,7 @@ const router = createBrowserRouter([
   {
     path: "/chat",
     element: <ChatPage />,
-    loader: aiChatLoader,
-    action: aiChatAction,
+    loader: aiChatLoader
   },
   {
     path: "/payment-success",
@@ -47,10 +46,10 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ConvexProvider client={convex}>
+    <ConvexAuthProvider client={convex}>
       <ModelProvider>
         <RouterProvider router={router} />
       </ModelProvider>
-    </ConvexProvider>
+    </ConvexAuthProvider>
   </StrictMode>
 );
