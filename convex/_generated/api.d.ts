@@ -8,7 +8,9 @@
  * @module
  */
 
+import type * as auth from "../auth.js";
 import type * as creemCheckout from "../creemCheckout.js";
+import type * as http from "../http.js";
 import type * as interactions from "../interactions.js";
 import type * as users from "../users.js";
 
@@ -19,7 +21,9 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
+  auth: typeof auth;
   creemCheckout: typeof creemCheckout;
+  http: typeof http;
   interactions: typeof interactions;
   users: typeof users;
 }>;
