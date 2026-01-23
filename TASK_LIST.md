@@ -86,7 +86,7 @@
 ## Deployment & Post-Deployment
 
 ### [ ] **[Easy]** Deployment Setup
-- [ ] Configure the deployment process (consider using Vercel, Netlify, or similar for SPAs)
+- [ ] Configure the deployment process
 - [ ] Set up CI/CD pipelines to automate tests and deployment
 - [ ] Ensure environment variables and Supabase setup are correctly configured for production
 
