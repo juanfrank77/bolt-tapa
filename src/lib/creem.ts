@@ -1,4 +1,3 @@
-import { SUPABASE_URL } from '../utils/env';
 
 export interface CreemCheckoutResponse {
   checkout_url: string;
@@ -12,8 +11,7 @@ export interface CreemCheckoutResponse {
  */
 export async function initiateCreemCheckout(product_id: string): Promise<string> {
   try {
-    // Use the Supabase Edge Function instead of direct API call
-    const response = await fetch(`${SUPABASE_URL}/functions/v1/creem-checkout`, {
+    const response = await fetch(`https://test-api.creem.io/v1/checkouts`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

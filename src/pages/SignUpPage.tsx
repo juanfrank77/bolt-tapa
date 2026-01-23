@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { Header } from '../components';
-import { Brain, Eye, EyeSlash, EnvelopeSimple, Lock, User } from '@phosphor-icons/react';
-import { supabase } from '../lib/supabase';
+import { Eye, EyeSlash, EnvelopeSimple, Lock, User } from '@phosphor-icons/react';
 
 const SignUpPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -56,31 +55,8 @@ const SignUpPage: React.FC = () => {
 
     setLoading(true);
 
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-        options: {
-          data: {
-            full_name: formData.fullName,
-          }
-        }
-      });
+    // Sign up flow
 
-      if (error) {
-        setError(error.message);
-      } else if (data.user) {
-        setSuccess(true);
-        // Navigate to dashboard after successful signup
-        setTimeout(() => {
-          navigate('/dashboard');
-        }, 2000);
-      }
-    } catch (err) {
-      setError('An unexpected error occurred. Please try again.');
-    } finally {
-      setLoading(false);
-    }
   };
 
   if (success) {
