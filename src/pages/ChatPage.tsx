@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate, useLoaderData, useFetcher } from 'react-router';
+import { useNavigate, useLoaderData } from 'react-router';
 import ReactMarkdown from 'react-markdown';
 import { useAuth, isGuestUser } from '../hooks/useAuth';
 import { useModels, useSelectedModel } from '../context/ModelContext';
 import { sendMessageToModel, getDisplayName, getProviderName, type ChatMessage } from '../lib/openrouter';
 import { Header, MascotGuide } from '../components';
 import type { ChatLoaderData } from '../routes/chat';
+import { useMutation } from 'convex/react';
+import { api } from '../../convex/_generated/api';
 import { 
   Brain, 
   PaperPlaneTilt, 
@@ -245,7 +247,7 @@ const ChatPage: React.FC = () => {
   const { profile } = useLoaderData() as ChatLoaderData;
   const { availableModels, loading: modelsLoading, error: modelsError } = useModels();
   const { selectedModel, setSelectedModel } = useSelectedModel();
-  const fetcher = useFetcher();
+  const logInteraction = useMutation(api.interactions.logInteraction);
   
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
@@ -392,16 +394,16 @@ const ChatPage: React.FC = () => {
 
       setMessages(prev => [...prev, aiMessage]);
 
-      // Log interaction to database using fetcher (only for authenticated users)
-      if (!isGuest) {
-        const formData = new FormData();
-        formData.append('modelName', selectedModel?.id || 'unknown');
-        formData.append('prompt', userMessage.content);
-        formData.append('response', result.content);
-        formData.append('tokensUsed', result.tokensUsed.toString());
-        formData.append('responseTimeMs', result.responseTime.toString());
-        
-        fetcher.submit(formData, { method: 'post' });
+      // Log interaction to database using Convex (only for authenticated users)
+      if (!isGuest && user) {
+        logInteraction({
+          userId: user.id,
+          modelName: selectedModel?.id || 'unknown',
+          prompt: userMessage.content,
+          response: result.content,
+          tokensUsed: result.tokensUsed,
+          responseTimeMs: result.responseTime,
+        });
       }
 
     } catch (error) {

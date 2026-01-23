@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import { useAuth, isGuestUser } from './useAuth'
 import * as db from '../lib/database'
 
@@ -9,68 +8,41 @@ const GUEST_PROFILE = {
   full_name: 'Guest User',
   avatar_url: null,
   subscription_status: 'free' as const,
-  created_at: new Date().toISOString(),
-  updated_at: new Date().toISOString()
+  created_at: Date.now(),
+  updated_at: Date.now()
 }
 
 // Hook for user profile
 export const useUserProfile = () => {
   const { user } = useAuth()
-  const [profile, setProfile] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (!user) {
-      setProfile(null)
-      setLoading(false)
-      return
+  // Return guest profile for guest users
+  if (isGuestUser(user)) {
+    return {
+      profile: GUEST_PROFILE,
+      loading: false,
+      error: null,
+      updateProfile: () => Promise.resolve()
     }
+  }
 
-    // Return guest profile for guest users
-    if (isGuestUser(user)) {
-      setProfile(GUEST_PROFILE)
-      setLoading(false)
-      return
-    }
-
-    const fetchProfile = async () => {
-      try {
-        setLoading(true)
-        const data = await db.getUserProfile(user.id)
-        setProfile(data)
-        setError(null)
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch profile')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchProfile()
-  }, [user])
+  const profile = user ? db.getUserProfile(user.id) : null
+  const updateProfileMutation = db.updateUserProfile()
 
   const updateProfile = async (updates: {
     full_name?: string
     avatar_url?: string
-    subscription_status?: 'free' | 'premium'
+    subscription_status?: 'free' | 'premium' | 'enterprise'
   }) => {
     if (!user || isGuestUser(user)) return
 
-    try {
-      const updatedProfile = await db.updateUserProfile(user.id, updates)
-      setProfile(updatedProfile)
-      return updatedProfile
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update profile')
-      throw err
-    }
+    return await updateProfileMutation({ userId: user.id, ...updates })
   }
 
   return {
     profile,
-    loading,
-    error,
+    loading: false, // Convex handles loading
+    error: null,
     updateProfile
   }
 }

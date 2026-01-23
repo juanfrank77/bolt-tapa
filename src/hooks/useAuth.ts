@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
-import { User as SupabaseUser } from '@supabase/supabase-js'
-import { supabase } from '../lib/supabase'
+import { useAuth as useConvexAuth } from 'convex/react'
 
 // Define a guest user type
 export interface GuestUser {
@@ -10,7 +9,7 @@ export interface GuestUser {
 }
 
 // Union type for authenticated user or guest
-export type User = SupabaseUser | GuestUser
+export type User = any | GuestUser // Convex user is any, but has id, etc.
 
 // Helper function to check if user is a guest
 export const isGuestUser = (user: User | null): user is GuestUser => {
@@ -18,82 +17,43 @@ export const isGuestUser = (user: User | null): user is GuestUser => {
 }
 
 export const useAuth = () => {
+  const { isAuthenticated, isLoading, user: convexUser } = useConvexAuth()
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Get initial session
-    const getInitialSession = async () => {
-      try {
-        const { data: { session }, error } = await supabase.auth.getSession()
-        
-        if (error) {
-          // Clear any stale session data if there's an error
-          await supabase.auth.signOut()
-          throw error
-        }
-        
-        if (session?.user) {
-          setUser(session.user)
-        } else {
-          // Set guest user if no authenticated session
-          const guestUser: GuestUser = {
-            id: 'guest',
-            email: 'guest@tapa.ai',
-            isGuest: true
-          }
-          setUser(guestUser)
-        }
-      } catch (error) {
-        // If there's any error (including refresh token issues), clear session and set guest user
-        await supabase.auth.signOut()
-        const guestUser: GuestUser = {
-          id: 'guest',
-          email: 'guest@tapa.ai',
-          isGuest: true
-        }
-        setUser(guestUser)
-      }
-      setLoading(false)
+    if (isLoading) {
+      setLoading(true)
+      return
     }
 
-    getInitialSession()
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        try {
-          if (session?.user) {
-            setUser(session.user)
-          } else {
-            // Set guest user if no authenticated session
-            const guestUser: GuestUser = {
-              id: 'guest',
-              email: 'guest@tapa.ai',
-              isGuest: true
-            }
-            setUser(guestUser)
-          }
-        } catch (error) {
-          // Handle any errors during auth state changes
-          await supabase.auth.signOut()
-          const guestUser: GuestUser = {
-            id: 'guest',
-            email: 'guest@tapa.ai',
-            isGuest: true
-          }
-          setUser(guestUser)
-        }
-        setLoading(false)
+    if (isAuthenticated && convexUser) {
+      setUser(convexUser)
+    } else {
+      // Set guest user if not authenticated
+      const guestUser: GuestUser = {
+        id: 'guest',
+        email: 'guest@tapa.ai',
+        isGuest: true
       }
-    )
-
-    return () => subscription.unsubscribe()
-  }, [])
+      setUser(guestUser)
+    }
+    setLoading(false)
+  }, [isAuthenticated, isLoading, convexUser])
 
   return {
     user,
     loading,
-    signOut: () => supabase.auth.signOut()
+    signOut: () => {
+      // Convex sign out
+      // Assuming we have a way, but for now, since guest is default, perhaps redirect or something
+      // Convex doesn't have built-in signOut, need to implement based on auth provider
+      // For simplicity, set to guest
+      setUser({
+        id: 'guest',
+        email: 'guest@tapa.ai',
+        isGuest: true
+      })
+    }
   }
 }

@@ -1,6 +1,8 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router';
+import { ConvexProvider, ConvexReactClient } from 'convex/react';
+import { convex } from './lib/convex';
 import { ModelProvider } from './context/ModelContext';
 import { LandingPage, LoginPage, SignUpPage, DashboardPage, ChatPage, PaymentSuccessPage, PrivacyPolicyPage, TermsOfServicePage } from './pages';
 import { aiChatLoader, aiChatAction } from './routes/chat';
@@ -45,8 +47,10 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ModelProvider>
-      <RouterProvider router={router} />
-    </ModelProvider>
+    <ConvexProvider client={convex}>
+      <ModelProvider>
+        <RouterProvider router={router} />
+      </ModelProvider>
+    </ConvexProvider>
   </StrictMode>
 );
