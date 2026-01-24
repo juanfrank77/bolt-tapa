@@ -1,2 +1,7 @@
 // Test setup file
-// Add any global test setup here
+import { afterEach } from "vitest";
+
+afterEach(() => {
+  // Cleanup after each test
+  console.log("Test cleanup");
+});
