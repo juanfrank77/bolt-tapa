@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { useAuth as useConvexAuth } from 'convex/react'
+import { useConvexAuth, useMutation, useQuery } from 'convex/react'
+import { api } from '../../convex/_generated/api'
 
 // Define a guest user type
 export interface GuestUser {
@@ -17,9 +18,12 @@ export const isGuestUser = (user: User | null): user is GuestUser => {
 }
 
 export const useAuth = () => {
-  const { isAuthenticated, isLoading, user: convexUser } = useConvexAuth()
+  const { isAuthenticated, isLoading } = useConvexAuth()
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+  const signOutMutation = useMutation(api.auth.signOut)
+  const getCurrentUser = useQuery(api.auth.getCurrentUser)
+  const createUserProfile = useMutation(api.users.createUserProfile)
 
   useEffect(() => {
     if (isLoading) {
@@ -27,8 +31,19 @@ export const useAuth = () => {
       return
     }
 
-    if (isAuthenticated && convexUser) {
-      setUser(convexUser)
+    if (isAuthenticated && getCurrentUser) {
+      // Create user profile if it doesn't exist
+      createUserProfile()
+        .then(() => {
+          setUser(getCurrentUser)
+          setLoading(false)
+        })
+        .catch((error) => {
+          console.error('Error creating user profile:', error)
+          setLoading(false)
+        })
+    } else if (isAuthenticated && !getCurrentUser) {
+      setLoading(false)
     } else {
       // Set guest user if not authenticated
       const guestUser: GuestUser = {
@@ -37,23 +52,33 @@ export const useAuth = () => {
         isGuest: true
       }
       setUser(guestUser)
+      setLoading(false)
     }
-    setLoading(false)
-  }, [isAuthenticated, isLoading, convexUser])
+  }, [isAuthenticated, isLoading, getCurrentUser, createUserProfile])
 
-  return {
-    user,
-    loading,
-    signOut: () => {
-      // Convex sign out
-      // Assuming we have a way, but for now, since guest is default, perhaps redirect or something
-      // Convex doesn't have built-in signOut, need to implement based on auth provider
-      // For simplicity, set to guest
+  const handleSignOut = async () => {
+    try {
+      await signOutMutation()
+      setUser({
+        id: 'guest',
+        email: 'guest@tapa.ai',
+        isGuest: true
+      })
+    } catch (error) {
+      console.error('Error signing out:', error)
+      // Fallback to guest state even if mutation fails
       setUser({
         id: 'guest',
         email: 'guest@tapa.ai',
         isGuest: true
       })
     }
+  }
+
+  return {
+    user,
+    loading,
+    isAuthenticated,
+    signOut: handleSignOut
   }
 }

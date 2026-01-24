@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { Header } from '../components';
-import { Eye, EyeSlash, EnvelopeSimple, Lock, User } from '@phosphor-icons/react';
+import { Eye, EyeSlash, EnvelopeSimple, Lock, User, GithubLogo, GoogleLogo } from '@phosphor-icons/react';
+import { useMutation } from 'convex/react';
+import { api } from '../../convex/_generated/api';
+import { useAuth } from '../hooks/useAuth';
 
 const SignUpPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +19,15 @@ const SignUpPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const updateUserProfile = useMutation(api.users.updateUserProfile);
+
+  // If already authenticated, redirect to dashboard
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -55,8 +67,30 @@ const SignUpPage: React.FC = () => {
 
     setLoading(true);
 
-    // Sign up flow
-
+    try {
+      // Note: Convex Auth primarily uses OAuth providers
+      // For email/password sign up, you'd need to implement your own logic
+      // This is a placeholder - actual implementation depends on your auth provider
+      
+      // After successful auth, create user profile
+      await updateUserProfile({
+        full_name: formData.fullName,
+        email: formData.email,
+        subscription_status: 'free',
+      });
+      
+      setSuccess(true);
+      
+      // Redirect to dashboard after successful sign up
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 2000);
+      
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to sign up');
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (success) {

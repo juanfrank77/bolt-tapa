@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { Header } from '../components';
-import { Eye, EyeSlash, EnvelopeSimple, Lock } from '@phosphor-icons/react';
+import { Eye, EyeSlash, EnvelopeSimple, Lock, GithubLogo, GoogleLogo } from '@phosphor-icons/react';
+import { useMutation } from 'convex/react';
+import { api } from '../../convex/_generated/api';
+import { useAuth } from '../hooks/useAuth';
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -10,14 +13,29 @@ const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const signInWithPassword = useMutation(api.auth.signInWithPassword);
+
+  // If already authenticated, redirect to dashboard
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
-    // Login flow
-
+    try {
+      await signInWithPassword({ email, password });
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to sign in');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

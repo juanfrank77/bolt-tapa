@@ -1,5 +1,6 @@
 import { useAuth, isGuestUser } from './useAuth'
-import * as db from '../lib/database'
+import { useQuery, useMutation } from 'convex/react'
+import { api } from '../../convex/_generated/api'
 
 // Default guest profile
 const GUEST_PROFILE = {
@@ -16,6 +17,10 @@ const GUEST_PROFILE = {
 export const useUserProfile = () => {
   const { user } = useAuth()
 
+  // Always call hooks at the top level
+  const profileQuery = useQuery(api.users.getUserProfile, user && !isGuestUser(user) ? { userId: user.id } : "skip")
+  const updateProfileMutation = useMutation(api.users.updateUserProfile)
+
   // Return guest profile for guest users
   if (isGuestUser(user)) {
     return {
@@ -25,9 +30,6 @@ export const useUserProfile = () => {
       updateProfile: () => Promise.resolve()
     }
   }
-
-  const profile = user ? db.getUserProfile(user.id) : null
-  const updateProfileMutation = db.updateUserProfile()
 
   const updateProfile = async (updates: {
     full_name?: string
@@ -40,7 +42,7 @@ export const useUserProfile = () => {
   }
 
   return {
-    profile,
+    profile: profileQuery,
     loading: false, // Convex handles loading
     error: null,
     updateProfile
