@@ -3,8 +3,7 @@ import { Link } from 'react-router';
 import { Header } from '../components';
 import { 
   Brain, 
-  Sparkle, 
-  Users, 
+  Sparkle,
   Shield, 
   ArrowRight,
   CheckCircle,
@@ -338,23 +337,6 @@ const LandingPage: React.FC = () => {
           
         </div>
       </section>
-
-      {/* Bolt Badge */}
-      <div className="fixed bottom-6 right-6 z-40">
-        <a 
-          href="https://bolt.new" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="block w-20 h-20 hover:scale-110 transition-transform duration-200"
-          title="Built with Bolt"
-        >
-          <img 
-            src="/white_circle_360x360.svg" 
-            alt="Built with Bolt" 
-            className="w-full h-full drop-shadow-lg"
-          />
-        </a>
-      </div>
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-16">
