@@ -7,6 +7,7 @@ export default defineSchema({
   user_profiles: defineTable({
     user_id: v.string(),
     full_name: v.optional(v.string()),
+    email: v.optional(v.string()),
     avatar_url: v.optional(v.string()),
     subscription_status: v.union(v.literal("free"), v.literal("premium"), v.literal("enterprise")),
     created_at: v.number(),

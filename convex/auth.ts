@@ -1,26 +1,11 @@
-import { convexAuth } from "@convex-dev/auth/server";
-import config from "./auth.config.js";
+import { convexAuth, getAuthUserId } from "@convex-dev/auth/server";
+import Google from "@auth/core/providers/google";
+import Postmark from "@auth/core/providers/postmark";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
 export const { auth, signIn, signOut: convexSignOut, store, isAuthenticated } = convexAuth({
-  providers: config.providers,
-});
-
-// Mutation to sign out
-export const signOut = mutation({
-  handler: async (ctx) => {
-    // Get current user
-    const userId = await ctx.auth.getUserIdentity();
-    if (!userId) {
-      return;
-    }
-    
-    // Implement sign out logic
-    // For Convex Auth, this might involve clearing any session data
-    // The actual sign out is handled by Convex Auth internally
-    return;
-  },
+  providers: [Google, Postmark],
 });
 
 // Mutation to sign in (email/password)
@@ -29,7 +14,7 @@ export const signInWithPassword = mutation({
     email: v.string(),
     password: v.string(),
   },
-  handler: async (ctx, args) => {
+  handler: async (ctx) => {
     // Note: Convex Auth uses OAuth providers primarily
     // For email/password auth, you'd need to implement your own logic
     // or use a service like Auth0, Clerk, etc.
@@ -38,19 +23,26 @@ export const signInWithPassword = mutation({
   },
 });
 
-// Query to get current user identity
-export const getCurrentUser = query({
+//Mutation to sign in with OTP
+export const signInWithOTP = mutation({
+  args: {
+    email: v.string(),
+  },
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) {
-      return null;
-    }
-    
-    return {
-      id: identity.subject,
-      email: identity.email,
-      name: identity.name,
-      picture: identity.picture,
-    };
+    // Implement OTP sign in logic
+    // This would typically involve sending an OTP to the user's email
+    // and verifying it on the client side
+    throw new Error("OTP authentication not implemented");
   },
 });
+
+export const getCurrentUser = query({
+  args: {},
+  handler: async (ctx) => {
+    const userId = await getAuthUserId(ctx);
+    if (userId === null) {
+      return null
+    }
+    return await ctx.db.get(userId);
+  }
+})

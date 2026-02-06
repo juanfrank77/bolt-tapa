@@ -45,6 +45,7 @@ export const updateUserProfile = mutation({
       return await ctx.db.insert("user_profiles", {
         user_id: userId,
         full_name: updates.full_name,
+        email: updates.email,
         avatar_url: updates.avatar_url,
         subscription_status: updates.subscription_status || "free",
         created_at: Date.now(),
@@ -87,7 +88,7 @@ export const createUserProfile = mutation({
       user_id: identity.subject,
       full_name: args.full_name || identity.name || "User",
       email: args.email || identity.email,
-      avatar_url: args.avatar_url || identity.picture,
+      avatar_url: (typeof args.avatar_url === "string" ? args.avatar_url : (typeof identity.picture === "string" ? identity.picture : undefined)),
       subscription_status: "free",
       created_at: Date.now(),
       updated_at: Date.now(),
