@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useAuthActions } from "@convex-dev/auth/react";
 import { useConvexAuth, useMutation, useQuery } from 'convex/react'
 import { api } from '../../convex/_generated/api'
 
@@ -21,9 +22,9 @@ export const useAuth = () => {
   const { isAuthenticated, isLoading } = useConvexAuth()
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
-  const signOutMutation = useMutation(api.auth.signOut)
   const getCurrentUser = useQuery(api.auth.getCurrentUser)
   const createUserProfile = useMutation(api.users.createUserProfile)
+  const authActions = useAuthActions()
 
   useEffect(() => {
     if (isLoading) {
@@ -33,7 +34,11 @@ export const useAuth = () => {
 
     if (isAuthenticated && getCurrentUser) {
       // Create user profile if it doesn't exist
-      createUserProfile()
+      createUserProfile({
+        full_name: getCurrentUser.name,
+        email: getCurrentUser.email,
+        avatar_url: getCurrentUser.image
+      })
         .then(() => {
           setUser(getCurrentUser)
           setLoading(false)
@@ -58,7 +63,7 @@ export const useAuth = () => {
 
   const handleSignOut = async () => {
     try {
-      await signOutMutation()
+      await authActions.signOut()
       setUser({
         id: 'guest',
         email: 'guest@tapa.ai',
@@ -66,7 +71,6 @@ export const useAuth = () => {
       })
     } catch (error) {
       console.error('Error signing out:', error)
-      // Fallback to guest state even if mutation fails
       setUser({
         id: 'guest',
         email: 'guest@tapa.ai',
@@ -75,10 +79,19 @@ export const useAuth = () => {
     }
   }
 
+  const handleSignIn = async (provider: string = "google") => {
+    try {
+      await authActions.signIn(provider)
+    } catch (error) {
+      console.error('Error signing in:', error)
+    }
+  }
+
   return {
     user,
     loading,
     isAuthenticated,
-    signOut: handleSignOut
+    signOut: handleSignOut,
+    signIn: handleSignIn
   }
 }
